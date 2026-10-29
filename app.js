@@ -23,11 +23,11 @@ const LEVEL1 = 67;
 const LEVEL2 = 35;
 
 // face: eksenden port alnına (A, B); dir: üstten görünümde P1 yukarı (-Z), P2 ve P3 sol (-X), P3 P2'nin üstünde.
-// Çıkıntılar (gövdeden alına) Rev C'de %30 kısaltıldı: 16 → 11.2, 12 → 8.4
+// Çıkıntılar (gövdeden alına) Rev C ve Rev D'de %30'ar kısaltıldı: 16 → 11.2 → 7.84, 12 → 8.4 → 5.88
 const PORTS = [
-  { id: 'P1', size: '3/4', bossR: 17, face: BODY_R + 11.2, depth: 15, passR: 8, y: LEVEL1, dir: [0, 0, -1] },
-  { id: 'P2', size: '1/2', bossR: 14, face: BODY_R + 8.4, depth: 13, passR: 6.5, y: LEVEL2, dir: [-1, 0, 0] },
-  { id: 'P3', size: '1/2', bossR: 14, face: BODY_R + 8.4, depth: 13, passR: 6.5, y: LEVEL1, dir: [-1, 0, 0] },
+  { id: 'P1', size: '3/4', bossR: 17, face: BODY_R + 7.84, depth: 15, passR: 8, y: LEVEL1, dir: [0, 0, -1] },
+  { id: 'P2', size: '1/2', bossR: 14, face: BODY_R + 5.88, depth: 13, passR: 6.5, y: LEVEL2, dir: [-1, 0, 0] },
+  { id: 'P3', size: '1/2', bossR: 14, face: BODY_R + 5.88, depth: 13, passR: 6.5, y: LEVEL1, dir: [-1, 0, 0] },
 ].map((p) => ({ ...p, dir: new THREE.Vector3(...p.dir) }));
 
 const Y = new THREE.Vector3(0, 1, 0);
