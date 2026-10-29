@@ -1,0 +1,5 @@
+# Üretim dosyaları olduğu gibi saklanır (satır sonu çevrilmez)
+*.step -text
+*.dxf -text
+*.pdf binary
+*.zip binary
