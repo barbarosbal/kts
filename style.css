@@ -55,6 +55,15 @@ html, body {
   z-index: 2;
   pointer-events: none;
 }
+.brand {
+  display: inline-block;
+  margin-bottom: 12px;
+  pointer-events: auto;
+  opacity: .92;
+  transition: opacity .15s;
+}
+.brand:hover { opacity: 1; }
+.brand img { display: block; width: auto; height: 22px; }
 .title h1 {
   margin: 0;
   font-size: 20px;
@@ -236,6 +245,8 @@ html, body {
   .toolbar { top: auto; bottom: 14px; right: 50%; transform: translateX(50%); }
   .hint { display: none; }
   .title h1 { font-size: 17px; }
+  .brand { margin-bottom: 8px; }
+  .brand img { height: 18px; }
 }
 
 @media (max-width: 760px) {

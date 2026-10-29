@@ -22,11 +22,12 @@ const TOP = BODY_Y[1] + L1; // H
 const LEVEL1 = 67;
 const LEVEL2 = 35;
 
-// face: eksenden port alnına (A, B, C); dir: üstten görünümde P1 yukarı (-Z), P2 sol (-X), P3 aşağı (+Z)
+// face: eksenden port alnına (A, B); dir: üstten görünümde P1 yukarı (-Z), P2 ve P3 sol (-X), P3 P2'nin üstünde.
+// Çıkıntılar (gövdeden alına) Rev C'de %30 kısaltıldı: 16 → 11.2, 12 → 8.4
 const PORTS = [
-  { id: 'P1', size: '3/4', bossR: 17, face: 46, depth: 15, passR: 8, y: LEVEL1, dir: [0, 0, -1] },
-  { id: 'P2', size: '1/2', bossR: 14, face: 42, depth: 13, passR: 6.5, y: LEVEL2, dir: [-1, 0, 0] },
-  { id: 'P3', size: '1/2', bossR: 14, face: 42, depth: 13, passR: 6.5, y: LEVEL1, dir: [0, 0, 1] },
+  { id: 'P1', size: '3/4', bossR: 17, face: BODY_R + 11.2, depth: 15, passR: 8, y: LEVEL1, dir: [0, 0, -1] },
+  { id: 'P2', size: '1/2', bossR: 14, face: BODY_R + 8.4, depth: 13, passR: 6.5, y: LEVEL2, dir: [-1, 0, 0] },
+  { id: 'P3', size: '1/2', bossR: 14, face: BODY_R + 8.4, depth: 13, passR: 6.5, y: LEVEL1, dir: [-1, 0, 0] },
 ].map((p) => ({ ...p, dir: new THREE.Vector3(...p.dir) }));
 
 const Y = new THREE.Vector3(0, 1, 0);
@@ -241,7 +242,7 @@ new ResizeObserver(resize).observe(stage);
 
 // ---------------- görünümler ----------------
 const VIEWS = {
-  iso: { theta: 28, phi: 66 },
+  iso: { theta: -50, phi: 66 },
   front: { theta: 0, phi: 90 },
   top: { theta: 0, phi: 0.05 },
   bottom: { theta: 0, phi: 179.95 },
@@ -380,11 +381,33 @@ function buildAnnotations() {
   dim(84, 0, TOP, 'H');
 
   // açıklamalar
-  callout([0, LEVEL1 + 17, -46], [26, LEVEL1 + 37, -64], 'P1 · 3/4″ iç diş', 'Seviye 1');
-  callout([0, LEVEL1 - 14, 42], [-20, LEVEL1 - 31, 62], 'P3 · 1/2″ iç diş', 'Seviye 1');
-  callout([-42, LEVEL2 + 14, 0], [-62, LEVEL2 + 31, -8], 'P2 · 1/2″ iç diş', 'Seviye 2');
-  callout([-rT * d45, TOP - 6, rT * d45], [-46, TOP + 17, 26], '1 1/2″ dış diş', 'Üst uç · klingerit conta');
-  callout([-rT * d45, 8, rT * d45], [-46, -12, 30], '1 1/2″ dış diş', 'Alt uç · keten + teflon');
+  const [P1, P2, P3] = PORTS;
+  callout([0, P1.y + P1.bossR, -P1.face], [26, P1.y + 36, -P1.face - 18], 'P1 · 3/4″ iç diş', 'Seviye 1');
+  callout([-P3.face, P3.y + P3.bossR, 0], [-P3.face - 22, P3.y + 30, -10], 'P3 · 1/2″ iç diş', 'Seviye 1');
+  callout([-P2.face, P2.y - P2.bossR, 0], [-P2.face - 22, P2.y - 30, 10], 'P2 · 1/2″ iç diş', 'Seviye 2');
+  callout([0, TOP - 6, rT], [-26, TOP + 16, 44], '1 1/2″ dış diş', 'Üst uç · klingerit conta');
+  callout([0, 8, rT], [24, -16, 44], '1 1/2″ dış diş', 'Alt uç · keten + teflon');
+}
+
+// Gövdenin arkasında kalan etiketleri gizler (gövde ≈ BODY_R yarıçaplı silindir)
+function hideOccludedLabels() {
+  const c = camera.position;
+  for (const l of labels) {
+    const a = l.position;
+    const dx = a.x - c.x;
+    const dz = a.z - c.z;
+    const qa = dx * dx + dz * dz;
+    const qb = 2 * (c.x * dx + c.z * dz);
+    const qc = c.x * c.x + c.z * c.z - BODY_R * BODY_R;
+    const disc = qb * qb - 4 * qa * qc;
+    let hidden = false;
+    if (qa > 1e-6 && disc > 0) {
+      const t = (-qb - Math.sqrt(disc)) / (2 * qa);
+      const y = c.y + t * (a.y - c.y);
+      hidden = t > 0 && t < 1 && y > 0 && y < TOP;
+    }
+    l.visible = !hidden;
+  }
 }
 
 function setTech(on, { refit = true } = {}) {
@@ -433,6 +456,7 @@ try {
   renderer.setAnimationLoop((now) => {
     if (tween) stepTween(now);
     controls.update();
+    if (annot.visible) hideOccludedLabels();
     renderer.render(scene, camera);
     labelRenderer.render(scene, camera);
   });

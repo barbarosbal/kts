@@ -5,7 +5,7 @@ Pirinç (CW614N) kazan altı parçasının 360° döndürülebilir 3D modeli ve 
 Canlı: https://kts.ratel.systems
 
 - `index.html`, `app.js`, `style.css`: Three.js görüntüleyici (derleme adımı yok, statik site)
-- `kazan-alti-parcasi-taslak.svg`: teknik çizim (Rev B, ölçüler bekleniyor)
+- `kazan-alti-parcasi-taslak.svg`: teknik çizim (Rev C, ölçüler bekleniyor)
 - **Teknik çizim** anahtarı (veya `T` tuşu) ölçü/etiket katmanını ve çizim panelini açar; `#teknik` ile doğrudan açık gelir.
 
 Model ölçüleri `app.js` başındaki sabitlerdedir (şimdilik ön değer; net ölçüler gelince güncellenecek).
