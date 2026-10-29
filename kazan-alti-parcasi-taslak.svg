@@ -41,16 +41,14 @@
     <circle class="vis" cx="380" cy="420" r="95"/>
 
     <!-- P1: 3/4" iç diş (üst) -->
-    <path class="vis" d="M320 282.5 V238.2 H440 V282.5"/>
-    <path class="hid" d="M350 238.2 V308.2 H410 V238.2"/>
-    <path class="hidt" d="M347 238.2 V295.2 M413 238.2 V295.2"/>
-    <path class="hid" d="M364 308.2 V326.4 M396 308.2 V326.4"/>
+    <path class="vis" d="M320 282.5 V254.1 H440 V282.5"/>
+    <path class="hid" d="M350 254.1 V324.1 H410 V254.1"/>
+    <path class="hidt" d="M347 254.1 V311.1 M413 254.1 V311.1"/>
 
     <!-- P3 (seviye 1, görünür) — P2 (seviye 2) tam altında, gizli -->
-    <path class="vis" d="M237.2 374 H203 V466 H237.2"/>
-    <path class="hid" d="M203 397 H268 V443 H203"/>
-    <path class="hidt" d="M203 394 H256 M203 446 H256"/>
-    <path class="hid" d="M268 408 H285.8 M268 432 H285.8"/>
+    <path class="vis" d="M237.2 374 H216.5 V466 H237.2"/>
+    <path class="hid" d="M216.5 397 H281.5 V443 H216.5"/>
+    <path class="hidt" d="M216.5 394 H269.5 M216.5 446 H269.5"/>
 
     <!-- ØD gövde -->
     <line class="dima" x1="273.9" y1="313.9" x2="486.1" y2="526.1"/>
@@ -69,21 +67,21 @@
     <text class="ts" x="162" y="657">boydan boya (boru gibi)</text>
 
     <!-- A: merkez – P1 alın -->
-    <line class="dim" x1="444" y1="238.2" x2="677" y2="238.2"/>
-    <line class="dima" x1="665" y1="238.2" x2="665" y2="420"/>
+    <line class="dim" x1="444" y1="254.1" x2="677" y2="254.1"/>
+    <line class="dima" x1="665" y1="254.1" x2="665" y2="420"/>
     <text class="tb q" transform="translate(657 345) rotate(-90)" text-anchor="middle">A</text>
 
     <!-- B: merkez – P2/P3 alın -->
-    <line class="dim" x1="203" y1="370" x2="203" y2="168"/>
-    <line class="dima" x1="203" y1="180" x2="380" y2="180"/>
-    <text class="tb q" x="291" y="173" text-anchor="middle">B</text>
+    <line class="dim" x1="216.5" y1="370" x2="216.5" y2="168"/>
+    <line class="dima" x1="216.5" y1="180" x2="380" y2="180"/>
+    <text class="tb q" x="298" y="173" text-anchor="middle">B</text>
 
     <!-- port etiketleri -->
-    <polyline class="lead" points="425,238.2 470,150 640,150"/>
+    <polyline class="lead" points="425,254.1 470,150 640,150"/>
     <text class="tb" x="474" y="143">P1 · 3/4" İÇ DİŞ</text>
     <text class="t" x="474" y="168">Seviye 1</text>
 
-    <polyline class="lead" points="203,455 190,520 -5,520"/>
+    <polyline class="lead" points="216.5,455 200,520 -5,520"/>
     <text class="tb" x="-4" y="513">P3 + P2 · 1/2" İÇ DİŞ</text>
     <text class="tn" x="-4" y="540">P3: Seviye 1 (üstte)</text>
     <text class="tn" x="-4" y="559">P2: Seviye 2 (altta, gizli)</text>
@@ -112,14 +110,12 @@
     <path class="hid" d="M1013 80 V500 M1127 80 V500"/>
 
     <!-- P3 (sol, seviye 1) -->
-    <path class="vis" d="M980 187.4 H963.8 V242.6 H980"/>
-    <path class="hid" d="M963.8 201.2 H1002.8 V228.8 H963.8"/>
-    <path class="hid" d="M1002.8 207.8 H1013 M1002.8 222.2 H1013"/>
+    <path class="vis" d="M980 187.4 H971.9 V242.6 H980"/>
+    <path class="hid" d="M971.9 201.2 H1010.9 V228.8 H971.9"/>
 
     <!-- P2 (sol, seviye 2) -->
-    <path class="vis" d="M980 307.4 H963.8 V362.6 H980"/>
-    <path class="hid" d="M963.8 321.2 H1002.8 V348.8 H963.8"/>
-    <path class="hid" d="M1002.8 327.8 H1013 M1002.8 342.2 H1013"/>
+    <path class="vis" d="M980 307.4 H971.9 V362.6 H980"/>
+    <path class="hid" d="M971.9 321.2 H1010.9 V348.8 H971.9"/>
 
     <!-- P1 (arkada, gizli) — seviye 1 -->
     <circle class="hid" cx="1070" cy="215" r="36"/>
@@ -215,11 +211,11 @@
     <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
     <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
 
-    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">D — Taslak</text>
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">E — Taslak</text>
     <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">29.10.2026</text>
     <text class="tl" x="1190" y="887">DURUM</text><text class="tb q" x="1190" y="906">Ölçü bekliyor</text>
 
-    <text class="tl" x="790" y="929">REV D</text>
-    <text class="t" x="790" y="947">Port çıkıntıları %30 daha kısaltıldı (Rev C: P3, P2'nin üstüne).</text>
+    <text class="tl" x="790" y="929">REV E</text>
+    <text class="t" x="790" y="947">Port çıkıntıları %50 daha kısaltıldı (Rev D %30, Rev C %30).</text>
   </g>
 </svg>
