@@ -1,13 +1,28 @@
 # KTS — Kazan Altı Parçası
 
-Pirinç (CW614N) kazan altı parçasının 360° döndürülebilir 3D modeli ve teknik çizimi.
+Pirinç (CW614N) kazan altı parçasının 360° döndürülebilir 3D modeli, teknik çizimi ve fason üretim paketi.
 
-Canlı: https://kts.ratel.systems
+- Canlı model: https://kts.ratel.systems
+- Üretim paketi: https://kts.ratel.systems/uretim/
 
-- `index.html`, `app.js`, `style.css`: Three.js görüntüleyici (derleme adımı yok, statik site)
-- `kazan-alti-parcasi-taslak.svg`: teknik çizim (Rev E, ölçüler bekleniyor)
-- **Teknik çizim** anahtarı (veya `T` tuşu) ölçü/etiket katmanını ve çizim panelini açar; `#teknik` ile doğrudan açık gelir.
+## Ölçüler tek yerde: `olculer.json`
 
-Model ölçüleri `app.js` başındaki sabitlerdedir (şimdilik ön değer; net ölçüler gelince güncellenecek).
+3D görüntüleyici, STEP, DXF, teknik resim ve üretim planı bu dosyadaki değerlerden üretilir.
+Net ölçüler gelince:
 
-Güncellemede `index.html` içindeki `?v=` değerini artır; GitHub Pages dosyaları 10 dk önbellekte tutar.
+1. `olculer.json` içinde `olculer.*.deger`, port ölçüleri, `rev`, `tarih`, `revNot` güncellenir; ölçüler onaylıysa `"onayli": true` yapılır (turuncu "ön değer" işaretleri kalkar).
+2. Paketi yeniden üret:
+
+   ```bash
+   cd tools && npm install && npm run build
+   ```
+
+3. Değişiklikler commit edilip `main`'e push edilir; GitHub Pages birkaç dakikada yayınlar.
+
+`npm run build` şunları yazar: `uretim/*.step`, `uretim/*.dxf`, teknik resim ve üretim planı PDF'leri (Edge ile basılır), `uretim/index.html`, paket ZIP'i, `kazan-alti-parcasi-taslak.svg` (şablon: `tools/cizim-sablon.svg`) ve `index.html` içindeki `?v=` önbellek etiketi.
+
+## Dosyalar
+
+- `index.html`, `app.js`, `style.css`: Three.js görüntüleyici (statik site). **Teknik çizim** anahtarı (veya `T` tuşu) ölçü/etiket katmanını ve çizim panelini açar; `#teknik` ile doğrudan açık gelir.
+- `tools/build.mjs`: üretim paketi üreticisi (STEP için replicad / OpenCascade).
+- `tools/cizim-sablon.svg`: teknik resim şablonu. Çizim geometrisi şematiktir (ölçeksiz); port sayısı veya yerleşimi değişirse şablon da elle güncellenir.

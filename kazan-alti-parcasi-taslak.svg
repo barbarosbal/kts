@@ -19,6 +19,8 @@
       .tn{font-size:13px;fill:#111}
       .tl{font-size:10px;fill:#555;letter-spacing:.4px}
       .h{font-size:18px;font-weight:700;fill:#111;letter-spacing:.5px}
+      .tt{font-size:11px;fill:#111}
+      .ttb{font-size:11px;font-weight:700;fill:#111}
       .q{fill:#c2410c}
     </style>
   </defs>
@@ -88,6 +90,25 @@
 
     <text class="h" x="380" y="770" text-anchor="middle">ÜSTTEN GÖRÜNÜM</text>
     <text class="ts" x="380" y="790" text-anchor="middle">ölçeksiz · taslak</text>
+  </g>
+
+  <!-- ================= ÖLÇÜ TABLOSU (olculer.json) ================= -->
+  <g>
+    <text class="tb" x="36" y="46">ÖLÇÜ TABLOSU (mm)</text>
+    <rect x="36" y="54" width="210" height="20" fill="#eee"/>
+    <rect class="grid" x="36" y="54" width="210" height="200"/>
+    <path class="grid" d="M36 74 H246 M36 94 H246 M36 114 H246 M36 134 H246 M36 154 H246 M36 174 H246 M36 194 H246 M36 214 H246 M36 234 H246 M70 54 V254 M125 54 V254"/>
+    <text class="ttb" x="42" y="68">Harf</text><text class="ttb" x="76" y="68">Değer</text><text class="ttb" x="131" y="68">Açıklama</text>
+    <text class="ttb" x="42" y="88">ØD</text><text class="tt q" x="76" y="88">60</text><text class="tt" x="131" y="88">Gövde çapı</text>
+    <text class="ttb" x="42" y="108">ØE</text><text class="tt q" x="76" y="108">36</text><text class="tt" x="131" y="108">Delik çapı</text>
+    <text class="ttb" x="42" y="128">A</text><text class="tt q" x="76" y="128">33,92</text><text class="tt" x="131" y="128">Eksen–P1 alın</text>
+    <text class="ttb" x="42" y="148">B</text><text class="tt q" x="76" y="148">32,94</text><text class="tt" x="131" y="148">Eksen–P2/P3 alın</text>
+    <text class="ttb" x="42" y="168">H</text><text class="tt q" x="76" y="168">103</text><text class="tt" x="131" y="168">Toplam boy</text>
+    <text class="ttb" x="42" y="188">H1</text><text class="tt q" x="76" y="188">20</text><text class="tt" x="131" y="188">Omuz–seviye 1</text>
+    <text class="ttb" x="42" y="208">H2</text><text class="tt q" x="76" y="208">52</text><text class="tt" x="131" y="208">Omuz–seviye 2</text>
+    <text class="ttb" x="42" y="228">L1</text><text class="tt q" x="76" y="228">16</text><text class="tt" x="131" y="228">Üst diş boyu</text>
+    <text class="ttb" x="42" y="248">L2</text><text class="tt q" x="76" y="248">18</text><text class="tt" x="131" y="248">Alt diş boyu</text>
+    <text class="ts q" x="36" y="270">Turuncu: ön değer, teyit edilecek.</text>
   </g>
 
   <!-- ================= YAN GÖRÜNÜM ================= -->
@@ -168,35 +189,35 @@
     <g class="tn">
       <text x="790" y="644" font-weight="700">P1</text><text x="860" y="644">3/4"</text><text x="940" y="644">İç diş</text>
       <text x="1020" y="644">0° · üst</text><text x="1120" y="644">1</text>
-      <text x="1190" y="644" class="q">?</text><text x="1280" y="644" class="q">?</text>
+      <text x="1190" y="644" class="q">Ø34</text><text x="1280" y="644" class="q">15</text>
 
       <text x="790" y="670" font-weight="700">P2</text><text x="860" y="670">1/2"</text><text x="940" y="670">İç diş</text>
       <text x="1020" y="670">90° · sol</text><text x="1120" y="670">2</text>
-      <text x="1190" y="670" class="q">?</text><text x="1280" y="670" class="q">?</text>
+      <text x="1190" y="670" class="q">Ø28</text><text x="1280" y="670" class="q">13</text>
 
       <text x="790" y="696" font-weight="700">P3</text><text x="860" y="696">1/2"</text><text x="940" y="696">İç diş</text>
       <text x="1020" y="696">90° · sol</text><text x="1120" y="696">1</text>
-      <text x="1190" y="696" class="q">?</text><text x="1280" y="696" class="q">?</text>
+      <text x="1190" y="696" class="q">Ø28</text><text x="1280" y="696" class="q">13</text>
 
       <text x="790" y="722" font-weight="700">Üst uç</text><text x="860" y="722">1 1/2"</text><text x="940" y="722">Dış diş</text>
       <text x="1020" y="722">conta</text><text x="1120" y="722">—</text>
-      <text x="1190" y="722">—</text><text x="1280" y="722" class="q">L1 ?</text>
+      <text x="1190" y="722">—</text><text x="1280" y="722" class="q">L1 = 16</text>
 
       <text x="790" y="748" font-weight="700">Alt uç</text><text x="860" y="748">1 1/2" <tspan class="q">?</tspan></text><text x="940" y="748">Dış diş</text>
       <text x="1020" y="748">keten/teflon</text><text x="1120" y="748">—</text>
-      <text x="1190" y="748">—</text><text x="1280" y="748" class="q">L2 ?</text>
+      <text x="1190" y="748">—</text><text x="1280" y="748" class="q">L2 = 18</text>
     </g>
   </g>
 
   <!-- ================= NOTLAR ================= -->
   <g>
     <text class="tb" x="40" y="832">NOTLAR</text>
-    <text class="tn" x="40" y="854">1. Ölçüler henüz yok: harfli ölçüler (ØD, ØE, A, B, H, H1, H2, L1, L2) ve turuncu "?" alanlar doldurulacak.</text>
-    <text class="tn" x="40" y="874">2. Üst uç (seviye 1 tarafı) klingerit conta ile sızdırmaz; conta oturma yüzeyi düz ve çapaksız olacak.</text>
-    <text class="tn" x="40" y="894">3. Alt uç keten + teflon ile sızdırmaz. Diş tipi (G paralel / R konik) teyit edilecek.</text>
-    <text class="tn" x="40" y="914">4. Gövde boydan boya delik (boru gibi); portlar iç kanallarla bu deliğe açılır.</text>
-    <text class="tn" x="40" y="934">5. P1 0°'de; P2 ve P3 90°'de üst üste. Eksenler gövde ekseninde kesişir. Toplam boy mümkün olan en kısa.</text>
-    <text class="tn" x="40" y="954">6. Keskin kenarlar 0,3–0,5 × 45° kırılacak. Malzeme: CW614N (CuZn39Pb3) otomat pirinci.</text>
+    <text class="tn" x="40" y="854">1. Harfli ölçülerin değerleri ölçü tablosundadır (turuncu: ön değer). Geometri için STEP modeli esastır; resim ölçeksizdir.</text>
+    <text class="tn" x="40" y="874">2. Genel tolerans ISO 2768-m. Üst uç klingerit conta ile sızdırmaz: conta yüzeyi düz, çapaksız, Ra 1,6.</text>
+    <text class="tn" x="40" y="894">3. Dişler ISO 228-1 (G) kabul edildi; alt uç keten + teflon, diş tipi (G / R) teyit edilecek. Diş boşaltma kanalı 4 mm.</text>
+    <text class="tn" x="40" y="914">4. Port diş dibi delikleri ØE deliğine kadar açılır; kesişim çapakları alınacak. Port girişleri 90° havşa.</text>
+    <text class="tn" x="40" y="934">5. P1 0°'de; P2 ve P3 90°'de üst üste. Eksenler gövde ekseninde kesişir. Keskin kenarlar 0,3–0,5 × 45°.</text>
+    <text class="tn" x="40" y="954">6. Malzeme: CW614N (CuZn39Pb3) otomat pirinci, EN 10204 3.1 sertifikalı.</text>
   </g>
 
   <!-- ================= ANTET ================= -->

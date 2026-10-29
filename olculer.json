@@ -1,0 +1,34 @@
+{
+  "parca": "Kazan Altı Parçası",
+  "rev": "E",
+  "tarih": "29.10.2026",
+  "revNot": "Port çıkıntıları %50 daha kısaltıldı (Rev D %30, Rev C %30).",
+  "onayli": false,
+  "durum": "Ön değerler — net ölçüler bekleniyor",
+  "malzeme": "CW614N (CuZn39Pb3) otomat pirinci",
+  "adet": "1–10 (prototip, fason)",
+  "genelTolerans": "ISO 2768-m",
+
+  "olculer": {
+    "D":  { "deger": 60,    "aciklama": "Gövde çapı (conta oturma yüzeyi)" },
+    "E":  { "deger": 36,    "aciklama": "Boydan boya delik çapı" },
+    "A":  { "deger": 33.92, "aciklama": "Eksen – P1 alın" },
+    "B":  { "deger": 32.94, "aciklama": "Eksen – P2/P3 alın" },
+    "H":  { "deger": 103,   "aciklama": "Toplam boy" },
+    "H1": { "deger": 20,    "aciklama": "Omuz – seviye 1 ekseni" },
+    "H2": { "deger": 52,    "aciklama": "Omuz – seviye 2 ekseni" },
+    "L1": { "deger": 16,    "aciklama": "Üst diş boyu" },
+    "L2": { "deger": 18,    "aciklama": "Alt diş boyu" }
+  },
+
+  "uclar": {
+    "ust": { "dis": "G 1 1/2", "sizdirmazlik": "klingerit conta" },
+    "alt": { "dis": "G 1 1/2", "sizdirmazlik": "keten + teflon", "teyit": "diş ölçüsü ve tipi (G/R)" }
+  },
+
+  "portlar": [
+    { "id": "P1", "dis": "G 3/4", "aci": 0,  "seviye": 1, "bossCap": 34, "disDerinligi": 15, "alin": "A" },
+    { "id": "P2", "dis": "G 1/2", "aci": 90, "seviye": 2, "bossCap": 28, "disDerinligi": 13, "alin": "B" },
+    { "id": "P3", "dis": "G 1/2", "aci": 90, "seviye": 1, "bossCap": 28, "disDerinligi": 13, "alin": "B" }
+  ]
+}

@@ -5,30 +5,47 @@ import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer
 import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
 import { Brush, Evaluator, ADDITION, SUBTRACTION } from 'three-bvh-csg';
 
-// Ölçüler mm, parça ekseni +Y, orijin alt ucun merkezi.
-// Net ölçüler gelene kadar ön değerler (teknik çizimdeki harfli ölçülere karşılık gelir).
+// Tüm ölçüler olculer.json'dan gelir (mm). Parça ekseni +Y, orijin alt ucun merkezi.
+const SPEC = await fetch(`olculer.json${new URL(import.meta.url).search}`).then((r) => r.json());
+const M = Object.fromEntries(Object.entries(SPEC.olculer).map(([k, v]) => [k, v.deger]));
+
+// BSP (ISO 228-1) diş verileri; tapDrill: diş dibi matkabı
 const BSP = {
-  '1 1/2': { major: 47.803, minor: 44.845, pitch: 25.4 / 11 },
-  '3/4': { major: 26.441, minor: 24.117, pitch: 25.4 / 14 },
-  '1/2': { major: 20.955, minor: 18.631, pitch: 25.4 / 14 },
+  '1 1/2': { major: 47.803, minor: 44.845, pitch: 25.4 / 11, tapDrill: 45.25 },
+  '3/4': { major: 26.441, minor: 24.117, pitch: 25.4 / 14, tapDrill: 24.25 },
+  '1/2': { major: 20.955, minor: 18.631, pitch: 25.4 / 14, tapDrill: 18.75 },
 };
+const sizeOf = (dis) => dis.replace(/^[GR]\s*/, '');
 
-const BODY_R = 30;          // ØD / 2
-const BORE_R = 18;          // ØE / 2
-const BODY_Y = [18, 87];    // gövde alt / üst (conta yüzeyi)
-const L1 = 16;              // üst diş boyu
-const L2 = 18;              // alt diş boyu
-const TOP = BODY_Y[1] + L1; // H
-const LEVEL1 = 67;
-const LEVEL2 = 35;
+const BODY_R = M.D / 2;
+const BORE_R = M.E / 2;
+const L1 = M.L1;
+const L2 = M.L2;
+const TOP = M.H;
+const BODY_Y = [L2, TOP - L1];             // gövde alt / üst (omuz = conta yüzeyi)
+const LEVEL = { 1: BODY_Y[1] - M.H1, 2: BODY_Y[1] - M.H2 };
+const LEVEL1 = LEVEL[1];
+const LEVEL2 = LEVEL[2];
+const TOP_THREAD = BSP[sizeOf(SPEC.uclar.ust.dis)];
+const BOTTOM_THREAD = BSP[sizeOf(SPEC.uclar.alt.dis)];
 
-// face: eksenden port alnına (A, B); dir: üstten görünümde P1 yukarı (-Z), P2 ve P3 sol (-X), P3 P2'nin üstünde.
-// Çıkıntılar (gövdeden alına): Rev C %30, Rev D %30, Rev E %50 kısaltıldı: 16 → 11.2 → 7.84 → 3.92, 12 → 8.4 → 5.88 → 2.94
-const PORTS = [
-  { id: 'P1', size: '3/4', bossR: 17, face: BODY_R + 3.92, depth: 15, passR: 8, y: LEVEL1, dir: [0, 0, -1] },
-  { id: 'P2', size: '1/2', bossR: 14, face: BODY_R + 2.94, depth: 13, passR: 6.5, y: LEVEL2, dir: [-1, 0, 0] },
-  { id: 'P3', size: '1/2', bossR: 14, face: BODY_R + 2.94, depth: 13, passR: 6.5, y: LEVEL1, dir: [-1, 0, 0] },
-].map((p) => ({ ...p, dir: new THREE.Vector3(...p.dir) }));
+// Açı üstten görünümde: 0° = P1 yönü (-Z), 90° = sol (-X). face: eksenden port alnına (A, B).
+// Diş dibi matkabı Ø, diş bitiminden gövde deliğine kadar devam eder.
+const PORTS = SPEC.portlar.map((p) => {
+  const a = THREE.MathUtils.degToRad(p.aci);
+  const size = sizeOf(p.dis);
+  return {
+    id: p.id,
+    size,
+    bossR: p.bossCap / 2,
+    face: M[p.alin],
+    depth: p.disDerinligi,
+    passR: BSP[size].tapDrill / 2,
+    y: LEVEL[p.seviye],
+    level: p.seviye,
+    dir: new THREE.Vector3(-Math.sin(a), 0, -Math.cos(a)),
+  };
+});
 
 const Y = new THREE.Vector3(0, 1, 0);
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -224,7 +241,7 @@ controls.autoRotateSpeed = 1.2;
 // Parçanın (teknik çizimde etiketlerle birlikte) kadraja sığdığı uzaklık
 function fitDistance() {
   const t = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
-  const [h, w] = annot.visible ? [80, 92] : [62, 58];
+  const [h, w] = (annot.visible ? [0.78, 0.9] : [0.6, 0.56]).map((k) => k * TOP);
   return Math.max(h / t, w / (t * camera.aspect));
 }
 
@@ -352,7 +369,7 @@ function callout(at, to, title, sub) {
 }
 
 function buildAnnotations() {
-  const rT = BSP['1 1/2'].major / 2;
+  const rT = TOP_THREAD.major / 2;
   const d45 = Math.SQRT1_2;
 
   // eksenler
@@ -368,25 +385,30 @@ function buildAnnotations() {
   }
 
   // yükseklik ölçüleri (boş olan +X tarafında)
-  ext(TOP, rT + 1, 88);
-  ext(BODY_Y[1], BODY_R + 1, 74);
-  ext(LEVEL1, BODY_R + 1, 62);
-  ext(LEVEL2, BODY_R + 1, 74);
-  ext(BODY_Y[0], BODY_R + 1, 49);
-  ext(0, rT + 1, 88);
-  dim(45, BODY_Y[1], TOP, 'L1');
-  dim(45, 0, BODY_Y[0], 'L2');
-  dim(58, LEVEL1, BODY_Y[1], 'H1');
-  dim(70, LEVEL2, BODY_Y[1], 'H2');
-  dim(84, 0, TOP, 'H');
+  const [x0, x1, x2, x3] = [15, 28, 40, 54].map((d) => BODY_R + d);
+  ext(TOP, rT + 1, x3 + 4);
+  ext(BODY_Y[1], BODY_R + 1, x2 + 4);
+  ext(LEVEL1, BODY_R + 1, x1 + 4);
+  ext(LEVEL2, BODY_R + 1, x2 + 4);
+  ext(BODY_Y[0], BODY_R + 1, x0 + 4);
+  ext(0, rT + 1, x3 + 4);
+  dim(x0, BODY_Y[1], TOP, 'L1');
+  dim(x0, 0, BODY_Y[0], 'L2');
+  dim(x1, LEVEL1, BODY_Y[1], 'H1');
+  dim(x2, LEVEL2, BODY_Y[1], 'H2');
+  dim(x3, 0, TOP, 'H');
 
-  // açıklamalar
-  const [P1, P2, P3] = PORTS;
-  callout([0, P1.y + P1.bossR, -P1.face], [26, P1.y + 36, -P1.face - 18], 'P1 · 3/4″ iç diş', 'Seviye 1');
-  callout([-P3.face, P3.y + P3.bossR, 0], [-P3.face - 22, P3.y + 30, -10], 'P3 · 1/2″ iç diş', 'Seviye 1');
-  callout([-P2.face, P2.y - P2.bossR, 0], [-P2.face - 22, P2.y - 30, 10], 'P2 · 1/2″ iç diş', 'Seviye 2');
-  callout([0, TOP - 6, rT], [-26, TOP + 16, 44], '1 1/2″ dış diş', 'Üst uç · klingerit conta');
-  callout([0, 8, rT], [24, -16, 44], '1 1/2″ dış diş', 'Alt uç · keten + teflon');
+  // açıklamalar: seviye 1 etiketleri yukarı, seviye 2 aşağı
+  for (const p of PORTS) {
+    const up = p.level === 1 ? 1 : -1;
+    const side = new THREE.Vector3(-p.dir.z, 0, p.dir.x).multiplyScalar(12 * up);
+    const at = p.dir.clone().multiplyScalar(p.face).setY(p.y + up * p.bossR);
+    const to = p.dir.clone().multiplyScalar(p.face + 20).add(side).setY(p.y + up * 32);
+    callout(at, to, `${p.id} · ${p.size}″ iç diş`, `Seviye ${p.level}`);
+  }
+  const { ust, alt } = SPEC.uclar;
+  callout([0, TOP - 6, rT], [-26, TOP + 16, 44], `${sizeOf(ust.dis)}″ dış diş`, `Üst uç · ${ust.sizdirmazlik}`);
+  callout([0, 8, rT], [24, -16, 44], `${sizeOf(alt.dis)}″ dış diş`, `Alt uç · ${alt.sizdirmazlik}`);
 }
 
 // Gövdenin arkasında kalan etiketleri gizler (gövde ≈ BODY_R yarıçaplı silindir)
@@ -433,8 +455,8 @@ try {
 
   const part = new THREE.Group();
   part.add(new THREE.Mesh(buildBody(), brass));
-  part.add(threadedEnd(BSP['1 1/2'], L1, BODY_Y[1], false, brass));
-  part.add(threadedEnd(BSP['1 1/2'], L2, 0, true, brass));
+  part.add(threadedEnd(TOP_THREAD, L1, BODY_Y[1], false, brass));
+  part.add(threadedEnd(BOTTOM_THREAD, L2, 0, true, brass));
   for (const p of PORTS) {
     const m = new THREE.Mesh(internalThread(BSP[p.size], p.depth - 1.6), brass);
     m.quaternion.setFromUnitVectors(Y, p.dir.clone().negate());
