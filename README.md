@@ -9,3 +9,5 @@ Canlı: https://kts.ratel.systems
 - **Teknik çizim** anahtarı (veya `T` tuşu) ölçü/etiket katmanını ve çizim panelini açar; `#teknik` ile doğrudan açık gelir.
 
 Model ölçüleri `app.js` başındaki sabitlerdedir (şimdilik ön değer; net ölçüler gelince güncellenecek).
+
+Güncellemede `index.html` içindeki `?v=` değerini artır; GitHub Pages dosyaları 10 dk önbellekte tutar.
