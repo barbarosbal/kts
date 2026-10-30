@@ -22,8 +22,8 @@ const BORE_R = M.E / 2;
 const L1 = M.L1;
 const L2 = M.L2;
 const TOP = M.H;
-const BODY_Y = [L2, TOP - L1];             // gövde alt / üst (omuz = conta yüzeyi)
-const LEVEL = { 1: BODY_Y[1] - M.H1, 2: BODY_Y[1] - M.H2 };
+const BODY_Y = [L2, TOP - L1];             // dişsiz gövde bölümü (alt / üst diş arası)
+const LEVEL = { 1: TOP - M.H1, 2: TOP - M.H2 };   // seviyeler üst alından ölçülür
 const LEVEL1 = LEVEL[1];
 const LEVEL2 = LEVEL[2];
 const TOP_THREAD = BSP[sizeOf(SPEC.uclar.ust.dis)];
@@ -93,17 +93,17 @@ function radialSurface(len, segs, rows, radius, inward) {
   return g;
 }
 
-// Sağ el dış diş; serbest uçta 45° pah, omuz tarafında diş boşaltma
+// Sağ el dış diş; serbest uçta 45° pah, gövde tarafında diş çıkışı (diş derinliği sıfıra iner)
 function externalThread(spec, len, freeAtStart) {
   const rMaj = spec.major / 2;
   const rMin = spec.minor / 2;
-  const rEnd = rMin - 0.8;
+  const rEnd = rMin - 0.3;
   const rows = Math.ceil((len / spec.pitch) * 26);
   return radialSurface(len, 192, rows, (th, s) => {
     const free = freeAtStart ? s : len - s;
-    const shoulder = freeAtStart ? len - s : s;
+    const runout = freeAtStart ? len - s : s;
     let r = lerp(rMin, rMaj, profile(s / spec.pitch - th / (2 * Math.PI)));
-    r = lerp(rMin - 0.5, r, smooth(0.8, 2.2, shoulder));
+    r = lerp(rMaj, r, smooth(0.4, 2.6, runout));
     return Math.min(r, rEnd + free);
   }, false);
 }
@@ -125,7 +125,7 @@ function threadedEnd(spec, len, y0, freeAtStart, mat) {
   g.position.y = y0;
   g.add(new THREE.Mesh(externalThread(spec, len, freeAtStart), mat));
   g.add(new THREE.Mesh(radialSurface(len, 128, 1, () => BORE_R, true), mat));
-  const cap = new THREE.RingGeometry(BORE_R, spec.minor / 2 - 0.8, 192, 1);
+  const cap = new THREE.RingGeometry(BORE_R, spec.minor / 2 - 0.3, 192, 1);
   cap.rotateX(freeAtStart ? Math.PI / 2 : -Math.PI / 2);
   cap.translate(0, freeAtStart ? 0 : len, 0);
   g.add(new THREE.Mesh(cap, mat));
@@ -139,29 +139,31 @@ function place(obj, p, dist) {
   obj.updateMatrixWorld();
 }
 
-// Gövde: delikli lathe + port bossları − diş delikleri, kanallar, havşalar
+// Gövde: dolu silindir + eksenden başlayan port bossları − delik (ince ette boss içi delikte kalır)
+// − diş delikleri, kanallar, havşalar
 function buildBody() {
   const [y0, y1] = BODY_Y;
-  const c = 0.8;
-  const outline = [
-    [BORE_R, y0], [BODY_R - c, y0], [BODY_R, y0 + c], [BODY_R, y1 - c],
-    [BODY_R - c, y1], [BORE_R, y1], [BORE_R, y0],
-  ].map(([x, y]) => new THREE.Vector2(x, y));
-
   const ev = new Evaluator();
   ev.attributes = ['position', 'normal'];
   ev.useGroups = false;
   const cyl = (rTop, rBottom, h, segs) => new Brush(new THREE.CylinderGeometry(rTop, rBottom, h, segs));
+  // CSG sonucu ilk operandın yerel koordinatında döner: eksendeki silindirlerin kaydırması geometriye işlenir
+  const onAxis = (r, h, segs) => {
+    const brush = new Brush(new THREE.CylinderGeometry(r, r, h, segs).translate(0, (y0 + y1) / 2, 0));
+    brush.updateMatrixWorld();
+    return brush;
+  };
 
-  let body = new Brush(new THREE.LatheGeometry(outline, 160));
-  body.updateMatrixWorld();
-
+  let body = onAxis(BODY_R, y1 - y0, 160);
   for (const p of PORTS) {
-    const from = 24;
+    // Boss, en geniş yeri gövde yüzeyine değdiği yerden başlar: tabanı dolu gövdenin içinde kalır,
+    // aynı seviyedeki diğer bosslarla kesişmez
+    const from = Math.sqrt(Math.max(0, BODY_R ** 2 - p.bossR ** 2)) - 0.5;
     const boss = cyl(p.bossR, p.bossR, p.face - from, 72);
     place(boss, p, (p.face + from) / 2);
     body = ev.evaluate(body, boss, ADDITION);
   }
+  body = ev.evaluate(body, onAxis(BORE_R, y1 - y0 + 2, 128), SUBTRACTION);
 
   for (const p of PORTS) {
     const rh = BSP[p.size].major / 2;
@@ -387,15 +389,15 @@ function buildAnnotations() {
   // yükseklik ölçüleri (boş olan +X tarafında)
   const [x0, x1, x2, x3] = [15, 28, 40, 54].map((d) => BODY_R + d);
   ext(TOP, rT + 1, x3 + 4);
-  ext(BODY_Y[1], BODY_R + 1, x2 + 4);
+  ext(BODY_Y[1], BODY_R + 1, x0 + 4);
   ext(LEVEL1, BODY_R + 1, x1 + 4);
   ext(LEVEL2, BODY_R + 1, x2 + 4);
   ext(BODY_Y[0], BODY_R + 1, x0 + 4);
   ext(0, rT + 1, x3 + 4);
   dim(x0, BODY_Y[1], TOP, 'L1');
   dim(x0, 0, BODY_Y[0], 'L2');
-  dim(x1, LEVEL1, BODY_Y[1], 'H1');
-  dim(x2, LEVEL2, BODY_Y[1], 'H2');
+  dim(x1, LEVEL1, TOP, 'H1');
+  dim(x2, LEVEL2, TOP, 'H2');
   dim(x3, 0, TOP, 'H');
 
   // açıklamalar: seviye 1 etiketleri yukarı, seviye 2 aşağı

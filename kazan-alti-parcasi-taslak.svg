@@ -28,65 +28,62 @@
   <rect x="0" y="0" width="1400" height="990" fill="#fff"/>
   <rect x="20" y="20" width="1360" height="950" class="grid" stroke-width="1.6"/>
 
-  <!-- ================= ÜSTTEN GÖRÜNÜM ================= -->
-  <g transform="translate(40,0)">
+  <!-- ================= ÜSTTEN GÖRÜNÜM (Ø48 boru ölçeğinde: 1 mm = 6,25 px) ================= -->
+  <g transform="translate(100,0)">
     <!-- eksenler -->
-    <line class="ctr" x1="150" y1="420" x2="677" y2="420"/>
+    <line class="ctr" x1="150" y1="420" x2="642" y2="420"/>
     <line class="ctr" x1="380" y1="160" x2="380" y2="600"/>
 
-    <!-- gövde (conta oturma yüzeyi) -->
+    <!-- gövde = üst diş üstü (Ø48 / 1 1/2"), diş dibi 3/4 ince yay -->
     <circle class="vis" cx="380" cy="420" r="150"/>
-    <!-- üst uç 1 1/2" dış diş: diş üstü kalın, diş dibi 3/4 ince yay -->
-    <circle class="vis" cx="380" cy="420" r="119.5"/>
-    <path class="thin" d="M380 308 A112 112 0 1 0 492 420"/>
+    <path class="thin" d="M380 279.8 A140.2 140.2 0 1 0 520.2 420"/>
     <!-- boydan boya delik -->
-    <circle class="vis" cx="380" cy="420" r="95"/>
+    <circle class="vis" cx="380" cy="420" r="125"/>
 
     <!-- P1: 3/4" iç diş (üst) -->
-    <path class="vis" d="M320 282.5 V254.1 H440 V282.5"/>
-    <path class="hid" d="M350 254.1 V324.1 H410 V254.1"/>
-    <path class="hidt" d="M347 254.1 V311.1 M413 254.1 V311.1"/>
+    <path class="vis" d="M274 313.9 V208 H486 V313.9"/>
+    <path class="hid" d="M304.2 208 V320.6 M455.8 208 V320.6"/>
+    <path class="hidt" d="M297.4 208 V289 M462.6 208 V289"/>
 
     <!-- P3 (seviye 1, görünür) — P2 (seviye 2) tam altında, gizli -->
-    <path class="vis" d="M237.2 374 H216.5 V466 H237.2"/>
-    <path class="hid" d="M216.5 397 H281.5 V443 H216.5"/>
-    <path class="hidt" d="M216.5 394 H269.5 M216.5 446 H269.5"/>
+    <path class="vis" d="M258.2 332.5 H174 V507.5 H258.2"/>
+    <path class="hid" d="M174 361.4 H269.6 M174 478.6 H269.6"/>
+    <path class="hidt" d="M174 354.5 H249 M174 485.5 H249"/>
 
-    <!-- ØD gövde -->
-    <line class="dima" x1="273.9" y1="313.9" x2="486.1" y2="526.1"/>
-    <polyline class="dim" points="486.1,526.1 520,560 645,560"/>
-    <text class="tb" x="524" y="553">Gövde <tspan class="q">ØD</tspan></text>
-    <text class="ts" x="524" y="577">conta oturma yüzeyi</text>
+    <!-- ØD -->
+    <polyline class="lead" points="521,471.3 560,510 620,510"/>
+    <text class="tb" x="564" y="503">Gövde <tspan class="q">ØD</tspan></text>
+    <text class="ts" x="564" y="527">et 4 mm</text>
 
-    <!-- üst diş -->
-    <polyline class="lead" points="464.5,335.5 515,285 640,285"/>
-    <text class="tb" x="519" y="278">1 1/2" DIŞ DİŞ</text>
-    <text class="ts" x="519" y="302">üst uç · klingerit conta</text>
+    <!-- dış diş -->
+    <polyline class="lead" points="450,541.4 490,600 620,600"/>
+    <text class="tb" x="494" y="593">1 1/2" DIŞ DİŞ</text>
+    <text class="ts" x="494" y="617">iki uç · üst alından conta</text>
 
     <!-- ØE delik -->
-    <polyline class="lead" points="339.9,506.1 300,640 160,640"/>
-    <text class="tb" x="162" y="633"><tspan class="q">ØE</tspan> DELİK</text>
-    <text class="ts" x="162" y="657">boydan boya (boru gibi)</text>
+    <polyline class="lead" points="317.5,528.3 280,640 140,640"/>
+    <text class="tb" x="142" y="633"><tspan class="q">ØE</tspan> DELİK</text>
+    <text class="ts" x="142" y="657">boydan boya</text>
 
-    <!-- A: merkez – P1 alın -->
-    <line class="dim" x1="444" y1="254.1" x2="677" y2="254.1"/>
-    <line class="dima" x1="665" y1="254.1" x2="665" y2="420"/>
-    <text class="tb q" transform="translate(657 345) rotate(-90)" text-anchor="middle">A</text>
+    <!-- A: eksen – P1 alın -->
+    <line class="dim" x1="490" y1="208" x2="642" y2="208"/>
+    <line class="dima" x1="630" y1="208" x2="630" y2="420"/>
+    <text class="tb q" transform="translate(622 314) rotate(-90)" text-anchor="middle">A</text>
 
-    <!-- B: merkez – P2/P3 alın -->
-    <line class="dim" x1="216.5" y1="370" x2="216.5" y2="168"/>
-    <line class="dima" x1="216.5" y1="180" x2="380" y2="180"/>
-    <text class="tb q" x="298" y="173" text-anchor="middle">B</text>
+    <!-- B: eksen – P2/P3 alın -->
+    <line class="dim" x1="174" y1="330" x2="174" y2="168"/>
+    <line class="dima" x1="174" y1="180" x2="380" y2="180"/>
+    <text class="tb q" x="277" y="173" text-anchor="middle">B</text>
 
     <!-- port etiketleri -->
-    <polyline class="lead" points="425,254.1 470,150 640,150"/>
-    <text class="tb" x="474" y="143">P1 · 3/4" İÇ DİŞ</text>
-    <text class="t" x="474" y="168">Seviye 1</text>
+    <polyline class="lead" points="450,208 490,150 620,150"/>
+    <text class="tb" x="494" y="143">P1 · 3/4" İÇ DİŞ</text>
+    <text class="t" x="494" y="168">Seviye 1</text>
 
-    <polyline class="lead" points="216.5,455 200,520 -5,520"/>
-    <text class="tb" x="-4" y="513">P3 + P2 · 1/2" İÇ DİŞ</text>
-    <text class="tn" x="-4" y="540">P3: Seviye 1 (üstte)</text>
-    <text class="tn" x="-4" y="559">P2: Seviye 2 (altta, gizli)</text>
+    <polyline class="lead" points="174,490 150,520 -5,520"/>
+    <text class="tb" x="-4" y="540">P3 + P2 · 1/2" İÇ DİŞ</text>
+    <text class="tn" x="-4" y="559">P3: Seviye 1 (üstte)</text>
+    <text class="tn" x="-4" y="578">P2: Seviye 2 (altta, gizli)</text>
 
     <text class="h" x="380" y="770" text-anchor="middle">ÜSTTEN GÖRÜNÜM</text>
     <text class="ts" x="380" y="790" text-anchor="middle">ölçeksiz · taslak</text>
@@ -99,76 +96,70 @@
     <rect class="grid" x="36" y="54" width="210" height="200"/>
     <path class="grid" d="M36 74 H246 M36 94 H246 M36 114 H246 M36 134 H246 M36 154 H246 M36 174 H246 M36 194 H246 M36 214 H246 M36 234 H246 M70 54 V254 M125 54 V254"/>
     <text class="ttb" x="42" y="68">Harf</text><text class="ttb" x="76" y="68">Değer</text><text class="ttb" x="131" y="68">Açıklama</text>
-    <text class="ttb" x="42" y="88">ØD</text><text class="tt q" x="76" y="88">60</text><text class="tt" x="131" y="88">Gövde çapı</text>
-    <text class="ttb" x="42" y="108">ØE</text><text class="tt q" x="76" y="108">36</text><text class="tt" x="131" y="108">Delik çapı</text>
+    <text class="ttb" x="42" y="88">ØD</text><text class="tt q" x="76" y="88">48</text><text class="tt" x="131" y="88">Gövde dış çapı</text>
+    <text class="ttb" x="42" y="108">ØE</text><text class="tt q" x="76" y="108">40</text><text class="tt" x="131" y="108">Delik çapı</text>
     <text class="ttb" x="42" y="128">A</text><text class="tt q" x="76" y="128">33,92</text><text class="tt" x="131" y="128">Eksen–P1 alın</text>
     <text class="ttb" x="42" y="148">B</text><text class="tt q" x="76" y="148">32,94</text><text class="tt" x="131" y="148">Eksen–P2/P3 alın</text>
     <text class="ttb" x="42" y="168">H</text><text class="tt q" x="76" y="168">103</text><text class="tt" x="131" y="168">Toplam boy</text>
-    <text class="ttb" x="42" y="188">H1</text><text class="tt q" x="76" y="188">20</text><text class="tt" x="131" y="188">Omuz–seviye 1</text>
-    <text class="ttb" x="42" y="208">H2</text><text class="tt q" x="76" y="208">52</text><text class="tt" x="131" y="208">Omuz–seviye 2</text>
+    <text class="ttb" x="42" y="188">H1</text><text class="tt q" x="76" y="188">36</text><text class="tt" x="131" y="188">Üst alın–seviye 1</text>
+    <text class="ttb" x="42" y="208">H2</text><text class="tt q" x="76" y="208">68</text><text class="tt" x="131" y="208">Üst alın–seviye 2</text>
     <text class="ttb" x="42" y="228">L1</text><text class="tt q" x="76" y="228">16</text><text class="tt" x="131" y="228">Üst diş boyu</text>
     <text class="ttb" x="42" y="248">L2</text><text class="tt q" x="76" y="248">18</text><text class="tt" x="131" y="248">Alt diş boyu</text>
     <text class="ts q" x="36" y="270">Turuncu: ön değer, teyit edilecek.</text>
   </g>
 
-  <!-- ================= YAN GÖRÜNÜM ================= -->
+  <!-- ================= YAN GÖRÜNÜM (1 mm = 4 px) ================= -->
   <g>
-    <line class="ctr" x1="1070" y1="60" x2="1070" y2="520"/>
-    <line class="ctr" x1="948" y1="215" x2="1227" y2="215"/>
-    <line class="ctr" x1="948" y1="335" x2="1262" y2="335"/>
+    <line class="ctr" x1="1070" y1="60" x2="1070" y2="512"/>
+    <line class="ctr" x1="930" y1="224" x2="1257" y2="224"/>
+    <line class="ctr" x1="930" y1="352" x2="1287" y2="352"/>
 
-    <!-- üst uç: 1 1/2" dış diş (klingerit conta) -->
-    <path class="vis" d="M998 160 V88 L1006 80 H1134 L1142 88 V160"/>
-    <path class="thin" d="M1003 84 V160 M1137 84 V160"/>
-    <line class="vis" x1="998" y1="152" x2="1142" y2="152"/>
-    <!-- gövde -->
-    <path class="vis" d="M980 160 H1160 V420 H980 Z"/>
-    <!-- alt uç: dış diş (keten + teflon) -->
-    <path class="vis" d="M998 420 V492 L1006 500 H1134 L1142 492 V420"/>
-    <path class="thin" d="M1003 420 V496 M1137 420 V496"/>
-    <line class="vis" x1="998" y1="428" x2="1142" y2="428"/>
+    <!-- dış kontur: Ø48 boru, uçlarda 1 1/2" dış diş; P3 ve P2 boss'ları solda -->
+    <path class="vis" d="M974 487.6 V408 H938.2 V296 H974 V280 H938.2 V168 H974 V84.4 L978.4 80 H1161.6 L1166 84.4 V487.6 L1161.6 492 H978.4 Z"/>
+    <!-- boss–gövde kesişim eğrileri -->
+    <path class="vis" d="M974 168 L975 169.8 L978.2 175.5 L983.7 187 L988.1 198.8 L990.6 209.2 L992 224 L990.6 238.8 L988.1 249.2 L983.7 261 L978.2 272.5 L975 278.2 L974 280"/>
+    <path class="vis" d="M974 296 L975 297.8 L978.2 303.5 L983.7 315 L988.1 326.8 L990.6 337.2 L992 352 L990.6 366.8 L988.1 377.2 L983.7 389 L978.2 400.5 L975 406.2 L974 408"/>
+    <!-- diş sınırları ve diş dibi çizgileri -->
+    <line class="vis" x1="974" y1="144" x2="1166" y2="144"/>
+    <line class="vis" x1="974" y1="420" x2="1166" y2="420"/>
+    <path class="thin" d="M980.3 84 V144 M1159.7 84 V144 M980.3 420 V488 M1159.7 420 V488"/>
     <!-- boydan boya delik -->
-    <path class="hid" d="M1013 80 V500 M1127 80 V500"/>
-
-    <!-- P3 (sol, seviye 1) -->
-    <path class="vis" d="M980 187.4 H971.9 V242.6 H980"/>
-    <path class="hid" d="M971.9 201.2 H1010.9 V228.8 H971.9"/>
-
-    <!-- P2 (sol, seviye 2) -->
-    <path class="vis" d="M980 307.4 H971.9 V362.6 H980"/>
-    <path class="hid" d="M971.9 321.2 H1010.9 V348.8 H971.9"/>
-
+    <path class="hid" d="M990 80 V492 M1150 80 V492"/>
+    <!-- P3 / P2 diş delikleri -->
+    <path class="hid" d="M938.2 186.5 H990 M938.2 261.5 H990 M938.2 314.5 H990 M938.2 389.5 H990"/>
+    <path class="hidt" d="M938.2 182.1 H986.2 M938.2 265.9 H986.2 M938.2 310.1 H986.2 M938.2 393.9 H986.2"/>
     <!-- P1 (arkada, gizli) — seviye 1 -->
-    <circle class="hid" cx="1070" cy="215" r="36"/>
-    <text class="ts" x="1070" y="272" text-anchor="middle">P1 (arkada)</text>
+    <circle class="hid" cx="1070" cy="224" r="68"/>
+    <circle class="hid" cx="1070" cy="224" r="48.5"/>
+    <text class="ts" x="1070" y="312" text-anchor="middle">P1 (arkada)</text>
 
-    <!-- ölçüler -->
-    <line class="dim" x1="1146" y1="80" x2="1302" y2="80"/>
-    <line class="dim" x1="1164" y1="160" x2="1262" y2="160"/>
-    <line class="dim" x1="1164" y1="420" x2="1227" y2="420"/>
-    <line class="dim" x1="1146" y1="500" x2="1302" y2="500"/>
-    <line class="dima" x1="1215" y1="80" x2="1215" y2="160"/>
-    <text class="tb q" transform="translate(1207 120) rotate(-90)" text-anchor="middle">L1</text>
-    <line class="dima" x1="1215" y1="160" x2="1215" y2="215"/>
-    <text class="tb q" transform="translate(1207 188) rotate(-90)" text-anchor="middle">H1</text>
-    <line class="dima" x1="1215" y1="420" x2="1215" y2="500"/>
-    <text class="tb q" transform="translate(1207 460) rotate(-90)" text-anchor="middle">L2</text>
-    <line class="dima" x1="1250" y1="160" x2="1250" y2="335"/>
-    <text class="tb q" transform="translate(1242 248) rotate(-90)" text-anchor="middle">H2</text>
-    <line class="dima" x1="1290" y1="80" x2="1290" y2="500"/>
-    <text class="tb q" transform="translate(1282 290) rotate(-90)" text-anchor="middle">H</text>
+    <!-- ölçüler (H1, H2 üst alından) -->
+    <line class="dim" x1="1170" y1="80" x2="1317" y2="80"/>
+    <line class="dim" x1="1170" y1="144" x2="1227" y2="144"/>
+    <line class="dim" x1="1170" y1="420" x2="1227" y2="420"/>
+    <line class="dim" x1="1170" y1="492" x2="1317" y2="492"/>
+    <line class="dima" x1="1215" y1="80" x2="1215" y2="144"/>
+    <text class="tb q" transform="translate(1207 112) rotate(-90)" text-anchor="middle">L1</text>
+    <line class="dima" x1="1215" y1="420" x2="1215" y2="492"/>
+    <text class="tb q" transform="translate(1207 456) rotate(-90)" text-anchor="middle">L2</text>
+    <line class="dima" x1="1245" y1="80" x2="1245" y2="224"/>
+    <text class="tb q" transform="translate(1237 152) rotate(-90)" text-anchor="middle">H1</text>
+    <line class="dima" x1="1275" y1="80" x2="1275" y2="352"/>
+    <text class="tb q" transform="translate(1267 216) rotate(-90)" text-anchor="middle">H2</text>
+    <line class="dima" x1="1305" y1="80" x2="1305" y2="492"/>
+    <text class="tb q" transform="translate(1297 286) rotate(-90)" text-anchor="middle">H</text>
 
     <!-- etiketler -->
-    <polyline class="lead" points="998,118 978,118"/>
-    <text class="tb" x="972" y="113" text-anchor="end">1 1/2" DIŞ DİŞ</text>
-    <text class="ts" x="972" y="132" text-anchor="end">klingerit conta</text>
-    <polyline class="lead" points="998,462 978,462"/>
-    <text class="tb" x="972" y="457" text-anchor="end">1 1/2" DIŞ DİŞ <tspan class="q">(?)</tspan></text>
-    <text class="ts" x="972" y="476" text-anchor="end">keten + teflon</text>
-    <text class="tb" x="944" y="209" text-anchor="end">P3 · 1/2"</text>
-    <text class="t" x="944" y="229" text-anchor="end">Seviye 1</text>
-    <text class="tb" x="944" y="329" text-anchor="end">P2 · 1/2"</text>
-    <text class="t" x="944" y="349" text-anchor="end">Seviye 2</text>
+    <polyline class="lead" points="974,112 958,112"/>
+    <text class="tb" x="952" y="107" text-anchor="end">1 1/2" DIŞ DİŞ</text>
+    <text class="ts" x="952" y="126" text-anchor="end">klingerit conta (alından)</text>
+    <polyline class="lead" points="974,456 958,456"/>
+    <text class="tb" x="952" y="451" text-anchor="end">1 1/2" DIŞ DİŞ <tspan class="q">(?)</tspan></text>
+    <text class="ts" x="952" y="470" text-anchor="end">keten + teflon</text>
+    <text class="tb" x="925" y="218" text-anchor="end">P3 · 1/2"</text>
+    <text class="t" x="925" y="238" text-anchor="end">Seviye 1</text>
+    <text class="tb" x="925" y="346" text-anchor="end">P2 · 1/2"</text>
+    <text class="t" x="925" y="366" text-anchor="end">Seviye 2</text>
 
     <text class="h" x="1070" y="545" text-anchor="middle">YAN GÖRÜNÜM</text>
     <text class="ts" x="1070" y="565" text-anchor="middle">boş taraftan (180°) bakış · ölçeksiz</text>
@@ -189,18 +180,18 @@
     <g class="tn">
       <text x="790" y="644" font-weight="700">P1</text><text x="860" y="644">3/4"</text><text x="940" y="644">İç diş</text>
       <text x="1020" y="644">0° · üst</text><text x="1120" y="644">1</text>
-      <text x="1190" y="644" class="q">Ø34</text><text x="1280" y="644" class="q">15</text>
+      <text x="1190" y="644" class="q">Ø34</text><text x="1280" y="644" class="q">13</text>
 
       <text x="790" y="670" font-weight="700">P2</text><text x="860" y="670">1/2"</text><text x="940" y="670">İç diş</text>
       <text x="1020" y="670">90° · sol</text><text x="1120" y="670">2</text>
-      <text x="1190" y="670" class="q">Ø28</text><text x="1280" y="670" class="q">13</text>
+      <text x="1190" y="670" class="q">Ø28</text><text x="1280" y="670" class="q">12</text>
 
       <text x="790" y="696" font-weight="700">P3</text><text x="860" y="696">1/2"</text><text x="940" y="696">İç diş</text>
       <text x="1020" y="696">90° · sol</text><text x="1120" y="696">1</text>
-      <text x="1190" y="696" class="q">Ø28</text><text x="1280" y="696" class="q">13</text>
+      <text x="1190" y="696" class="q">Ø28</text><text x="1280" y="696" class="q">12</text>
 
       <text x="790" y="722" font-weight="700">Üst uç</text><text x="860" y="722">1 1/2"</text><text x="940" y="722">Dış diş</text>
-      <text x="1020" y="722">conta</text><text x="1120" y="722">—</text>
+      <text x="1020" y="722">alın conta</text><text x="1120" y="722">—</text>
       <text x="1190" y="722">—</text><text x="1280" y="722" class="q">L1 = 16</text>
 
       <text x="790" y="748" font-weight="700">Alt uç</text><text x="860" y="748">1 1/2" <tspan class="q">?</tspan></text><text x="940" y="748">Dış diş</text>
@@ -213,8 +204,8 @@
   <g>
     <text class="tb" x="40" y="832">NOTLAR</text>
     <text class="tn" x="40" y="854">1. Harfli ölçülerin değerleri ölçü tablosundadır (turuncu: ön değer). Geometri için STEP modeli esastır; resim ölçeksizdir.</text>
-    <text class="tn" x="40" y="874">2. Genel tolerans ISO 2768-m. Üst uç klingerit conta ile sızdırmaz: conta yüzeyi düz, çapaksız, Ra 1,6.</text>
-    <text class="tn" x="40" y="894">3. Dişler ISO 228-1 (G) kabul edildi; alt uç keten + teflon, diş tipi (G / R) teyit edilecek. Diş boşaltma kanalı 4 mm.</text>
+    <text class="tn" x="40" y="874">2. Genel tolerans ISO 2768-m; gövde et kalınlığı 4 mm. Üst alın conta yüzeyidir: düz, çapaksız, Ra 1,6.</text>
+    <text class="tn" x="40" y="894">3. Dişler ISO 228-1 (G) kabul edildi; alt uç keten + teflon, diş tipi (G / R) teyit edilecek. Diş çıkışları serbest.</text>
     <text class="tn" x="40" y="914">4. Port diş dibi delikleri ØE deliğine kadar açılır; kesişim çapakları alınacak. Port girişleri 90° havşa.</text>
     <text class="tn" x="40" y="934">5. P1 0°'de; P2 ve P3 90°'de üst üste. Eksenler gövde ekseninde kesişir. Keskin kenarlar 0,3–0,5 × 45°.</text>
     <text class="tn" x="40" y="954">6. Malzeme: CW614N (CuZn39Pb3) otomat pirinci, EN 10204 3.1 sertifikalı.</text>
@@ -232,11 +223,11 @@
     <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
     <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
 
-    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">E — Taslak</text>
-    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">29.10.2026</text>
-    <text class="tl" x="1190" y="887">DURUM</text><text class="tb q" x="1190" y="906">Ölçü bekliyor</text>
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">F — Taslak</text>
+    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">30.10.2026</text>
+    <text class="tl" x="1190" y="887">DURUM</text><text class="tb q" x="1190" y="906">Teklif aşaması</text>
 
-    <text class="tl" x="790" y="929">REV E</text>
-    <text class="t" x="790" y="947">Port çıkıntıları %50 daha kısaltıldı (Rev D %30, Rev C %30).</text>
+    <text class="tl" x="790" y="929">REV F</text>
+    <text class="t" x="790" y="947">Gövde et kalınlığı 4 mm: ØD 48, ØE 40; omuz kalktı, conta üst alına oturur.</text>
   </g>
 </svg>

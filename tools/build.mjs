@@ -42,12 +42,12 @@ const clean = (v) => (Math.abs(v) < 1e-9 ? 0 : v);
 const R = M.D / 2;
 const RB = M.E / 2;
 const H = M.H;
-const Z_SHOULDER = H - M.L1;                 // omuz = conta yüzeyi
-const LEVEL = { 1: Z_SHOULDER - M.H1, 2: Z_SHOULDER - M.H2 };
+const Z_TT = H - M.L1;                        // üst diş başlangıcı
+const LEVEL = { 1: H - M.H1, 2: H - M.H2 };   // seviyeler üst alından ölçülür
 const TOP = BSP[sizeOf(spec.uclar.ust.dis)];
 const BOT = BSP[sizeOf(spec.uclar.alt.dis)];
-const GROOVE = 4;                             // diş boşaltma kanalı genişliği
-const CH = 0.5;                               // kenar pahı
+const WALL = spec.et ?? (M.D - M.E) / 2;
+const CH = 0.5;                               // delik giriş pahı
 
 // Üstten görünüm (CAD, Z yukarı): 0° = +Y (P1), 90° = -X
 const PORTS = spec.portlar.map((p) => {
@@ -57,29 +57,24 @@ const PORTS = spec.portlar.map((p) => {
 });
 const MAX_FACE = Math.max(R, ...PORTS.map((p) => p.face));
 
-// Dönel profil [yarıçap, z], alt delik pahından başlayıp saat yönünün tersine
+// Dış kontur [yarıçap, z], alt uçtan üst uca. Dişler gövde çapına yakın olduğundan omuz ve kanal yok;
+// diş çıkışı serbest, serbest uçlarda diş dibine 45° pah.
 function profile() {
   const rcB = BOT.minor / 2 - 0.3;
   const rMB = BOT.major / 2;
-  const rgB = BOT.minor / 2 - 0.25;
   const rcT = TOP.minor / 2 - 0.3;
   const rMT = TOP.major / 2;
-  const rgT = TOP.minor / 2 - 0.25;
-  return [
-    [RB + CH, 0], [rcB, 0], [rMB, rMB - rcB], [rMB, M.L2 - GROOVE], [rgB, M.L2 - GROOVE], [rgB, M.L2],
-    [R - CH, M.L2], [R, M.L2 + CH], [R, Z_SHOULDER - CH], [R - CH, Z_SHOULDER],
-    [rgT, Z_SHOULDER], [rgT, Z_SHOULDER + GROOVE], [rMT, Z_SHOULDER + GROOVE], [rMT, H - (rMT - rcT)], [rcT, H],
-    [RB + CH, H], [RB, H - CH], [RB, CH],
-  ];
+  return [[rcB, 0], [rMB, rMB - rcB], [rMB, M.L2], [R, M.L2], [R, Z_TT], [rMT, Z_TT], [rMT, H - (rMT - rcT)], [rcT, H]];
 }
 
 function checks() {
   const w = [];
   for (const p of PORTS) {
-    if (p.z + p.r > Z_SHOULDER - CH) w.push(`${p.id} boss'u üst omza taşıyor`);
-    if (p.z - p.r < M.L2 + CH) w.push(`${p.id} boss'u alt omza taşıyor`);
+    if (p.z + p.r > Z_TT) w.push(`${p.id} boss'u üst diş bölgesine taşıyor`);
+    if (p.z - p.r < M.L2) w.push(`${p.id} boss'u alt diş bölgesine taşıyor`);
     if (p.face < R) w.push(`${p.id} alnı gövdenin içinde kalıyor (alın < ØD/2)`);
     if (p.face - p.disDerinligi < RB) w.push(`${p.id} diş derinliği ØE deliğine taşıyor`);
+    if (p.r >= R) w.push(`${p.id} boss'u gövde çapından geniş`);
   }
   for (const [i, a] of PORTS.entries()) {
     for (const b of PORTS.slice(i + 1)) {
@@ -87,7 +82,9 @@ function checks() {
       if (sameDir && Math.abs(a.z - b.z) < a.r + b.r) w.push(`${a.id} ve ${b.id} boss'ları çakışıyor`);
     }
   }
-  if (TOP.major / 2 >= R) w.push('Üst diş çapı gövdeden büyük: conta omzu kalmıyor');
+  if (Math.abs((M.D - M.E) / 2 - WALL) > 0.01) w.push(`Et kalınlığı ${WALL} mm ile ØD/ØE uyuşmuyor`);
+  if (Math.max(TOP.major, BOT.major) > M.D + 0.01) w.push('Diş çapı gövde çapından büyük');
+  if ((Math.min(TOP.minor, BOT.minor) - M.E) / 2 < 1.5) w.push('Diş dibinde et 1,5 mm\'nin altına iniyor');
   return w;
 }
 
@@ -98,14 +95,17 @@ async function buildStep() {
   const wasm = createRequire(import.meta.url).resolve('replicad-opencascadejs/wasm');
   setOC(await opencascade({ locateFile: () => wasm }));
 
-  const pts = profile();
-  let part = pts.slice(1).reduce((pen, p) => pen.lineTo(p), draw(pts[0])).close().sketchOnPlane('XZ').revolve();
+  const revolve = (pts) => pts.slice(1).reduce((pen, p) => pen.lineTo(p), draw(pts[0])).close().sketchOnPlane('XZ').revolve();
+  let part = revolve([[0, 0], ...profile(), [0, H]]);
 
-  const start = (R + RB) / 2;
+  // Boss, en geniş yeri gövde yüzeyine değdiği yerden başlar (tabanı dolu gövdenin içinde kalır)
   for (const p of PORTS) {
     const [dx, dy] = p.dir;
+    const start = Math.sqrt(R * R - p.r * p.r) - 0.5;
     part = part.fuse(makeCylinder(p.r, p.face - start, [dx * start, dy * start, p.z], [dx, dy, 0]));
   }
+  // Boydan boya delik, iki uçta 45° giriş pahıyla
+  part = part.cut(revolve([[0, -1], [RB + CH + 1, -1], [RB, CH], [RB, H - CH], [RB + CH + 1, H + 1], [0, H + 1]]));
   // Diş dibi delikleri alından ØE deliğine kadar
   for (const p of PORTS) {
     const [dx, dy] = p.dir;
@@ -158,14 +158,14 @@ class Dxf {
 
 function buildDxf() {
   const d = new Dxf();
-  const outer = profile().slice(1, 15);
-  const [zBodyLo, zBodyHi] = [M.L2 + CH, Z_SHOULDER - CH];
+  const outer = profile();
+  const [zBodyLo, zBodyHi] = [M.L2, Z_TT];
 
   // ---- Ön görünüş (boş taraftan, -Y yönünden bakış): x = X, y = Z ----
   for (const side of [1, -1]) {
     const gaps = PORTS.filter((p) => p.dir[0] === side).map((p) => [p.z - p.r, p.z + p.r]).sort((a, b) => a[0] - b[0]);
-    const pre = outer.slice(0, 8);   // alt uçtan gövde başına
-    const post = outer.slice(8);     // gövde sonundan üst uca
+    const pre = outer.slice(0, 4);   // alt uçtan gövde başına
+    const post = outer.slice(4);     // gövde sonundan üst uca
     d.path('KONTUR', pre.map(([r, z]) => [side * r, z]));
     d.path('KONTUR', post.map(([r, z]) => [side * r, z]));
     let z0 = zBodyLo;
@@ -182,7 +182,7 @@ function buildDxf() {
   for (const [r, z] of outer) if (z > 0 && z < H) edgeZ.set(z, Math.max(edgeZ.get(z) ?? 0, r));
   for (const [z, r] of edgeZ) d.line('KONTUR', [-r, z], [r, z]);
   // Diş dibi çizgileri (ince)
-  const threadRuns = [[BOT, outer[1][1], M.L2 - GROOVE], [TOP, Z_SHOULDER + GROOVE, outer[12][1]]];
+  const threadRuns = [[BOT, outer[1][1], M.L2], [TOP, Z_TT, outer[6][1]]];
   for (const [t, z0, z1] of threadRuns) for (const s of [1, -1]) d.line('DIS', [s * t.minor / 2, z0], [s * t.minor / 2, z1]);
   // Delik (gizli) ve eksen
   for (const s of [1, -1]) d.line('GIZLI', [s * RB, CH], [s * RB, H - CH]);
@@ -211,8 +211,8 @@ function buildDxf() {
     }
   }
   d.text('YAZI', [-MAX_FACE, -14], 3.5, 'ON GORUNUS (bos taraftan bakis)');
-  d.text('YAZI', [TOP.major / 2 + 4, H - 8], 2.5, `${spec.uclar.ust.dis} dis dis (${spec.uclar.ust.sizdirmazlik})`);
-  d.text('YAZI', [BOT.major / 2 + 4, 6], 2.5, `${spec.uclar.alt.dis} dis dis (${spec.uclar.alt.sizdirmazlik})`);
+  d.text('YAZI', [TOP.major / 2 + 4, H - 8], 2.5, `${spec.uclar.ust.dis} dis dis - ${spec.uclar.ust.sizdirmazlik}`);
+  d.text('YAZI', [BOT.major / 2 + 4, 6], 2.5, `${spec.uclar.alt.dis} dis dis - ${spec.uclar.alt.sizdirmazlik}`);
   for (const p of PORTS.filter((q) => q.dir[0] !== 0)) {
     d.text('YAZI', [p.dir[0] * (p.face + 4) - (p.dir[0] < 0 ? 22 : 0), p.z + p.r + 2], 2.5, `${p.id} ${p.dis}`);
   }
@@ -258,7 +258,7 @@ function buildDxf() {
 }
 
 // ---------------- teknik resim (SVG) ----------------
-const SHORT = { D: 'Gövde çapı', E: 'Delik çapı', A: 'Eksen–P1 alın', B: 'Eksen–P2/P3 alın', H: 'Toplam boy', H1: 'Omuz–seviye 1', H2: 'Omuz–seviye 2', L1: 'Üst diş boyu', L2: 'Alt diş boyu' };
+const SHORT = { D: 'Gövde dış çapı', E: 'Delik çapı', A: 'Eksen–P1 alın', B: 'Eksen–P2/P3 alın', H: 'Toplam boy', H1: 'Üst alın–seviye 1', H2: 'Üst alın–seviye 2', L1: 'Üst diş boyu', L2: 'Alt diş boyu' };
 const letter = (k) => (k === 'D' || k === 'E' ? `Ø${k}` : k);
 
 function olcuTablosu() {
@@ -294,11 +294,12 @@ async function buildDrawing() {
     rev: spec.rev,
     revDurum: spec.onayli ? 'Onaylı' : 'Taslak',
     tarih: spec.tarih,
-    durumKisa: spec.onayli ? 'Üretime hazır' : 'Ölçü bekliyor',
+    durumKisa: spec.onayli ? 'Üretime hazır' : 'Teklif aşaması',
     revNot: esc(spec.revNot ?? ''),
     malzeme: esc(spec.malzeme),
     genelTolerans: esc(spec.genelTolerans),
     onDegerNotu: spec.onayli ? '' : ' (turuncu: ön değer)',
+    et: fmt(WALL),
     OLCU_TABLOSU: olcuTablosu(),
     L1: fmt(M.L1),
     L2: fmt(M.L2),
@@ -320,11 +321,13 @@ const BAR_SIZES = [50, 55, 60, 63, 65, 70, 75, 80, 85, 90, 100];
 function planData(stepInfo) {
   const envelope = 2 * MAX_FACE;
   const bar = BAR_SIZES.find((s) => s >= envelope + 1.5) ?? Math.ceil(envelope + 5);
-  const plainBody = Math.ceil(envelope);
   const blank = H + 7;
   const rawKg = (Math.PI / 4) * bar * bar * blank * 8.5e-6;
   const partKg = stepInfo.volume * 8.5e-6;
-  return { envelope, bar, plainBody, blank, rawKg, partKg, chipPct: 100 * (1 - partKg / rawKg) };
+  const sealFace = TOP.minor / 2 - 0.3 - (RB + CH);           // üst alında conta için kalan halka genişliği
+  const rootWall = (Math.min(TOP.minor, BOT.minor) - M.E) / 2; // diş dibindeki et
+  const threadLen = PORTS.map((p) => p.face - RB);             // port dişi için kullanılabilir boy
+  return { envelope, bar, blank, rawKg, partKg, chipPct: 100 * (1 - partKg / rawKg), sealFace, rootWall, threadLen };
 }
 
 function table(head, rows) {
@@ -418,7 +421,7 @@ function planHtml(info, sizes) {
     ${dl(FILES.dxf, 'DXF', 'Ön + üst görünüş, 1:1, mm')}
     ${dl(FILES.planPdf, 'Üretim planı (PDF)', 'Bu sayfanın baskısı')}
   </div>
-  ${spec.onayli ? '' : `<p class="callout"><b>Ölçüler henüz ön değer.</b> Paket teklif almak ve fasoncuyla ön görüşme için hazır. Sipariş, net ölçüler girildikten sonra onaylı revizyonla verilmeli. Ölçüler <code>olculer.json</code> dosyasına girilip <code>npm run build</code> çalıştırılınca bütün dosyalar yeniden üretilir.</p>`}
+  ${spec.onayli ? '' : `<p class="callout"><b>Teklif aşaması.</b> Et kalınlığı ${fmt(WALL)} mm kesin; diğer ölçüler ön değer. Fiyat bu paketle istenebilir, sipariş ise son ölçülerle onaylı revizyon üzerinden verilmeli. Ölçüler <code>olculer.json</code> dosyasına girilip <code>npm run build</code> çalıştırılınca bütün dosyalar yeniden üretilir.</p>`}
 </section>
 
 <h2>1. Özet</h2>
@@ -435,24 +438,26 @@ function planHtml(info, sizes) {
 
 <h2>2. Açık konular <small>siparişten önce kapatılacak</small></h2>
 <ol class="open">
-  ${spec.onayli ? '' : '<li><b>Net ölçüler:</b> ölçü tablosundaki ØD, ØE, A, B, H, H1, H2, L1, L2 ve kritik toleranslar.</li>'}
+  ${spec.onayli ? '' : `<li><b>Net ölçüler:</b> et kalınlığı ${fmt(WALL)} mm kesinleşti; ölçü tablosundaki diğer değerler (ØD, ØE, A, B, H, H1, H2, L1, L2) ve kritik toleranslar.</li>`}
+  <li><b>Conta yüzeyi:</b> omuz kalmadığı için conta üst alına oturuyor. Diş pahı ve delik pahından sonra alında yaklaşık ${fmt(d.sealFace, 1)} mm genişliğinde halka kalıyor. Kazan tarafındaki bağlantı (rakor somunu / manşon) ve conta ölçüsü buna uygun mu? Değilse üst uca conta bileziği (ör. Ø56–60 × 3–4 mm) eklenir.</li>
   <li><b>Diş tipi:</b> üst uç conta ile sızdırmaz olduğu için G (ISO 228-1, paralel) uygun. Alt uç keten + teflonla sızdırmaz: G mi, R (ISO 7-1, konik) mi? Alt uç ölçüsü de ${spec.uclar.alt.dis} olarak kabul edildi, teyit edilecek.</li>
   <li><b>İçme / kullanım suyu teması:</b> parça sıcak kullanım suyuyla temas ediyorsa CW614N (yaklaşık %3 kurşun) uygun değil; kurşunsuz pirinç (CW511L veya CW724R) gerekir.</li>
-  <li><b>Port boss geometrisi:</b> aşağıdaki üretilebilirlik seçeneklerinden biri seçilecek (maliyete en çok etki eden karar).</li>
-  <li><b>Montaj:</b> parça kazana döndürülerek mi takılıyor? Öyleyse yuvarlak gövdeye anahtar ağzı (iki düz yüz veya altıgen bölüm) eklenmeli.</li>
+  <li><b>Üretim yöntemi:</b> aşağıdaki seçeneklerden biri (maliyete en çok etki eden karar).</li>
+  <li><b>Montaj:</b> Ø${fmt(M.D)} gövde boru anahtarıyla tutulabilir. Düzgün anahtar yüzeyi isteniyorsa altıgen bölüm eklenmeli (boyu uzatır).</li>
   <li><b>İşletme basıncı ve sıcaklığı:</b> sızdırmazlık testinin basıncını belirler.</li>
   <li><b>Yüzey ve markalama:</b> doğal pirinç mi, nikel kaplama mı? Lazer markalama (logo, rev, parti no) istenecek mi?</li>
 </ol>
 
 <h2>3. Üretilebilirlik notları</h2>
-<p><b>Port boss'ları maliyeti belirliyor.</b> Boss'lar gövdeden yalnızca ${fmt(Math.min(...PORTS.map((p) => p.face - R)))}–${fmt(Math.max(...PORTS.map((p) => p.face - R)))} mm çıkıyor. Bunları bırakmak için Ø${d.bar} çubuktan başlayıp gövdeyi boss'ların etrafında Ø${fmt(M.D)} çapa indirmek gerekir. Bu da 4 eksen (veya C eksenli tahrikli takım) kontur frezeleme demek ve prototipte en pahalı adım bu.</p>
+<p><b>Et ${fmt(WALL)} mm: gövde boru gibi.</b> Dış Ø${fmt(M.D)}, delik Ø${fmt(M.E)}. ${sizeOf(spec.uclar.ust.dis)}" dişler gövdeyle neredeyse aynı çapta (Ø${fmt(TOP.major)}) olduğu için omuz ve diş boşaltma kanalı yok, dişler serbest çıkışla biter. Diş dibinde et ${fmt(d.rootWall, 1)} mm kalır; bu boru dişlerinde normaldir.</p>
+<p><b>Port boss'ları zorunlu.</b> ${fmt(WALL)} mm et tek başına yalnız ${fmt(WALL)} mm diş boyu verir; 1/2" ve 3/4" bağlantılar için 12–14 mm gerekir. Alın mesafeleri (A, B) korunduğu için kullanılabilir diş boyu ${PORTS.map((p, i) => `${p.id} ${fmt(d.threadLen[i], 1)} mm`).join(', ')}. Boss'lar gövdeden ${fmt(Math.min(...PORTS.map((p) => p.face - R)), 1)}–${fmt(Math.max(...PORTS.map((p) => p.face - R)), 1)} mm çıkar.</p>
 ${table(['Seçenek', 'Nasıl', 'İşleme', 'Not'], [
-    ['<b>A. Mevcut tasarım</b>', `Boss'lar Ø${fmt(M.D)} gövdeden çıkıntı`, 'Torna + 4 eksen kontur frezeleme', 'En pahalı, en çok talaş'],
-    ['<b>B. Boss\'suz gövde</b> (öneri)', `Gövde düz Ø${d.plainBody} silindir, port alınları düz oturma yüzeyi olarak frezelenir`, 'Torna + delik/diş', 'En ucuz; parça biraz ağırlaşır'],
-    ['<b>C. Seviye bilezikleri</b>', `Gövde Ø${fmt(M.D)}, port seviyelerinde Ø${d.plainBody} tornalanmış bilezik`, 'Torna + delik/diş', 'B ile A arası görünüm'],
+    ['<b>A. Çubuktan tek parça</b> (öneri, prototip)', `Ø${d.bar} çubuk; gövde boss'ların etrafında Ø${fmt(M.D)} çapa indirilir`, 'Torna + 4 eksen kontur frezeleme', `Tek parça, sızdırmazlık riski yok; talaş çok (≈ %${fmt(d.chipPct, 0)})`],
+    ['<b>B. Boru + lehimli manşon</b>', `Ø${fmt(M.D)} × ${fmt(WALL)} pirinç boru; ${[...new Set(PORTS.map((p) => p.dis))].join(' ve ')} manşonlar sert lehimle`, 'Torna + lehim + diş', 'Malzeme ucuz; lehim kalitesi ve basınç testi kritik'],
+    ['<b>C. Sıcak dövme + CNC</b>', 'CW617N dövme ham parça, boss\'lar dövmeden gelir', 'Kalıp + torna + delik/diş', 'Seri (1000+) için en ucuz; kalıp yatırımı'],
   ])}
 <ul>
-  <li><b>Diş boşaltma kanalları:</b> dış dişler omza kadar çekilebilsin diye her iki uca ${GROOVE} mm kanal eklendi (L1 ve L2'nin içinde).</li>
+  <li><b>İnce et ve bağlama:</b> ${fmt(WALL)} mm ette ayna sıkma kuvveti gövdeyi ovalleştirebilir; ikinci bağlamada geniş/yumuşak çene veya iç destek tapası önerilir.</li>
   <li><b>Port delikleri:</b> diş dibi delikleri (${uniqueTaps.map((p) => `${p.dis} için Ø${fmt(p.t.tapDrill)}`).join(', ')}) doğrudan ØE deliğine açılır, ayrı kanal delmeye gerek yok. Kesişimde çapak oluşur, çapak alma ayrı operasyon olarak planlandı.</li>
   <li><b>Diş frezesi:</b> G 1/2 ve G 3/4 aynı adımda (14 TPI). Kılavuz yerine 14 TPI 55° diş frezesi kullanılırsa iki port tek takımla çekilir.</li>
   <li><b>Talaş oranı:</b> yaklaşık %${fmt(d.chipPct, 0)}. Prototip için sorun değil; seri üretimde sıcak dövme ham parça (CW617N) + CNC daha ekonomik olur.</li>
@@ -461,21 +466,22 @@ ${table(['Seçenek', 'Nasıl', 'İşleme', 'Not'], [
 <h2>4. Ölçüler <small>olculer.json</small></h2>
 ${table(['Harf', 'Değer (mm)', 'Açıklama'], Object.entries(spec.olculer).map(([k, v]) => [`<b>${letter(k)}</b>`, q(fmt(v.deger)), esc(v.aciklama)]))}
 ${table(['Port', 'Diş', 'Açı', 'Seviye', 'Boss', 'Alın (eksenden)', 'Diş derinliği', 'Diş dibi matkabı'], portRows)}
-<p class="note">Üstten görünümde açı: 0° = P1 yönü, 90° = sol. Seviyeler omuzdan (conta yüzeyi) ölçülür: seviye 1 = H1, seviye 2 = H2.</p>
+<p class="note">Üstten görünümde açı: 0° = P1 yönü, 90° = sol. Seviyeler üst alından ölçülür: seviye 1 = H1, seviye 2 = H2. Et kalınlığı = (ØD − ØE) / 2 = ${fmt(WALL)} mm.</p>
 
 <h2>5. Ham malzeme</h2>
 ${table(['Kalem', 'Değer'], [
     ['Malzeme', `${esc(spec.malzeme)} · EN 12164 çubuk · EN 10204 3.1 sertifikalı`],
-    ['Çubuk', `Ø${d.bar} mm yuvarlak (boss zarfı Ø${fmt(d.envelope)}) · seçenek B/C'de de Ø${d.bar} yeterli`],
+    ['Çubuk (seçenek A)', `Ø${d.bar} mm yuvarlak (boss zarfı Ø${fmt(d.envelope)})`],
+    ['Boru (seçenek B)', `Ø${fmt(M.D)} × ${fmt(WALL)} mm pirinç boru + manşonlar`],
     ['Kesim boyu', `${d.blank} mm / parça (H = ${fmt(H)} + alın ve kesme payı)`],
     ['10 adet için', `≈ ${fmt((d.blank + 3) * 10 / 1000, 2)} m çubuk (testere payı dahil)`],
   ])}
 
 <h2>6. Operasyon planı <small>fason, prototip</small></h2>
 ${table(['Op', 'Tezgah / bağlama', 'İşlem', 'Takım'], [
-    ['10', 'CNC torna — 1. bağlama, alt uç dışarıda', `Alın tornalama · dış çap kaba (gövde bölgesi Ø${fmt(d.envelope)} zarf bırakılır) · alt uç Ø${fmt(BOT.major)} · ${GROOVE} mm diş boşaltma kanalı · pah · punta + Ø20 ön delik + ØE ${fmt(M.E)} iç tornalama (boydan) · alt dış diş ${spec.uclar.alt.dis} (${BOT.tpi} TPI) · kesme`, 'T01, T02, T03, T04, T05, T06'],
-    ['20', 'CNC torna — 2. bağlama, ters, yumuşak çene (gövdeden)', `Boy alma H = ${fmt(H)} · üst uç Ø${fmt(TOP.major)} · conta yüzeyi (omuz) finiş, Ra 1,6, düz · ${GROOVE} mm kanal · pah · üst dış diş ${spec.uclar.ust.dis} (${TOP.tpi} TPI) · iç pah`, 'T01, T02, T03, T06'],
-    ['30', '4 eksen dik işlem / C eksenli torna', `Yalnız seçenek A: gövdeyi boss'lar etrafında Ø${fmt(M.D)} çapa indirme (kontur). Seçenek B/C'de bu op yok.`, 'T07'],
+    ['10', 'CNC torna — 1. bağlama, alt uç dışarıda', `Alın tornalama · dış çap kaba (boss bölgesi Ø${fmt(d.envelope)} zarf bırakılır) · alt uç Ø${fmt(BOT.major)} · pah · punta + Ø25 ön delik + ØE ${fmt(M.E)} iç tornalama (boydan) · alt dış diş ${spec.uclar.alt.dis} (${BOT.tpi} TPI, serbest çıkış) · kesme`, 'T01, T02, T03, T04, T05, T06'],
+    ['20', 'CNC torna — 2. bağlama, ters, geniş/yumuşak çene + iç destek', `Boy alma H = ${fmt(H)} · üst uç Ø${fmt(TOP.major)} · üst alın (conta yüzeyi) finiş, Ra 1,6, düz · pah · üst dış diş ${spec.uclar.ust.dis} (${TOP.tpi} TPI) · iç pah`, 'T01, T03, T06'],
+    ['30', '4 eksen dik işlem / C eksenli torna', `Gövdeyi boss'lar etrafında Ø${fmt(M.D)} çapa indirme (kontur), et ${fmt(WALL)} mm`, 'T07'],
     ['40', 'Aynı bağlama', `Port alınlarını düzleme (A = ${fmt(M.A)}, B = ${fmt(M.B)}) · punta · diş dibi delikleri ØE'ye kadar (${uniqueTaps.map((p) => `Ø${fmt(p.t.tapDrill)}`).join(' / ')}) · 90° havşa · port dişleri ${uniqueTaps.map((p) => p.dis).join(' / ')}`, 'T04, T07, T08, T09, T10, T11'],
     ['50', 'Tezgah dışı', 'Çapak alma: port–ØE kesişimleri, diş girişleri, pahlar · yıkama, kurutma', 'Çapak alma takımı, fırça'],
     ['60', 'Kalite', 'Ölçü ve diş kontrolü, sızdırmazlık testi (bkz. kontrol planı)', 'Mastarlar, test düzeneği'],
@@ -485,12 +491,12 @@ ${table(['Op', 'Tezgah / bağlama', 'İşlem', 'Takım'], [
 <h2>7. Takım listesi <small>CW614N için başlangıç değerleri</small></h2>
 ${table(['T', 'Takım', 'Kullanım', 'Vc (m/dk)', 'İlerleme'], [
     ['T01', 'Dış tornalama kateri 35° (VCGT tipi, parlak, pozitif)', 'Kaba + finiş', '250–400', '0,10–0,25 mm/dev'],
-    ['T02', 'Kanal / kesme kateri 3 mm', 'Diş boşaltma kanalları, kesme', '150–250', '0,05–0,10 mm/dev'],
+    ['T02', 'Kesme kateri 3 mm', 'Kesme', '150–250', '0,05–0,10 mm/dev'],
     ['T03', 'Dış diş kateri 55° (Whitworth)', `${[...new Set([spec.uclar.ust.dis, spec.uclar.alt.dis])].join(' / ')} (${TOP.tpi} TPI, adım ${fmt(25.4 / TOP.tpi, 3)})`, '120–200', 'Adım'],
     ['T04', 'Punta matkabı 90°', 'Merkezleme', '60–100', '0,05–0,10 mm/dev'],
-    ['T05', 'Matkap Ø20 (ağzı köreltilmiş, 0° talaş açısı)', 'ØE ön delik', '80–150', '0,10–0,20 mm/dev'],
+    ['T05', 'Matkap Ø25 (ağzı köreltilmiş, 0° talaş açısı)', 'ØE ön delik', '80–150', '0,10–0,20 mm/dev'],
     ['T06', `İç tornalama bıçağı (Ø${fmt(M.E)} için)`, 'ØE finiş, iç pahlar', '200–300', '0,08–0,15 mm/dev'],
-    ['T07', 'Parmak freze Ø10–12, 3 ağız (pirinç/alüminyum)', 'Port alınları, (A) boss konturu', '150–250', '0,03–0,06 mm/diş'],
+    ['T07', 'Parmak freze Ø10–12, 3 ağız (pirinç/alüminyum)', 'Boss konturu, port alınları', '150–250', '0,03–0,06 mm/diş'],
     ['T08', `Matkap Ø${fmt(P1.t.tapDrill)}`, `${P1.dis} diş dibi (alternatif Ø24,5)`, '80–120', '0,10–0,18 mm/dev'],
     ['T09', `Matkap Ø${fmt(BSP['1/2'].tapDrill)}`, 'G 1/2 diş dibi (alternatif Ø19)', '80–120', '0,10–0,15 mm/dev'],
     ['T10', 'Havşa 90°', 'Port girişleri', '60–100', 'Elle/yavaş'],
@@ -502,27 +508,31 @@ ${table(['T', 'Takım', 'Kullanım', 'Vc (m/dk)', 'İlerleme'], [
 ${table(['No', 'Karakteristik', 'Kabul kriteri', 'Yöntem / ekipman', 'Kayıt'], [
     ['1', 'Malzeme', `${esc(spec.malzeme.split(' (')[0])}, EN 12164`, 'EN 10204 3.1 sertifikası', 'Sertifika'],
     ['2', 'Toplam boy H', `${q(fmt(H))} · ${esc(spec.genelTolerans)}`, 'Kumpas', 'Ölçüm raporu'],
-    ['3', 'Gövde ØD, delik ØE', `${q(fmt(M.D))} / ${q(fmt(M.E))}`, 'Kumpas, mikrometre, iç ölçer', 'Ölçüm raporu'],
-    ['4', 'Seviye yükseklikleri H1, H2', `${q(fmt(M.H1))} / ${q(fmt(M.H2))} (omuzdan)`, 'Yükseklik mihengiri / kumpas', 'Ölçüm raporu'],
+    ['3', 'Gövde ØD, delik ØE, et', `${q(fmt(M.D))} / ${q(fmt(M.E))} · et ${fmt(WALL)} mm ± 0,2 (öneri)`, 'Kumpas, mikrometre, iç ölçer; et için ultrasonik kalınlık ölçer', 'Ölçüm raporu'],
+    ['4', 'Seviye yükseklikleri H1, H2', `${q(fmt(M.H1))} / ${q(fmt(M.H2))} (üst alından)`, 'Yükseklik mihengiri / kumpas', 'Ölçüm raporu'],
     ['5', 'Port alınları A, B', `${q(fmt(M.A))} / ${q(fmt(M.B))} (eksenden)`, 'Kumpas (ØD/2 + çıkıntı)', 'Ölçüm raporu'],
     ['6', `Üst dış diş ${spec.uclar.ust.dis}`, 'ISO 228-1, sınıf A (öneri)', `${spec.uclar.ust.dis} halka mastar, geçer/geçmez`, 'Ölçüm raporu'],
     ['7', `Alt dış diş ${spec.uclar.alt.dis}`, 'G ise ISO 228-1; R seçilirse ISO 7-1', 'Halka mastar (R ise ISO 7-2 konik mastar)', 'Ölçüm raporu'],
     ['8', 'Port dişleri', `${uniqueTaps.map((p) => p.dis).join(', ')} · ISO 228-1`, 'Tampon mastar, geçer/geçmez', 'Ölçüm raporu'],
     ['9', 'Diş boyları', `L1 = ${q(fmt(M.L1))}, L2 = ${q(fmt(M.L2))}, port diş derinlikleri ${PORTS.map((p) => `${p.id} ${fmt(p.disDerinligi)}`).join(', ')}`, 'Kumpas, mastarla tur sayısı', 'Ölçüm raporu'],
-    ['10', 'Conta yüzeyi (omuz)', 'Düz, çapaksız, radyal çizik yok, Ra ≤ 1,6', 'Görsel + pürüzlülük karşılaştırma numunesi', 'Ölçüm raporu'],
+    ['10', 'Conta yüzeyi (üst alın)', 'Düz, çapaksız, radyal çizik yok, Ra ≤ 1,6', 'Görsel + pürüzlülük karşılaştırma numunesi', 'Ölçüm raporu'],
     ['11', 'İç kesişim çapakları', 'Çapak ve gevşek talaş yok', 'Görsel (fener / endoskop)', 'Kontrol listesi'],
     ['12', 'Kenar pahları', '0,3–0,5 × 45°, keskin kenar yok', 'Görsel', 'Kontrol listesi'],
     ['13', 'Sızdırmazlık', 'Test basıncı = 1,5 × işletme basıncı (teyit edilecek), 60 s, kaçak yok', 'Hidrostatik test veya su altında hava testi', 'Test kaydı'],
     ['14', 'İlk parça muayenesi', 'Tüm karakteristikler', 'Ölçüm tablosu + fotoğraf', 'İlk parça raporu'],
   ])}
 
-<h2>9. Fasoncudan teklif isterken</h2>
-<ul>
-  <li><b>Gönderilecekler:</b> STEP, PDF teknik resim ve bu üretim planı (ZIP'in tamamı).</li>
-  <li><b>Belirtilecekler:</b> adet: ${esc(spec.adet)}; malzeme ve 3.1 sertifika, ISO 2768-m genel tolerans, diş mastar kontrolü, sızdırmazlık testi, ilk parça ölçüm raporu, paketleme, termin.</li>
-  <li><b>Fiyatı ayrıştırarak isteyin:</b> parça başı işçilik, kurulum (programlama + bağlama), malzeme, mastarlar (kimde var, kim alacak), test.</li>
-  <li><b>Sorulacaklar:</b> port boss seçeneği (A/B/C) için ayrı fiyat; diş için kılavuz mu, diş frezesi mi kullanacakları.</li>
-</ul>
+<h2>9. Teklif talebi <small>fason atölyeye</small></h2>
+<p>Ekteki STEP model ve teknik resme göre ${esc(spec.parca)} (Rev ${spec.rev}) için fiyat rica ediyoruz.</p>
+${table(['Kalem', 'İstek'], [
+    ['Adet', '1, 5 ve 10 adet için ayrı birim fiyat'],
+    ['Malzeme', `${esc(spec.malzeme)}, EN 12164, EN 10204 3.1 sertifikalı · kurşunsuz CW511L için ayrı fiyat`],
+    ['Üretim', 'Seçenek A (çubuktan tek parça). Uygun görürseniz seçenek B (boru + lehimli manşon) için de fiyat'],
+    ['Kalite', `${esc(spec.genelTolerans)} · diş mastar kontrolü (${spec.uclar.ust.dis} halka, ${[...new Set(PORTS.map((p) => p.dis))].join(' ve ')} tampon) · sızdırmazlık testi · ilk parça ölçüm raporu`],
+    ['Teslim', 'Çapaksız ve temiz; diş koruma tapalı, parça başı poşet, etiketli'],
+    ['Teklifte görmek istediklerimiz', 'Birim fiyat, kurulum / programlama bedeli, malzeme, mastar bedeli (mastarlar sizde var mı), test, termin, teklif geçerlilik süresi, ödeme koşulu'],
+    ['Not', `Et kalınlığı ${fmt(WALL)} mm kesindir; diğer ölçüler ön değerdir, son ölçülerle teklif güncellenebilir. Sipariş onaylı revizyon üzerinden verilecektir.`],
+  ])}
 
 <footer>${esc(spec.parca)} · Rev ${spec.rev} · ${spec.tarih} · Bu sayfa ve ekleri <code>olculer.json</code> dosyasından üretildi.</footer>
 </main>
@@ -571,7 +581,10 @@ async function bustCache() {
   const v = h.digest('hex').slice(0, 8);
   const indexPath = path.join(ROOT, 'index.html');
   const html = await readFile(indexPath, 'utf8');
-  await writeFile(indexPath, html.replace(/\?v=[\w-]+/g, `?v=${v}`));
+  await writeFile(indexPath, html
+    .replace(/\?v=[\w-]+/g, `?v=${v}`)
+    .replace(/Rev [A-Z]+ taslak/g, `Rev ${spec.rev} taslak`)
+    .replace(/(Teknik çizim · Rev )[A-Z]+/g, `$1${spec.rev}`));
   return v;
 }
 
