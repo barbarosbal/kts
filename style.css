@@ -269,6 +269,12 @@ html, body {
   #app.tech #sheet { height: 46%; border-left: 0; border-top: 1px solid #000; }
 }
 
+@container stage (max-width: 380px) {
+  .toolbar { gap: 6px; }
+  .views button { padding: 6px 7px; }
+  .switch { gap: 6px; padding: 6px 8px 6px 6px; font-size: 12px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   #sheet, .switch .track, .switch .thumb { transition: none; }
 }

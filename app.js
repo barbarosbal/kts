@@ -11,7 +11,7 @@ const M = Object.fromEntries(Object.entries(SPEC.olculer).map(([k, v]) => [k, v.
 
 // BSP (ISO 228-1) diş verileri; tapDrill: diş dibi matkabı
 const BSP = {
-  '1 1/2': { major: 47.803, minor: 44.845, pitch: 25.4 / 11, tapDrill: 45.25 },
+  '1 1/2': { major: 47.803, minor: 44.845, pitch: 25.4 / 11, tapDrill: 45.25, gauge: 12.7 },
   '3/4': { major: 26.441, minor: 24.117, pitch: 25.4 / 14, tapDrill: 24.25 },
   '1/2': { major: 20.955, minor: 18.631, pitch: 25.4 / 14, tapDrill: 18.75 },
 };
@@ -93,8 +93,9 @@ function radialSurface(len, segs, rows, radius, inward) {
   return g;
 }
 
-// Sağ el dış diş; serbest uçta 45° pah, gövde tarafında diş çıkışı (diş derinliği sıfıra iner)
-function externalThread(spec, len, freeAtStart) {
+// Sağ el dış diş; serbest uçta 45° pah, gövde tarafında diş çıkışı (diş derinliği sıfıra iner).
+// R (ISO 7-1) dişte çap 1:16 koniktir; nominal çap serbest uçtan spec.gauge kadar içeride.
+function externalThread(spec, len, freeAtStart, conical) {
   const rMaj = spec.major / 2;
   const rMin = spec.minor / 2;
   const rEnd = rMin - 0.3;
@@ -102,9 +103,10 @@ function externalThread(spec, len, freeAtStart) {
   return radialSurface(len, 192, rows, (th, s) => {
     const free = freeAtStart ? s : len - s;
     const runout = freeAtStart ? len - s : s;
-    let r = lerp(rMin, rMaj, profile(s / spec.pitch - th / (2 * Math.PI)));
-    r = lerp(rMaj, r, smooth(0.4, 2.6, runout));
-    return Math.min(r, rEnd + free);
+    const taper = conical ? (s - spec.gauge) / 32 : 0;
+    let r = lerp(rMin, rMaj, profile(s / spec.pitch - th / (2 * Math.PI))) + taper;
+    r = lerp(rMaj + taper, r, smooth(0.4, 2.6, runout));
+    return Math.min(r, rEnd + free, BODY_R);
   }, false);
 }
 
@@ -120,10 +122,10 @@ function internalThread(spec, len) {
 }
 
 // Dış dişli boru ucu: diş + iç delik + alın halkası
-function threadedEnd(spec, len, y0, freeAtStart, mat) {
+function threadedEnd(spec, len, y0, freeAtStart, mat, conical = false) {
   const g = new THREE.Group();
   g.position.y = y0;
-  g.add(new THREE.Mesh(externalThread(spec, len, freeAtStart), mat));
+  g.add(new THREE.Mesh(externalThread(spec, len, freeAtStart, conical), mat));
   g.add(new THREE.Mesh(radialSurface(len, 128, 1, () => BORE_R, true), mat));
   const cap = new THREE.RingGeometry(BORE_R, spec.minor / 2 - 0.3, 192, 1);
   cap.rotateX(freeAtStart ? Math.PI / 2 : -Math.PI / 2);
@@ -458,7 +460,7 @@ try {
   const part = new THREE.Group();
   part.add(new THREE.Mesh(buildBody(), brass));
   part.add(threadedEnd(TOP_THREAD, L1, BODY_Y[1], false, brass));
-  part.add(threadedEnd(BOTTOM_THREAD, L2, 0, true, brass));
+  part.add(threadedEnd(BOTTOM_THREAD, L2, 0, true, brass, /^R/.test(SPEC.uclar.alt.dis)));
   for (const p of PORTS) {
     const m = new THREE.Mesh(internalThread(BSP[p.size], p.depth - 1.6), brass);
     m.quaternion.setFromUnitVectors(Y, p.dir.clone().negate());
