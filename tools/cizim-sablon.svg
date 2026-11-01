@@ -54,7 +54,7 @@
 
     <!-- ØD -->
     <polyline class="lead" points="521,471.3 560,510 620,510"/>
-    <text class="tb" x="564" y="503">Gövde <tspan class="q">ØD</tspan></text>
+    <text class="tb" x="564" y="503">Gövde <tspan{{q}}>ØD</tspan></text>
     <text class="ts" x="564" y="527">et {{et}} mm</text>
 
     <!-- dış diş -->
@@ -64,18 +64,18 @@
 
     <!-- ØE delik -->
     <polyline class="lead" points="317.5,528.3 280,640 140,640"/>
-    <text class="tb" x="142" y="633"><tspan class="q">ØE</tspan> DELİK</text>
+    <text class="tb" x="142" y="633"><tspan{{q}}>ØE</tspan> DELİK</text>
     <text class="ts" x="142" y="657">boydan boya</text>
 
     <!-- A: eksen – P1 alın -->
     <line class="dim" x1="490" y1="220" x2="642" y2="220"/>
     <line class="dima" x1="630" y1="220" x2="630" y2="420"/>
-    <text class="tb q" transform="translate(622 320) rotate(-90)" text-anchor="middle">A</text>
+    <text class="tb{{qc}}" transform="translate(622 320) rotate(-90)" text-anchor="middle">A</text>
 
     <!-- B: eksen – P2/P3 alın -->
     <line class="dim" x1="180" y1="330" x2="180" y2="168"/>
     <line class="dima" x1="180" y1="180" x2="380" y2="180"/>
-    <text class="tb q" x="280" y="173" text-anchor="middle">B</text>
+    <text class="tb{{qc}}" x="280" y="173" text-anchor="middle">B</text>
 
     <!-- port etiketleri -->
     <polyline class="lead" points="450,220 490,150 620,150"/>
@@ -88,7 +88,7 @@
     <text class="tn" x="-4" y="578">P2: Seviye 2 (altta, gizli)</text>
 
     <text class="h" x="380" y="770" text-anchor="middle">ÜSTTEN GÖRÜNÜM</text>
-    <text class="ts" x="380" y="790" text-anchor="middle">ölçeksiz · taslak</text>
+    <text class="ts" x="380" y="790" text-anchor="middle">ölçeksiz</text>
   </g>
 
   <!-- ================= ÖLÇÜ TABLOSU (olculer.json) ================= -->
@@ -126,15 +126,15 @@
     <line class="dim" x1="1170" y1="418" x2="1227" y2="418"/>
     <line class="dim" x1="1170" y1="498" x2="1317" y2="498"/>
     <line class="dima" x1="1215" y1="70" x2="1215" y2="150"/>
-    <text class="tb q" transform="translate(1207 110) rotate(-90)" text-anchor="middle">L1 = {{L1}}</text>
+    <text class="tb{{qc}}" transform="translate(1207 110) rotate(-90)" text-anchor="middle">L1 = {{L1}}</text>
     <line class="dima" x1="1215" y1="418" x2="1215" y2="498"/>
-    <text class="tb q" transform="translate(1207 458) rotate(-90)" text-anchor="middle">L2 = {{L2}}</text>
+    <text class="tb{{qc}}" transform="translate(1207 458) rotate(-90)" text-anchor="middle">L2 = {{L2}}</text>
     <line class="dima" x1="1245" y1="70" x2="1245" y2="226"/>
-    <text class="tb q" transform="translate(1237 186) rotate(-90)" text-anchor="middle">H1 = {{H1}}</text>
+    <text class="tb{{qc}}" transform="translate(1237 186) rotate(-90)" text-anchor="middle">H1 = {{H1}}</text>
     <line class="dima" x1="1275" y1="70" x2="1275" y2="354"/>
-    <text class="tb q" transform="translate(1267 290) rotate(-90)" text-anchor="middle">H2 = {{H2}}</text>
+    <text class="tb{{qc}}" transform="translate(1267 290) rotate(-90)" text-anchor="middle">H2 = {{H2}}</text>
     <line class="dima" x1="1305" y1="70" x2="1305" y2="498"/>
-    <text class="tb q" transform="translate(1297 284) rotate(-90)" text-anchor="middle">H = {{H}}</text>
+    <text class="tb{{qc}}" transform="translate(1297 284) rotate(-90)" text-anchor="middle">H = {{H}}</text>
 
     <!-- etiketler -->
     <polyline class="lead" points="974,110 958,110"/>
@@ -204,7 +204,7 @@
     <path class="grid" d="M780 830 H1360 M780 872 H1360 M780 914 H1360"/>
     <path class="grid" d="M980 830 V914 M1180 830 V914"/>
     <text x="795" y="814" font-size="22" font-weight="700" fill="#111" letter-spacing=".5">KAZAN ALTI PARÇASI</text>
-    <text class="ts" x="1345" y="814" text-anchor="end">Teknik resim · taslak</text>
+    <text class="ts" x="1345" y="814" text-anchor="end">Teknik resim</text>
 
     <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">Pirinç {{malzemeKisa}}</text>
     <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>

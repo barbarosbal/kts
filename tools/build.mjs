@@ -339,7 +339,7 @@ async function buildDrawing() {
     rev: spec.rev,
     revDurum: spec.onayli ? 'Onaylı' : 'Taslak',
     tarih: spec.tarih,
-    durumKisa: spec.onayli ? 'Üretime hazır' : 'Teklif aşaması',
+    durumKisa: spec.onayli ? 'Ölçüler onaylı' : 'Teklif aşaması',
     revNot: esc(spec.revNot ?? ''),
     malzeme: esc(spec.malzeme),
     malzemeKisa: esc(spec.malzemeKisa),
@@ -604,7 +604,9 @@ ${table(['Kalem', 'İstek'], [
     ['Kalite', `${esc(spec.genelTolerans)} · diş mastar kontrolü (${spec.uclar.ust.dis} ve ${spec.uclar.alt.dis} halka, ${[...new Set(PORTS.map((p) => p.dis))].join(' ve ')} tampon) · ${spec.testBasinci} bar sızdırmazlık testi (işletme ${spec.isletmeBasinci.min}–${spec.isletmeBasinci.max} bar) · ilk parça ölçüm raporu`],
     ['Teslim', 'Çapaksız ve temiz; diş koruma tapalı, parça başı poşet, etiketli'],
     ['Teklifte görmek istediklerimiz', 'Birim fiyat, kurulum / programlama bedeli, malzeme, mastar bedeli (mastarlar sizde var mı), test, termin, teklif geçerlilik süresi, ödeme koşulu'],
-    ['Not', `Sipariş onaylı revizyon üzerinden verilecektir; boy onayında küçük değişiklik olabilir.`],
+    ['Not', spec.onayli
+      ? `Ölçüler onaylıdır (Rev ${spec.rev}). Üretim yöntemi, su sıcaklığı veya yüzey kararı ölçüyü değiştirirse yeni revizyonla bildirilir.`
+      : 'Sipariş onaylı revizyon üzerinden verilecektir; ölçülerde küçük değişiklik olabilir.'],
   ])}
 
 <footer>${esc(spec.parca)} · Rev ${spec.rev} · ${spec.tarih} · Bu sayfa ve ekleri <code>olculer.json</code> dosyasından üretildi.</footer>
@@ -656,7 +658,7 @@ async function bustCache() {
   const html = await readFile(indexPath, 'utf8');
   await writeFile(indexPath, html
     .replace(/\?v=[\w-]+/g, `?v=${v}`)
-    .replace(/Rev [A-Z]+ taslak/g, `Rev ${spec.rev} taslak`)
+    .replace(/· Rev [A-Z]+( taslak)?<\/p>/, `· Rev ${spec.rev}${spec.onayli ? '' : ' taslak'}</p>`)
     .replace(/Pirinç [A-Z0-9]+ ·/g, `Pirinç ${spec.malzemeKisa} ·`)
     .replace(/(Teknik çizim · Rev )[A-Z]+/g, `$1${spec.rev}`));
   return v;
