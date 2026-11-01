@@ -439,7 +439,6 @@ function planHtml(info, sizes) {
 <h2>2. Açık konular <small>siparişten önce kapatılacak</small></h2>
 <ol class="open">
   ${spec.onayli ? '' : `<li><b>Net ölçüler:</b> et kalınlığı ${fmt(WALL)} mm kesinleşti; ölçü tablosundaki diğer değerler (ØD, ØE, A, B, H, H1, H2, L1, L2) ve kritik toleranslar.</li>`}
-  <li><b>Conta yüzeyi:</b> omuz kalmadığı için conta üst alına oturuyor. Diş pahı ve delik pahından sonra alında yaklaşık ${fmt(d.sealFace, 1)} mm genişliğinde halka kalıyor. Kazan tarafındaki bağlantı (rakor somunu / manşon) ve conta ölçüsü buna uygun mu? Değilse üst uca conta bileziği (ör. Ø56–60 × 3–4 mm) eklenir.</li>
   <li><b>Diş tipi:</b> üst uç conta ile sızdırmaz olduğu için G (ISO 228-1, paralel) uygun. Alt uç keten + teflonla sızdırmaz: G mi, R (ISO 7-1, konik) mi? Alt uç ölçüsü de ${spec.uclar.alt.dis} olarak kabul edildi, teyit edilecek.</li>
   <li><b>İçme / kullanım suyu teması:</b> parça sıcak kullanım suyuyla temas ediyorsa CW614N (yaklaşık %3 kurşun) uygun değil; kurşunsuz pirinç (CW511L veya CW724R) gerekir.</li>
   <li><b>Üretim yöntemi:</b> aşağıdaki seçeneklerden biri (maliyete en çok etki eden karar).</li>
@@ -457,6 +456,7 @@ ${table(['Seçenek', 'Nasıl', 'İşleme', 'Not'], [
     ['<b>C. Sıcak dövme + CNC</b>', 'CW617N dövme ham parça, boss\'lar dövmeden gelir', 'Kalıp + torna + delik/diş', 'Seri (1000+) için en ucuz; kalıp yatırımı'],
   ])}
 <ul>
+  <li><b>Conta yüzeyi:</b> klingerit conta üst alına oturur, conta bileziği yok (karar verildi). Diş pahı ve delik pahından sonra alında yaklaşık ${fmt(d.sealFace, 1)} mm genişliğinde halka kalır. Bu halka düz, çapaksız ve Ra 1,6 olmalı; pahlar büyütülmemeli.</li>
   <li><b>İnce et ve bağlama:</b> ${fmt(WALL)} mm ette ayna sıkma kuvveti gövdeyi ovalleştirebilir; ikinci bağlamada geniş/yumuşak çene veya iç destek tapası önerilir.</li>
   <li><b>Port delikleri:</b> diş dibi delikleri (${uniqueTaps.map((p) => `${p.dis} için Ø${fmt(p.t.tapDrill)}`).join(', ')}) doğrudan ØE deliğine açılır, ayrı kanal delmeye gerek yok. Kesişimde çapak oluşur, çapak alma ayrı operasyon olarak planlandı.</li>
   <li><b>Diş frezesi:</b> G 1/2 ve G 3/4 aynı adımda (14 TPI). Kılavuz yerine 14 TPI 55° diş frezesi kullanılırsa iki port tek takımla çekilir.</li>
