@@ -200,8 +200,9 @@ html, body {
 .dimtag {
   color: var(--q);
   font: 700 12px/1 system-ui, sans-serif;
-  background: rgba(12, 16, 22, .7);
+  background: rgba(12, 16, 22, .92);
   padding: 2px 4px;
+  white-space: nowrap;
   border-radius: 4px;
 }
 .lvl {

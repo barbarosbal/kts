@@ -347,11 +347,11 @@ function label(html, at, cls = 'tag') {
   labels.push(o);
 }
 
-function dim(x, y0, y1, text) {
+function dim(x, y0, y1, name) {
   line([[x, y0, 0], [x, y1, 0]]);
   arrow([x, y0, 0], [x, y1, 0]);
   arrow([x, y1, 0], [x, y0, 0]);
-  label(text, [x + 5, (y0 + y1) / 2, 0], 'dimtag');
+  label(`${name} = ${String(M[name]).replace('.', ',')}`, [x, (y0 + y1) / 2, 0], 'dimtag');
 }
 
 function ext(y, x0, x1) {
@@ -411,8 +411,8 @@ function buildAnnotations() {
     callout(at, to, `${p.id} · ${p.size}″ iç diş`, `Seviye ${p.level}`);
   }
   const { ust, alt } = SPEC.uclar;
-  callout([0, TOP - 6, rT], [-26, TOP + 16, 44], `${sizeOf(ust.dis)}″ dış diş`, `Üst uç · ${ust.sizdirmazlik}`);
-  callout([0, 8, rT], [24, -16, 44], `${sizeOf(alt.dis)}″ dış diş`, `Alt uç · ${alt.sizdirmazlik}`);
+  callout([0, TOP - 6, rT], [10, TOP + 18, 44], `${ust.dis} dış diş`, `Üst uç · ${ust.sizdirmazlik}`);
+  callout([0, 8, rT], [24, -24, 44], `${alt.dis} dış diş`, `Alt uç · ${alt.sizdirmazlik}`);
 }
 
 // Gövdenin arkasında kalan etiketleri gizler (gövde ≈ BODY_R yarıçaplı silindir)
