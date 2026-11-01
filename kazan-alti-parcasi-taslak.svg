@@ -208,7 +208,7 @@
     <text class="tn" x="40" y="894">3. Dişler ISO 228-1 (G) kabul edildi; alt uç keten + teflon, diş tipi (G / R) teyit edilecek. Diş çıkışları serbest.</text>
     <text class="tn" x="40" y="914">4. Port diş dibi delikleri ØE deliğine kadar açılır; kesişim çapakları alınacak. Port girişleri 90° havşa.</text>
     <text class="tn" x="40" y="934">5. P1 0°'de; P2 ve P3 90°'de üst üste. Eksenler gövde ekseninde kesişir. Keskin kenarlar 0,3–0,5 × 45°.</text>
-    <text class="tn" x="40" y="954">6. Malzeme: CW614N (CuZn39Pb3) otomat pirinci, EN 10204 3.1 sertifikalı.</text>
+    <text class="tn" x="40" y="954">6. Malzeme: CW511L (CuZn38As) düşük kurşunlu, çinko kaybına dayanıklı pirinç, EN 10204 3.1 sertifikalı.</text>
   </g>
 
   <!-- ================= ANTET ================= -->
@@ -219,15 +219,15 @@
     <text x="795" y="814" font-size="22" font-weight="700" fill="#111" letter-spacing=".5">KAZAN ALTI PARÇASI</text>
     <text class="ts" x="1345" y="814" text-anchor="end">Teknik resim · taslak</text>
 
-    <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">Pirinç CW614N</text>
+    <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">Pirinç CW511L</text>
     <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
     <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
 
-    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">F — Taslak</text>
-    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">30.10.2026</text>
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">G — Taslak</text>
+    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">01.11.2026</text>
     <text class="tl" x="1190" y="887">DURUM</text><text class="tb q" x="1190" y="906">Teklif aşaması</text>
 
-    <text class="tl" x="790" y="929">REV F</text>
-    <text class="t" x="790" y="947">Gövde et kalınlığı 4 mm: ØD 48, ØE 40; omuz kalktı, conta üst alına oturur.</text>
+    <text class="tl" x="790" y="929">REV G</text>
+    <text class="t" x="790" y="947">Su teması için malzeme CW511L; işletme 10–12 bar, test 18 bar.</text>
   </g>
 </svg>

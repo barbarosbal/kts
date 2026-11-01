@@ -203,7 +203,7 @@
     <text x="795" y="814" font-size="22" font-weight="700" fill="#111" letter-spacing=".5">KAZAN ALTI PARÇASI</text>
     <text class="ts" x="1345" y="814" text-anchor="end">Teknik resim · taslak</text>
 
-    <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">Pirinç CW614N</text>
+    <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">Pirinç {{malzemeKisa}}</text>
     <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
     <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
 

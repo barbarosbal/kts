@@ -297,6 +297,7 @@ async function buildDrawing() {
     durumKisa: spec.onayli ? 'Üretime hazır' : 'Teklif aşaması',
     revNot: esc(spec.revNot ?? ''),
     malzeme: esc(spec.malzeme),
+    malzemeKisa: esc(spec.malzemeKisa),
     genelTolerans: esc(spec.genelTolerans),
     onDegerNotu: spec.onayli ? '' : ' (turuncu: ön değer)',
     et: fmt(WALL),
@@ -327,7 +328,21 @@ function planData(stepInfo) {
   const sealFace = TOP.minor / 2 - 0.3 - (RB + CH);           // üst alında conta için kalan halka genişliği
   const rootWall = (Math.min(TOP.minor, BOT.minor) - M.E) / 2; // diş dibindeki et
   const threadLen = PORTS.map((p) => p.face - RB);             // port dişi için kullanılabilir boy
-  return { envelope, bar, blank, rawKg, partKg, chipPct: 100 * (1 - partKg / rawKg), sealFace, rootWall, threadLen };
+
+  // Dayanım el hesabı: ince cidarlı boru σ = P·D / 2t, burulma τ = T·r / J
+  const YIELD = 140;                                           // MPa, pirinç için muhafazakâr akma kabulü
+  const TORQUE = 200;                                          // Nm, sıkma momenti kabulü
+  const rootD = Math.min(TOP.minor, BOT.minor);
+  const hoop = (bar, D, t) => (bar * 0.1 * D) / (2 * t);
+  const tau = (D) => (TORQUE * 1000 * (D / 2)) / ((Math.PI / 32) * (D ** 4 - M.E ** 4));
+  const pMax = spec.isletmeBasinci.max;
+  const strength = [
+    [`${pMax} bar, gövde (et ${fmt(WALL)} mm)`, hoop(pMax, M.D, WALL), YIELD],
+    [`${pMax} bar, diş dibi (et ${fmt(rootWall, 1)} mm)`, hoop(pMax, rootD, rootWall), YIELD],
+    [`${spec.testBasinci} bar test, diş dibi`, hoop(spec.testBasinci, rootD, rootWall), YIELD],
+    [`${TORQUE} Nm sıkma, diş dibi (burulma)`, tau(rootD), 0.58 * YIELD],
+  ];
+  return { envelope, bar, blank, rawKg, partKg, chipPct: 100 * (1 - partKg / rawKg), sealFace, rootWall, threadLen, strength, YIELD };
 }
 
 function table(head, rows) {
@@ -434,16 +449,16 @@ function planHtml(info, sizes) {
   <div><small>Ağırlık (tahmini)</small><b>${fmt(d.partKg, 2)} kg mamul · ${fmt(d.rawKg, 2)} kg ham</b></div>
   <div><small>Genel tolerans</small><b>${esc(spec.genelTolerans)}</b></div>
   <div><small>Üst / alt bağlantı</small><b>${spec.uclar.ust.dis} / ${spec.uclar.alt.dis} dış</b></div>
+  <div><small>İşletme / test basıncı</small><b>${spec.isletmeBasinci.min}–${spec.isletmeBasinci.max} bar / ${spec.testBasinci} bar</b></div>
 </div>
 
 <h2>2. Açık konular <small>siparişten önce kapatılacak</small></h2>
 <ol class="open">
   ${spec.onayli ? '' : `<li><b>Net ölçüler:</b> et kalınlığı ${fmt(WALL)} mm kesinleşti; ölçü tablosundaki diğer değerler (ØD, ØE, A, B, H, H1, H2, L1, L2) ve kritik toleranslar.</li>`}
-  <li><b>Diş tipi:</b> üst uç conta ile sızdırmaz olduğu için G (ISO 228-1, paralel) uygun. Alt uç keten + teflonla sızdırmaz: G mi, R (ISO 7-1, konik) mi? Alt uç ölçüsü de ${spec.uclar.alt.dis} olarak kabul edildi, teyit edilecek.</li>
-  <li><b>İçme / kullanım suyu teması:</b> parça sıcak kullanım suyuyla temas ediyorsa CW614N (yaklaşık %3 kurşun) uygun değil; kurşunsuz pirinç (CW511L veya CW724R) gerekir.</li>
-  <li><b>Üretim yöntemi:</b> aşağıdaki seçeneklerden biri (maliyete en çok etki eden karar).</li>
-  <li><b>Montaj:</b> Ø${fmt(M.D)} gövde boru anahtarıyla tutulabilir. Düzgün anahtar yüzeyi isteniyorsa altıgen bölüm eklenmeli (boyu uzatır).</li>
-  <li><b>İşletme basıncı ve sıcaklığı:</b> sızdırmazlık testinin basıncını belirler.</li>
+  <li><b>Üretim yöntemi (ustaya sorulacak):</b> çubuktan tek parça mı, boru + lehimli manşon mu? Maliyete en çok etki eden karar; seçenekler aşağıda.</li>
+  <li><b>Anahtar yeri:</b> parça anahtarla sıkılacak. Boru anahtarı ${fmt(WALL)} mm eti ezebilir ve diş izi bırakır; altıgen bölüm eklenirse anahtar oraya oturur (boyu uzatır).</li>
+  <li><b>Alt uç dişi:</b> üst uç conta ile sızdırmaz olduğu için G (ISO 228-1, paralel) kalır. Alt uç keten + teflonla sızdırmaz: karşı parçaya göre G mi, R (ISO 7-1, konik) mi? Alt uç ölçüsü de ${spec.uclar.alt.dis} kabul edildi, teyit edilecek.</li>
+  <li><b>Çalışma sıcaklığı:</b> azami su sıcaklığı teyit edilecek.</li>
   <li><b>Yüzey ve markalama:</b> doğal pirinç mi, nikel kaplama mı? Lazer markalama (logo, rev, parti no) istenecek mi?</li>
 </ol>
 
@@ -452,16 +467,21 @@ function planHtml(info, sizes) {
 <p><b>Port boss'ları zorunlu.</b> ${fmt(WALL)} mm et tek başına yalnız ${fmt(WALL)} mm diş boyu verir; 1/2" ve 3/4" bağlantılar için 12–14 mm gerekir. Alın mesafeleri (A, B) korunduğu için kullanılabilir diş boyu ${PORTS.map((p, i) => `${p.id} ${fmt(d.threadLen[i], 1)} mm`).join(', ')}. Boss'lar gövdeden ${fmt(Math.min(...PORTS.map((p) => p.face - R)), 1)}–${fmt(Math.max(...PORTS.map((p) => p.face - R)), 1)} mm çıkar.</p>
 ${table(['Seçenek', 'Nasıl', 'İşleme', 'Not'], [
     ['<b>A. Çubuktan tek parça</b> (öneri, prototip)', `Ø${d.bar} çubuk; gövde boss'ların etrafında Ø${fmt(M.D)} çapa indirilir`, 'Torna + 4 eksen kontur frezeleme', `Tek parça, sızdırmazlık riski yok; talaş çok (≈ %${fmt(d.chipPct, 0)})`],
-    ['<b>B. Boru + lehimli manşon</b>', `Ø${fmt(M.D)} × ${fmt(WALL)} pirinç boru; ${[...new Set(PORTS.map((p) => p.dis))].join(' ve ')} manşonlar sert lehimle`, 'Torna + lehim + diş', 'Malzeme ucuz; lehim kalitesi ve basınç testi kritik'],
-    ['<b>C. Sıcak dövme + CNC</b>', 'CW617N dövme ham parça, boss\'lar dövmeden gelir', 'Kalıp + torna + delik/diş', 'Seri (1000+) için en ucuz; kalıp yatırımı'],
+    ['<b>B. Boru + lehimli manşon</b>', `Ø${fmt(M.D)} × ${fmt(WALL)} pirinç boru; ${[...new Set(PORTS.map((p) => p.dis))].join(' ve ')} manşonlar kurşunsuz sert lehimle`, 'Torna + lehim + diş', 'Malzeme ucuz; boru ve manşon da suya uygun olmalı, lehim kalitesi ve basınç testi kritik'],
+    ['<b>C. Sıcak dövme + CNC</b>', `${esc(spec.malzemeKisa)} dövme ham parça, boss'lar dövmeden gelir`, 'Kalıp + torna + delik/diş', 'Seri (1000+) için en ucuz; kalıp yatırımı'],
   ])}
+<p><b>Malzeme:</b> parça suyla temas ettiği için ${esc(spec.malzemeKisa)} seçildi: kurşun oranı %0,2'nin altında, çinko kaybına dayanıklı (EN ISO 6509). Kurşunlu pirince göre daha zor işlenir, çapak eğilimi fazladır. Alternatif: kurşunsuz CW724R (yüksek dayanım, daha pahalı).</p>
 <ul>
   <li><b>Conta yüzeyi:</b> klingerit conta üst alına oturur, conta bileziği yok (karar verildi). Diş pahı ve delik pahından sonra alında yaklaşık ${fmt(d.sealFace, 1)} mm genişliğinde halka kalır. Bu halka düz, çapaksız ve Ra 1,6 olmalı; pahlar büyütülmemeli.</li>
   <li><b>İnce et ve bağlama:</b> ${fmt(WALL)} mm ette ayna sıkma kuvveti gövdeyi ovalleştirebilir; ikinci bağlamada geniş/yumuşak çene veya iç destek tapası önerilir.</li>
   <li><b>Port delikleri:</b> diş dibi delikleri (${uniqueTaps.map((p) => `${p.dis} için Ø${fmt(p.t.tapDrill)}`).join(', ')}) doğrudan ØE deliğine açılır, ayrı kanal delmeye gerek yok. Kesişimde çapak oluşur, çapak alma ayrı operasyon olarak planlandı.</li>
   <li><b>Diş frezesi:</b> G 1/2 ve G 3/4 aynı adımda (14 TPI). Kılavuz yerine 14 TPI 55° diş frezesi kullanılırsa iki port tek takımla çekilir.</li>
-  <li><b>Talaş oranı:</b> yaklaşık %${fmt(d.chipPct, 0)}. Prototip için sorun değil; seri üretimde sıcak dövme ham parça (CW617N) + CNC daha ekonomik olur.</li>
+  <li><b>Talaş oranı:</b> yaklaşık %${fmt(d.chipPct, 0)}. Prototip için sorun değil; seri üretimde sıcak dövme ham parça + CNC daha ekonomik olur.</li>
 </ul>
+
+<h2>Dayanım kontrolü <small>el hesabı</small></h2>
+${table(['Durum', 'Gerilme', 'İzin verilen', 'Emniyet'], d.strength.map(([name, s, limit]) => [name, `${fmt(s, 1)} MPa`, `${fmt(limit, 0)} MPa`, `≈ ${fmt(limit / s, 0)} kat`]))}
+<p class="note">Akma için muhafazakâr ${d.YIELD} MPa kabul edildi; kesin değer malzeme sertifikasından alınır. Hesap ince cidarlı boru formülüyle yapıldı, port delikleri çevresindeki gerilme yığılması dahil değildir; bu yüzden ${spec.testBasinci} bar sızdırmazlık testi her parçaya uygulanır. ${fmt(WALL)} mm et basınç ve burulma için yeterlidir; asıl risk boru anahtarının eti ezmesidir (bkz. anahtar yeri).</p>
 
 <h2>4. Ölçüler <small>olculer.json</small></h2>
 ${table(['Harf', 'Değer (mm)', 'Açıklama'], Object.entries(spec.olculer).map(([k, v]) => [`<b>${letter(k)}</b>`, q(fmt(v.deger)), esc(v.aciklama)]))}
@@ -488,25 +508,25 @@ ${table(['Op', 'Tezgah / bağlama', 'İşlem', 'Takım'], [
     ['70', 'Paketleme', 'Diş koruma tapaları/kapakları, parça başı poşet, etiket (parça, rev, adet)', '—'],
   ])}
 
-<h2>7. Takım listesi <small>CW614N için başlangıç değerleri</small></h2>
+<h2>7. Takım listesi <small>${esc(spec.malzemeKisa)} için tahmini başlangıç değerleri</small></h2>
 ${table(['T', 'Takım', 'Kullanım', 'Vc (m/dk)', 'İlerleme'], [
-    ['T01', 'Dış tornalama kateri 35° (VCGT tipi, parlak, pozitif)', 'Kaba + finiş', '250–400', '0,10–0,25 mm/dev'],
-    ['T02', 'Kesme kateri 3 mm', 'Kesme', '150–250', '0,05–0,10 mm/dev'],
-    ['T03', 'Dış diş kateri 55° (Whitworth)', `${[...new Set([spec.uclar.ust.dis, spec.uclar.alt.dis])].join(' / ')} (${TOP.tpi} TPI, adım ${fmt(25.4 / TOP.tpi, 3)})`, '120–200', 'Adım'],
+    ['T01', 'Dış tornalama kateri 35° (VCGT tipi, keskin, talaş kırıcılı)', 'Kaba + finiş', '180–300', '0,10–0,20 mm/dev'],
+    ['T02', 'Kesme kateri 3 mm', 'Kesme', '100–180', '0,05–0,10 mm/dev'],
+    ['T03', 'Dış diş kateri 55° (Whitworth)', `${[...new Set([spec.uclar.ust.dis, spec.uclar.alt.dis])].join(' / ')} (${TOP.tpi} TPI, adım ${fmt(25.4 / TOP.tpi, 3)})`, '80–140', 'Adım'],
     ['T04', 'Punta matkabı 90°', 'Merkezleme', '60–100', '0,05–0,10 mm/dev'],
-    ['T05', 'Matkap Ø25 (ağzı köreltilmiş, 0° talaş açısı)', 'ØE ön delik', '80–150', '0,10–0,20 mm/dev'],
-    ['T06', `İç tornalama bıçağı (Ø${fmt(M.E)} için)`, 'ØE finiş, iç pahlar', '200–300', '0,08–0,15 mm/dev'],
-    ['T07', 'Parmak freze Ø10–12, 3 ağız (pirinç/alüminyum)', 'Boss konturu, port alınları', '150–250', '0,03–0,06 mm/diş'],
-    ['T08', `Matkap Ø${fmt(P1.t.tapDrill)}`, `${P1.dis} diş dibi (alternatif Ø24,5)`, '80–120', '0,10–0,18 mm/dev'],
-    ['T09', `Matkap Ø${fmt(BSP['1/2'].tapDrill)}`, 'G 1/2 diş dibi (alternatif Ø19)', '80–120', '0,10–0,15 mm/dev'],
+    ['T05', 'Matkap Ø25 (ağzı köreltilmiş, 0° talaş açısı)', 'ØE ön delik', '60–100', '0,08–0,15 mm/dev'],
+    ['T06', `İç tornalama bıçağı (Ø${fmt(M.E)} için)`, 'ØE finiş, iç pahlar', '150–220', '0,06–0,12 mm/dev'],
+    ['T07', 'Parmak freze Ø10–12, 3 ağız (pirinç/alüminyum)', 'Boss konturu, port alınları', '100–180', '0,03–0,05 mm/diş'],
+    ['T08', `Matkap Ø${fmt(P1.t.tapDrill)}`, `${P1.dis} diş dibi (alternatif Ø24,5)`, '60–90', '0,08–0,15 mm/dev'],
+    ['T09', `Matkap Ø${fmt(BSP['1/2'].tapDrill)}`, 'G 1/2 diş dibi (alternatif Ø19)', '60–90', '0,08–0,12 mm/dev'],
     ['T10', 'Havşa 90°', 'Port girişleri', '60–100', 'Elle/yavaş'],
-    ['T11', 'Kılavuz G 3/4 ve G 1/2 (ISO 228, HSS-E, düz oluklu) <i>veya</i> diş frezesi 14 TPI 55°', 'Port dişleri', '10–20 / 80–150', 'Adım 1,814'],
+    ['T11', 'Kılavuz G 3/4 ve G 1/2 (ISO 228, HSS-E, düz oluklu) <i>veya</i> diş frezesi 14 TPI 55°', 'Port dişleri', '8–15 / 60–100', 'Adım 1,814'],
   ])}
-<p class="note">Değerler başlangıç içindir; atölye kendi takım ve tezgahına göre ayarlar. Pirinçte matkap ve kılavuzda pozitif talaş açısı yerine 0° (ağzı köreltilmiş) tercih edilir; böylece takım işe çekilmez.</p>
+<p class="note">Değerler başlangıç içindir; atölye kendi takım ve tezgahına göre ayarlar. Pirinçte matkap ve kılavuzda pozitif talaş açısı yerine 0° (ağzı köreltilmiş) tercih edilir; böylece takım işe çekilmez. ${esc(spec.malzemeKisa)} kurşunlu pirince göre uzun talaş ve fazla çapak verebilir: ilerleme düşük tutulur, takım keskin olmalıdır.</p>
 
 <h2>8. Kontrol planı <small>prototipte %100</small></h2>
 ${table(['No', 'Karakteristik', 'Kabul kriteri', 'Yöntem / ekipman', 'Kayıt'], [
-    ['1', 'Malzeme', `${esc(spec.malzeme.split(' (')[0])}, EN 12164`, 'EN 10204 3.1 sertifikası', 'Sertifika'],
+    ['1', 'Malzeme', `${esc(spec.malzemeKisa)}, EN 12164, Pb ≤ %0,2, çinko kaybına dayanıklı (EN ISO 6509)`, 'EN 10204 3.1 sertifikası', 'Sertifika'],
     ['2', 'Toplam boy H', `${q(fmt(H))} · ${esc(spec.genelTolerans)}`, 'Kumpas', 'Ölçüm raporu'],
     ['3', 'Gövde ØD, delik ØE, et', `${q(fmt(M.D))} / ${q(fmt(M.E))} · et ${fmt(WALL)} mm ± 0,2 (öneri)`, 'Kumpas, mikrometre, iç ölçer; et için ultrasonik kalınlık ölçer', 'Ölçüm raporu'],
     ['4', 'Seviye yükseklikleri H1, H2', `${q(fmt(M.H1))} / ${q(fmt(M.H2))} (üst alından)`, 'Yükseklik mihengiri / kumpas', 'Ölçüm raporu'],
@@ -518,7 +538,7 @@ ${table(['No', 'Karakteristik', 'Kabul kriteri', 'Yöntem / ekipman', 'Kayıt'],
     ['10', 'Conta yüzeyi (üst alın)', 'Düz, çapaksız, radyal çizik yok, Ra ≤ 1,6', 'Görsel + pürüzlülük karşılaştırma numunesi', 'Ölçüm raporu'],
     ['11', 'İç kesişim çapakları', 'Çapak ve gevşek talaş yok', 'Görsel (fener / endoskop)', 'Kontrol listesi'],
     ['12', 'Kenar pahları', '0,3–0,5 × 45°, keskin kenar yok', 'Görsel', 'Kontrol listesi'],
-    ['13', 'Sızdırmazlık', 'Test basıncı = 1,5 × işletme basıncı (teyit edilecek), 60 s, kaçak yok', 'Hidrostatik test veya su altında hava testi', 'Test kaydı'],
+    ['13', 'Sızdırmazlık', `${spec.testBasinci} bar (1,5 × ${spec.isletmeBasinci.max} bar), 60 s, kaçak yok`, 'Hidrostatik test veya su altında hava testi', 'Test kaydı'],
     ['14', 'İlk parça muayenesi', 'Tüm karakteristikler', 'Ölçüm tablosu + fotoğraf', 'İlk parça raporu'],
   ])}
 
@@ -526,9 +546,9 @@ ${table(['No', 'Karakteristik', 'Kabul kriteri', 'Yöntem / ekipman', 'Kayıt'],
 <p>Ekteki STEP model ve teknik resme göre ${esc(spec.parca)} (Rev ${spec.rev}) için fiyat rica ediyoruz.</p>
 ${table(['Kalem', 'İstek'], [
     ['Adet', '1, 5 ve 10 adet için ayrı birim fiyat'],
-    ['Malzeme', `${esc(spec.malzeme)}, EN 12164, EN 10204 3.1 sertifikalı · kurşunsuz CW511L için ayrı fiyat`],
+    ['Malzeme', `${esc(spec.malzeme)}, EN 12164, EN 10204 3.1 sertifikalı · Ø${d.bar} çubuk temin edilebiliyor mu belirtin · kurşunsuz CW724R için ayrı fiyat`],
     ['Üretim', 'Seçenek A (çubuktan tek parça). Uygun görürseniz seçenek B (boru + lehimli manşon) için de fiyat'],
-    ['Kalite', `${esc(spec.genelTolerans)} · diş mastar kontrolü (${spec.uclar.ust.dis} halka, ${[...new Set(PORTS.map((p) => p.dis))].join(' ve ')} tampon) · sızdırmazlık testi · ilk parça ölçüm raporu`],
+    ['Kalite', `${esc(spec.genelTolerans)} · diş mastar kontrolü (${spec.uclar.ust.dis} halka, ${[...new Set(PORTS.map((p) => p.dis))].join(' ve ')} tampon) · ${spec.testBasinci} bar sızdırmazlık testi (işletme ${spec.isletmeBasinci.min}–${spec.isletmeBasinci.max} bar) · ilk parça ölçüm raporu`],
     ['Teslim', 'Çapaksız ve temiz; diş koruma tapalı, parça başı poşet, etiketli'],
     ['Teklifte görmek istediklerimiz', 'Birim fiyat, kurulum / programlama bedeli, malzeme, mastar bedeli (mastarlar sizde var mı), test, termin, teklif geçerlilik süresi, ödeme koşulu'],
     ['Not', `Et kalınlığı ${fmt(WALL)} mm kesindir; diğer ölçüler ön değerdir, son ölçülerle teklif güncellenebilir. Sipariş onaylı revizyon üzerinden verilecektir.`],
@@ -584,6 +604,7 @@ async function bustCache() {
   await writeFile(indexPath, html
     .replace(/\?v=[\w-]+/g, `?v=${v}`)
     .replace(/Rev [A-Z]+ taslak/g, `Rev ${spec.rev} taslak`)
+    .replace(/Pirinç [A-Z0-9]+ ·/g, `Pirinç ${spec.malzemeKisa} ·`)
     .replace(/(Teknik çizim · Rev )[A-Z]+/g, `$1${spec.rev}`));
   return v;
 }

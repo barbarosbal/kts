@@ -1,6 +1,6 @@
 # KTS — Kazan Altı Parçası
 
-Pirinç (CW614N) kazan altı parçasının 360° döndürülebilir 3D modeli, teknik çizimi ve fason üretim paketi.
+Pirinç (CW511L) kazan altı parçasının 360° döndürülebilir 3D modeli, teknik çizimi ve fason üretim paketi.
 
 - Canlı model: https://kts.ratel.systems
 - Üretim paketi: https://kts.ratel.systems/uretim/
