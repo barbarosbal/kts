@@ -298,6 +298,39 @@ function olcuTablosu() {
   return s.join('\n');
 }
 
+// Yan görünüşte dış diş: testere dişi kenarlar, eğik diş üstü ve diş dibi çizgileri (1 mm = 4 px).
+// Koniklik gerçekte 2 px'e denk geldiği için görünür olsun diye abartılı çizilir (resim ölçeksiz).
+function threadArt(t, yBody, yFree, conical) {
+  const [cx, half, k] = [1070, 96, 4];
+  const sign = Math.sign(yFree - yBody);
+  const len = Math.abs(yFree - yBody);
+  const pitch = (25.4 / t.tpi) * k;
+  const depth = ((t.major - t.minor) / 2) * k;
+  const yAt = (n) => yBody + sign * n * pitch;
+  const edge = (y) => half - (conical ? (5 * Math.abs(y - yBody)) / len : 0);
+  const left = [[cx - half, yBody]];
+  const right = [[cx + half, yBody]];
+  const crests = [];
+  const roots = [];
+  // Solda diş tepesi tam adımda, sağda yarım adım kayık (helis); serbest uçta pah payı bırakılır
+  for (let n = 0; (n + 1) * pitch <= len - depth - 1; n++) {
+    const [a, b, c] = [yAt(n), yAt(n + 0.5), yAt(n + 1)];
+    left.push([cx - edge(b) + depth, b], [cx - edge(c), c]);
+    right.push([cx + edge(b), b], [cx + edge(c) - depth, c]);
+    crests.push([[cx - edge(a), a], [cx + edge(b), b]]);
+    roots.push([[cx - edge(b) + depth, b], [cx + edge(c) - depth, c]]);
+  }
+  const end = edge(yFree) - depth;
+  const pt = ([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`;
+  const outline = [...left, [cx - end, yFree], [cx + end, yFree], ...right.reverse()].map(pt).join(' L');
+  const lines = (segs) => segs.map(([p, q]) => `M${pt(p)} L${pt(q)}`).join(' ');
+  return [
+    `    <path class="dis" d="M${outline}"/>`,
+    `    <path class="thin" d="${lines(crests)}"/>`,
+    `    <path class="disi" d="${lines(roots)}"/>`,
+  ].join('\n');
+}
+
 async function buildDrawing() {
   const template = await readFile(path.join(ROOT, 'tools', 'cizim-sablon.svg'), 'utf8');
   const vals = {
@@ -316,6 +349,11 @@ async function buildDrawing() {
     onDegerNotu: spec.onayli ? '' : ' (turuncu: ön değer)',
     et: fmt(WALL),
     OLCU_TABLOSU: olcuTablosu(),
+    DIS_UST: threadArt(TOP, 70 + 4 * M.L1, 70, false),
+    DIS_ALT: threadArt(BOT, 498 - 4 * M.L2, 498, BOT_CONICAL),
+    H: fmt(M.H),
+    H1: fmt(M.H1),
+    H2: fmt(M.H2),
     L1: fmt(M.L1),
     L2: fmt(M.L2),
   };

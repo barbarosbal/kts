@@ -21,6 +21,8 @@
       .h{font-size:18px;font-weight:700;fill:#111;letter-spacing:.5px}
       .tt{font-size:11px;fill:#111}
       .ttb{font-size:11px;font-weight:700;fill:#111}
+      .dis{fill:none;stroke:#111;stroke-width:1.5;stroke-linejoin:miter}
+      .disi{fill:none;stroke:#111;stroke-width:.7}
       .q{fill:#c2410c}
     </style>
   </defs>
@@ -98,15 +100,16 @@
     <line class="ctr" x1="930" y1="226" x2="1257" y2="226"/>
     <line class="ctr" x1="930" y1="354" x2="1287" y2="354"/>
 
-    <!-- dış kontur: Ø48 boru, uçlarda 1 1/2" dış diş; P3 ve P2 boss'ları solda -->
-    <path class="vis" d="M974 493.6 V410 H942 V298 H974 V282 H942 V170 H974 V74.4 L978.4 70 H1161.6 L1166 74.4 V493.6 L1161.6 498 H978.4 Z"/>
+    <!-- gövde konturu: Ø48 boru, P3 ve P2 boss'ları solda; dişler aşağıda ayrı çizilir -->
+    <path class="vis" d="M974 418 V410 H942 V298 H974 V282 H942 V170 H974 V150 M1166 150 V418"/>
     <!-- boss–gövde kesişim eğrileri -->
     <path class="vis" d="M974 170 L975 171.8 L978.2 177.5 L983.7 189 L988.1 200.8 L990.6 211.2 L992 226 L990.6 240.8 L988.1 251.2 L983.7 263 L978.2 274.5 L975 280.2 L974 282"/>
     <path class="vis" d="M974 298 L975 299.8 L978.2 305.5 L983.7 317 L988.1 328.8 L990.6 339.2 L992 354 L990.6 368.8 L988.1 379.2 L983.7 391 L978.2 402.5 L975 408.2 L974 410"/>
-    <!-- diş sınırları ve diş dibi çizgileri -->
+    <!-- diş sınırları ve dişler (build.mjs üretir) -->
     <line class="vis" x1="974" y1="150" x2="1166" y2="150"/>
     <line class="vis" x1="974" y1="418" x2="1166" y2="418"/>
-    <path class="thin" d="M980.3 74 V150 M1159.7 74 V150 M980.3 418 V494 M1159.7 418 V494"/>
+{{DIS_UST}}
+{{DIS_ALT}}
     <!-- boydan boya delik -->
     <path class="hid" d="M990 70 V498 M1150 70 V498"/>
     <!-- P3 / P2 diş delikleri -->
@@ -123,15 +126,15 @@
     <line class="dim" x1="1170" y1="418" x2="1227" y2="418"/>
     <line class="dim" x1="1170" y1="498" x2="1317" y2="498"/>
     <line class="dima" x1="1215" y1="70" x2="1215" y2="150"/>
-    <text class="tb q" transform="translate(1207 110) rotate(-90)" text-anchor="middle">L1</text>
+    <text class="tb q" transform="translate(1207 110) rotate(-90)" text-anchor="middle">L1 = {{L1}}</text>
     <line class="dima" x1="1215" y1="418" x2="1215" y2="498"/>
-    <text class="tb q" transform="translate(1207 458) rotate(-90)" text-anchor="middle">L2</text>
+    <text class="tb q" transform="translate(1207 458) rotate(-90)" text-anchor="middle">L2 = {{L2}}</text>
     <line class="dima" x1="1245" y1="70" x2="1245" y2="226"/>
-    <text class="tb q" transform="translate(1237 148) rotate(-90)" text-anchor="middle">H1</text>
+    <text class="tb q" transform="translate(1237 186) rotate(-90)" text-anchor="middle">H1 = {{H1}}</text>
     <line class="dima" x1="1275" y1="70" x2="1275" y2="354"/>
-    <text class="tb q" transform="translate(1267 212) rotate(-90)" text-anchor="middle">H2</text>
+    <text class="tb q" transform="translate(1267 290) rotate(-90)" text-anchor="middle">H2 = {{H2}}</text>
     <line class="dima" x1="1305" y1="70" x2="1305" y2="498"/>
-    <text class="tb q" transform="translate(1297 284) rotate(-90)" text-anchor="middle">H</text>
+    <text class="tb q" transform="translate(1297 284) rotate(-90)" text-anchor="middle">H = {{H}}</text>
 
     <!-- etiketler -->
     <polyline class="lead" points="974,110 958,110"/>
