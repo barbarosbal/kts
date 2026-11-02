@@ -154,7 +154,7 @@ export function kur({ brass }) {
       src: 'kazan-alti-parcasi-taslak.svg',
       alt: 'Kazan altı parçası teknik çizimi: üstten ve yan görünüm, port listesi, notlar',
     },
-    parcalar: [{ obj: part, ayrik: 0 }],
+    parcalar: [{ obj: part }],
     occluder: { r: BODY_R, y0: 0, y1: TOP },
     fit: (tech) => ({ y: TOP / 2, h: (tech ? 0.78 : 0.6) * TOP, w: (tech ? 0.9 : 0.56) * TOP }),
     annotate,

@@ -1,4 +1,4 @@
-// rekor-olculer.json → oynar-rekor-taslak.svg (teknik çizim sayfası)
+// rekor-olculer.json → oynar-rekor-taslak.svg (teknik çizim sayfası) + sökme yolu denetimi
 // Kullanım: cd tools && npm run site
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -17,16 +17,134 @@ const BORE_R = M.E / 2;
 const NECK_R = M.N / 2;
 const COLLAR_R = M.D / 2;
 const HEX_R = M.S / 2;
-const SPIGOT_Y = M.C + 1;
-const FACE_Y = M.C + CONTA.kalinlik;
+const SPIGOT_R = spec.merkezleme.cap / 2;
+const SEAT_Y = M.C + M.K;
+const SPIGOT_Y = SEAT_Y - spec.merkezleme.giris;
+const FACE_Y = SEAT_Y + CONTA.kalinlik;
 const COLLAR_TOP = FACE_Y + M.T;
 const NECK_TOP = M.H - M.L;
 const LIP = M.B - COLLAR_TOP;
+const CH_U = spec.pah.yakaUst;
+const CH_B = spec.pah.yakaAlt;
+const CH_A = spec.pah.agiz;
+
+// Yaka dış çizgisi: x, z
+function collarOutline(n = 24) {
+  const hf = M.F / 2;
+  const rc = M.R;
+  const ang = Math.asin((hf - rc) / (COLLAR_R - rc));
+  const cx = (COLLAR_R - rc) * Math.cos(ang);
+  const quarter = [];
+  for (let i = 0; i <= n; i++) {
+    const a = (i / n) * ang;
+    quarter.push([COLLAR_R * Math.cos(a), COLLAR_R * Math.sin(a)]);
+  }
+  for (let i = 1; i <= n / 2; i++) {
+    const a = ang + ((2 * i) / n) * (Math.PI / 2 - ang);
+    quarter.push([cx + rc * Math.cos(a), hf - rc + rc * Math.sin(a)]);
+  }
+  const m = (sx, sz, list) => list.map(([x, z]) => [sx * x, sz * z]);
+  return [...quarter, ...m(-1, 1, quarter).reverse(), ...m(-1, -1, quarter), ...m(1, -1, quarter).reverse()];
+}
+
+// Nokta yaka dış çizgisinin içinde mi?
+function inCollar(x, z) {
+  if (Math.abs(z) > M.F / 2 || Math.hypot(x, z) > COLLAR_R) return false;
+  const ef = M.F / 2 - M.R;
+  const cx = Math.sqrt((COLLAR_R - M.R) ** 2 - ef ** 2);
+  const [ax, az] = [Math.abs(x), Math.abs(z)];
+  if (az <= ef || ax <= cx) return true;
+  if (Math.atan2(az - ef, ax - cx) < Math.atan2(ef, cx)) return true;
+  return Math.hypot(ax - cx, az - ef) <= M.R;
+}
+
+// ---------------- sökme yolu denetimi ----------------
+// Gövde noktaları bileziğin katı bölgesine girmeden yol tamamlanıyor mu? En küçük boşluğu bulur.
+function bodyPoints() {
+  const pts = [];
+  const circle = (r, y, n = 48) => {
+    for (let i = 0; i < n; i++) {
+      const a = (i / n) * 2 * Math.PI;
+      pts.push([r * Math.cos(a), y, r * Math.sin(a)]);
+    }
+  };
+  for (let y = COLLAR_TOP; y <= NECK_TOP; y += 1) circle(NECK_R, y);
+  for (let y = NECK_TOP; y <= M.H; y += 2) circle(24.2, y);
+  for (let y = SPIGOT_Y; y <= FACE_Y; y += 1) circle(SPIGOT_R, y);
+  const outline = collarOutline();
+  const [fu, fb] = [1 - CH_U / COLLAR_R, 1 - CH_B / COLLAR_R];
+  for (const [x, z] of outline) {
+    pts.push([x, (FACE_Y + COLLAR_TOP) / 2, z], [x, FACE_Y + CH_B, z], [x, COLLAR_TOP - CH_U, z]);
+    pts.push([x * fb, FACE_Y, z * fb], [x * fu, COLLAR_TOP, z * fu]);
+  }
+  for (let x = -COLLAR_R; x <= COLLAR_R; x += 2) {
+    for (let z = -M.F / 2; z <= M.F / 2; z += 2) {
+      if (inCollar(x * 1.1, z * 1.1)) pts.push([x, FACE_Y, z], [x, COLLAR_TOP, z]);
+    }
+  }
+  return pts;
+}
+
+// Nokta, m kadar şişirilmiş bilezik katısının içinde mi?
+function inNut(q, m) {
+  const r = Math.hypot(q[0], q[2]);
+  const y = q[1];
+  if (y < -m || y > M.B + m) return false;
+  if (y >= COLLAR_TOP - m) return r >= M.W / 2 + Math.max(0, y - (M.B - CH_A)) - m;
+  if (y >= M.C - m) return r >= M.G / 2 - m;
+  return r >= BSP.minor / 2 + 0.2 - m;
+}
+
+// Yol boyunca çarpışma; kilitli poz (dokunma) atlanır, son adım gövdenin altındadır
+function blockedAt(m) {
+  const pts = bodyPoints();
+  const way = spec.sokme.yol;
+  for (let i = 1; i < way.length - 1; i++) {
+    const [a, b] = [way[i], way[i + 1]];
+    const steps = Math.ceil(Math.abs(b[0] - a[0]) + Math.abs(b[1] - a[1]) + Math.abs(b[2] - a[2])) * 4 + 1;
+    for (let s = 0; s <= steps; s++) {
+      const [sx, dy, th] = a.map((v, k) => v + ((b[k] - v) * s) / steps);
+      const t = (th * Math.PI) / 180;
+      const [cs, sn] = [Math.cos(t), Math.sin(t)];
+      for (const p of pts) {
+        const X = p[0] - sx;
+        const Y = p[1] - dy - COLLAR_TOP;
+        if (inNut([cs * X + sn * Y, -sn * X + cs * Y + COLLAR_TOP, p[2]], m)) return [sx, dy, th].map((v) => Math.round(v * 10) / 10);
+      }
+    }
+  }
+  return null;
+}
+
+function checkPath() {
+  let worst = 0;
+  for (const m of [0.1, 0.2, 0.3, 0.4, 0.5]) {
+    if (blockedAt(m)) break;
+    worst = m;
+  }
+  return { worst, at: worst ? null : blockedAt(0.05) };
+}
+
+function contactArea() {
+  const d = 0.05;
+  let n = 0;
+  for (let x = -COLLAR_R; x <= COLLAR_R; x += d) {
+    for (let z = -COLLAR_R; z <= COLLAR_R; z += d) {
+      if (Math.hypot(x, z) >= M.W / 2 && Math.hypot(x, z) <= COLLAR_R - CH_U && inCollar(x, z)) n++;
+    }
+  }
+  return n * d * d;
+}
+
+const path0 = checkPath();
+const AREA = Math.round(contactArea());
+if (path0.worst < 0.3) console.warn(`UYARI: sökme yolunda boşluk ${path0.worst} mm${path0.at ? `, poz ${path0.at}` : ''}`);
+console.log(`YOL   en küçük boşluk ${path0.worst} mm · yaka teması ${AREA} mm²`);
 
 // ---------------- kesit ----------------
 const AX = 350;
-const S = 7.5;                             // 1 mm = 7,5 px
-const BASE = 590;
+const S = 6.5;                             // 1 mm = 6,5 px
+const BASE = 572;
 const px = (r, side) => AX + side * S * r;
 const py = (y) => BASE - S * y;
 const poly = (pts, side) => pts.map(([r, y]) => `${px(r, side).toFixed(1)},${py(y).toFixed(1)}`).join(' ');
@@ -59,12 +177,13 @@ const bodyPts = [
   ...outerThread(),
   [NECK_R, NECK_TOP],
   [NECK_R, COLLAR_TOP],
-  [COLLAR_R - 0.5, COLLAR_TOP],
-  [COLLAR_R, COLLAR_TOP - 0.5],
-  [COLLAR_R, FACE_Y + 0.5],
-  [COLLAR_R - 0.5, FACE_Y],
-  [CONTA.ic / 2 - 0.25, FACE_Y],
-  [CONTA.ic / 2 - 0.25, SPIGOT_Y],
+  [COLLAR_R - CH_U, COLLAR_TOP],
+  [COLLAR_R, COLLAR_TOP - CH_U],
+  [COLLAR_R, FACE_Y + CH_B],
+  [COLLAR_R - CH_B, FACE_Y],
+  [SPIGOT_R, FACE_Y],
+  [SPIGOT_R, SPIGOT_Y + 0.5],
+  [SPIGOT_R - 0.5, SPIGOT_Y],
   [BORE_R, SPIGOT_Y],
 ];
 
@@ -74,21 +193,21 @@ const nutPts = [
   [HEX_R, 0.23],
   [HEX_R, M.B - 0.23],
   [HEX_R - 0.4, M.B],
-  [M.W / 2 + 0.4, M.B],
-  [M.W / 2, M.B - 0.4],
+  [M.W / 2 + CH_A, M.B],
+  [M.W / 2, M.B - CH_A],
   [M.W / 2, COLLAR_TOP],
   [M.G / 2, COLLAR_TOP],
   [M.G / 2, M.C],
   ...innerThread(),
 ];
 
-const gasketPts = [[CONTA.ic / 2, M.C], [CONTA.dis / 2, M.C], [CONTA.dis / 2, FACE_Y], [CONTA.ic / 2, FACE_Y]];
+const gasketPts = [[CONTA.ic / 2, SEAT_Y], [CONTA.dis / 2, SEAT_Y], [CONTA.dis / 2, FACE_Y], [CONTA.ic / 2, FACE_Y]];
 
 const section = [-1, 1].map((side) => `
     <polygon class="vis" fill="url(#h1)" points="${poly(bodyPts, side)}"/>
     <polygon class="vis" fill="url(#h2)" points="${poly(nutPts, side)}"/>
     <polygon class="thin" style="fill:#555" points="${poly(gasketPts, side)}"/>
-    <path class="hid" d="M${px(20, side)} ${py(M.C)} V${py(-7)} M${px(BSP.major / 2, side)} ${py(M.C)} V${py(-7)}"/>`).join('');
+    <path class="hid" d="M${px(20, side)} ${py(SEAT_Y)} V${py(-7)} M${px(BSP.major / 2 - 2, side)} ${py(SEAT_Y)} L${px(BSP.major / 2, side)} ${py(SEAT_Y - 2)} V${py(-7)} M${px(20, side)} ${py(SEAT_Y)} H${px(BSP.major / 2 - 2, side)}"/>`).join('');
 
 // ---------------- ölçüler ----------------
 function vdim(x, y0, y1, text) {
@@ -129,19 +248,19 @@ const dims = `
     ${vdim(75, M.B, NECK_TOP, `U = ${M.U}`)}
     ${vdim(75, 0, M.B, `B = ${M.B}`)}
     ${vdim(45, 0, M.H, `H = ${M.H}`)}
-    ${hdim(BORE_R, 150, `ØE = ${M.E}`)}
-    ${hdim(HEX_R, 664, `SW ${M.S}`)}
-    ${note([px(BSP.major / 2, 1), py(44)], 186, `${ust.dis} DIŞ DİŞ`, ust.sizdirmazlik)}
-    ${note([px(NECK_R, 1), py(31)], 252, `BOYUN ÇELTİĞİ ØN = ${M.N}`, 'diş çıkışı · bilezik burada döner')}
-    ${note([px(M.W / 2 + 1, 1), py(25)], 318, `TIRNAK · KALINLIK ${LIP}`, `ağız W = ${fmt(M.W)} × A = ${fmt(M.A)}`)}
-    ${note([px(COLLAR_R, 1), py(19)], 384, `YAKA ØD = ${M.D}`, `T = ${M.T} · iki yan kesik F = ${M.F}`)}
-    ${note([px(CONTA.dis / 2, 1), py(M.C + 1)], 450, 'KLİNGERİT CONTA', `Ø${CONTA.dis} × Ø${CONTA.ic} × ${CONTA.kalinlik}`)}
-    ${note([px(BSP.major / 2, 1), py(6)], 516, `${alt.dis} İÇ DİŞ`, `C = ${M.C} · iç çeltik ØG = ${M.G}`)}`;
+    ${hdim(BORE_R, 165, `ØE = ${M.E}`)}
+    ${hdim(HEX_R, 640, `SW ${M.S}`)}
+    ${note([px(BSP.major / 2, 1), py(47)], 176, `${ust.dis} DIŞ DİŞ`, ust.sizdirmazlik)}
+    ${note([px(NECK_R, 1), py(34)], 242, `BOYUN ÇELTİĞİ ØN = ${M.N}`, `U = ${M.U} · bilezik burada kayar`)}
+    ${note([px(M.W / 2 + 2, 1), py(28)], 308, `AĞIZ ØW = ${M.W}`, `tırnak ${LIP} · üst pah ${CH_A}`)}
+    ${note([px(COLLAR_R, 1), py(22)], 374, `YAKA ØD = ${M.D}`, `T = ${M.T} · F = ${M.F} · alt pah ${CH_B}`)}
+    ${note([px(CONTA.dis / 2, 1), py(SEAT_Y + 1)], 440, 'KLİNGERİT CONTA', `Ø${CONTA.dis} × Ø${CONTA.ic} × ${CONTA.kalinlik}`)}
+    ${note([px(BSP.major / 2, 1), py(6)], 506, `${alt.dis} İÇ DİŞ`, `C = ${M.C} · ØG = ${M.G} · K = ${M.K}`)}`;
 
-// ---------------- bilezik ağzı ve yaka ----------------
-const T = 3.4;                             // 1 mm = 3,4 px
-const NY = 210;
-const NX = 950;
+// ---------------- bilezik ve yaka görünüşleri ----------------
+const T = 3.1;                             // 1 mm = 3,1 px
+const NY = 198;
+const NX = 945;
 const CX = 1225;
 
 const corner = HEX_R / Math.cos(Math.PI / 6);
@@ -149,61 +268,65 @@ const hex = Array.from({ length: 6 }, (_, i) => {
   const a = (i * Math.PI) / 3;
   return `${(NX + T * corner * Math.sin(a)).toFixed(1)},${(NY + T * corner * Math.cos(a)).toFixed(1)}`;
 }).join(' ');
-
-// Bilezik ağzı: dar ölçü X yönünde, tırnaklar sağda solda
-const rA = (T * M.A) / 2;
-const hw = (T * M.W) / 2;
-const zc = Math.sqrt(rA ** 2 - hw ** 2);
-const opening = `M${NX + hw} ${NY - zc} V${NY + zc} A${rA} ${rA} 0 0 1 ${NX - hw} ${NY + zc} V${NY - zc} A${rA} ${rA} 0 0 1 ${NX + hw} ${NY - zc} Z`;
-
-// Yaka: kesikler Z yönünde, kulaklar sağda solda
-const rD = T * COLLAR_R;
-const hf = (T * M.F) / 2;
-const xc = Math.sqrt(rD ** 2 - hf ** 2);
-const collar = `M${CX - xc} ${NY - hf} H${CX + xc} A${rD} ${rD} 0 0 1 ${CX + xc} ${NY + hf} H${CX - xc} A${rD} ${rD} 0 0 1 ${CX - xc} ${NY - hf} Z`;
+const collar = collarOutline().map(([x, z]) => `${(CX + T * x).toFixed(1)},${(NY + T * z).toFixed(1)}`).join(' ');
 
 const views = `
-    <line class="ctr" x1="${NX - 150}" y1="${NY}" x2="${NX + 150}" y2="${NY}"/>
-    <line class="ctr" x1="${NX}" y1="${NY - 155}" x2="${NX}" y2="${NY + 155}"/>
+    <line class="ctr" x1="${NX - 145}" y1="${NY}" x2="${NX + 145}" y2="${NY}"/>
+    <line class="ctr" x1="${NX}" y1="${NY - 150}" x2="${NX}" y2="${NY + 150}"/>
     <polygon class="vis" points="${hex}"/>
     <circle class="thin" cx="${NX}" cy="${NY}" r="${T * (HEX_R - 0.4)}"/>
-    <path class="vis" style="fill:none" d="${opening}"/>
-    <circle class="hid" cx="${NX}" cy="${NY}" r="${(T * BSP.major) / 2}"/>
-    <text class="h" x="${NX}" y="${NY + 182}" text-anchor="middle">BİLEZİK AĞZI</text>
-    <text class="ts" x="${NX}" y="${NY + 202}" text-anchor="middle">üstten · W = ${fmt(M.W)} × A = ${fmt(M.A)}</text>
-    <line class="ctr" x1="${CX - 125}" y1="${NY}" x2="${CX + 125}" y2="${NY}"/>
-    <line class="ctr" x1="${CX}" y1="${NY - 125}" x2="${CX}" y2="${NY + 125}"/>
-    <path class="vis" style="fill:none" d="${collar}"/>
-    <circle class="thin" cx="${CX}" cy="${NY}" r="${T * (CONTA.ic / 2 - 0.25)}"/>
+    <circle class="vis" style="fill:none" cx="${NX}" cy="${NY}" r="${(T * M.W) / 2}"/>
+    <circle class="thin" cx="${NX}" cy="${NY}" r="${T * (M.W / 2 + CH_A)}"/>
+    <circle class="hid" cx="${NX}" cy="${NY}" r="${(T * M.G) / 2}"/>
+    <text class="h" x="${NX}" y="${NY + 176}" text-anchor="middle">BİLEZİK</text>
+    <text class="ts" x="${NX}" y="${NY + 196}" text-anchor="middle">üstten · ØW = ${M.W} · çentik yok</text>
+    <line class="ctr" x1="${CX - 120}" y1="${NY}" x2="${CX + 120}" y2="${NY}"/>
+    <line class="ctr" x1="${CX}" y1="${NY - 120}" x2="${CX}" y2="${NY + 120}"/>
+    <polygon class="vis" style="fill:none" points="${collar}"/>
+    <circle class="thin" cx="${CX}" cy="${NY}" r="${T * SPIGOT_R}"/>
     <circle class="vis" style="fill:none" cx="${CX}" cy="${NY}" r="${T * BORE_R}"/>
     <circle class="hid" cx="${CX}" cy="${NY}" r="${T * NECK_R}"/>
-    <text class="h" x="${CX}" y="${NY + 182}" text-anchor="middle">YAKA</text>
-    <text class="ts" x="${CX}" y="${NY + 202}" text-anchor="middle">alttan · ØD = ${M.D} · kesik F = ${M.F}</text>`;
+    <text class="h" x="${CX}" y="${NY + 176}" text-anchor="middle">YAKA</text>
+    <text class="ts" x="${CX}" y="${NY + 196}" text-anchor="middle">alttan · ØD = ${M.D} · kesik F = ${M.F} · köşe R${M.R}</text>`;
 
-// ---------------- parça listesi ----------------
+// ---------------- parça listesi ve sökme sırası ----------------
 const ROWS = [
   ['1', 'Gövde', '1', `Pirinç ${spec.malzemeKisa}`, `Boy ${M.H - SPIGOT_Y}`],
   ['2', 'Bilezik', '1', `Pirinç ${spec.malzemeKisa}`, `SW ${M.S} × ${M.B}`],
   ['3', 'Conta', '1', 'Klingerit', `Ø${CONTA.dis} × Ø${CONTA.ic} × ${CONTA.kalinlik}`],
 ];
 const COLS = [790, 850, 1000, 1080, 1250];
-const rowY = (i) => 536 + i * 26;
+const rowY = (i) => 450 + i * 24;
 const parts = `
-    <text class="tb" x="780" y="510">PARÇA LİSTESİ</text>
-    <rect x="780" y="518" width="580" height="26" fill="#eee"/>
-    <rect x="780" y="518" width="580" height="104" class="grid"/>
-    <path class="grid" d="M780 544 H1360 M780 570 H1360 M780 596 H1360"/>
-    <path class="grid" d="M840 518 V622 M990 518 V622 M1070 518 V622 M1240 518 V622"/>
+    <text class="tb" x="780" y="426">PARÇA LİSTESİ</text>
+    <rect x="780" y="432" width="580" height="24" fill="#eee"/>
+    <rect x="780" y="432" width="580" height="96" class="grid"/>
+    <path class="grid" d="M780 456 H1360 M780 480 H1360 M780 504 H1360"/>
+    <path class="grid" d="M840 432 V528 M990 432 V528 M1070 432 V528 M1240 432 V528"/>
     <g class="tb" font-size="13">${['No', 'Parça', 'Adet', 'Malzeme', 'Ölçü'].map((t, i) => `<text x="${COLS[i]}" y="${rowY(0)}">${t}</text>`).join('')}</g>
     <g class="tn">${ROWS.map((row, j) => row.map((t, i) => `<text x="${COLS[i]}" y="${rowY(j + 1)}">${t}</text>`).join('')).join('')}</g>`;
+
+const way = spec.sokme.yol;
+const maxShift = Math.max(...way.map((p) => Math.abs(p[0])));
+const maxTilt = Math.max(...way.map((p) => Math.abs(p[2])));
+const STEPS = [
+  'Bilezik Parça 1 dişinden sökülür; merkezleme Parça 1 deliğinden çıkar, conta düşer.',
+  `Bilezik ${maxShift} mm yana kaydırılır: yakanın bir ucu ağız içine girer.`,
+  `Bilezik ${maxTilt}° eğilir, yaka ağızdan sıyrılır.`,
+  'Bilezik aşağı alınır. Üst diş hiç açılmaz. Takma ters sırayla yapılır.',
+];
+const steps = `
+    <text class="tb" x="780" y="560">SÖKME SIRASI</text>
+    ${STEPS.map((t, i) => `<text class="tn" x="780" y="${582 + i * 20}">${i + 1}. ${t}</text>`).join('\n    ')}
+    <text class="ts" x="780" y="674">Yol simülasyonla denendi: en dar yerde ${fmt(path0.worst)} mm boşluk. Parça 1 takılıyken bilezik kaymaz.</text>`;
 
 // ---------------- notlar ----------------
 const NOTES = [
   'Taslak: ölçüler öneridir, onaydan sonra kesinleşir. Kesit orantılı çizildi; değerler esastır.',
-  `Genel tolerans ${spec.genelTolerans}. Bilezik boyunda serbest dönmeli; ağız ile yaka arasında çapta en az 0,5 mm boşluk kalır.`,
+  `Genel tolerans ${spec.genelTolerans}. Ağız ØW ile boyun arasındaki boşluk bileziğin sökülmesi içindir, doldurulmaz.`,
   `Üst uç ${ust.dis} (ISO 7-1, konik 1:16), ${ust.sizdirmazlik}. Bilezik ${alt.dis} (ISO 228-1), Parça 1 üst dişine oturur.`,
-  'Montaj: kesikler hizalıyken yaka bilezik ağzından geçer, 90° çevrilince tırnaklar yakaya basar.',
-  'Sıkılı konumda kesikler hizaya ±15° yaklaşmamalı. Bilezik ve yakaya işaret vurulur; gerekirse conta kalınlığı değiştirilir.',
+  `Sızdırmazlık: conta merkezlemeye oturur, merkezleme Ø${fmt(spec.merkezleme.cap)} Parça 1 deliğine ${spec.merkezleme.giris} mm girer; bilezik her açıda aynı sıkar.`,
+  `Yaka alt pahı ${CH_B} × 45° ve ağız üst pahı ${CH_A} × 45° sökme için gereklidir. Yaka üst pahı ${fmt(CH_U)} geçilmez: tırnak buraya basar.`,
   `Gövde, bilezik takılmadan yaka kesiklerinden SW ${M.F} anahtarla sıkılır. Conta alnı düz, Ra 1,6. Keskin kenarlar 0,3–0,5 × 45°.`,
   `Malzeme: ${spec.malzeme}, EN 10204 3.1 sertifikalı.`,
 ];
@@ -242,17 +365,20 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 990" widt
   <rect x="20" y="20" width="1360" height="950" class="grid" stroke-width="1.6"/>
 
   <g>
-    <line class="ctr" x1="${AX}" y1="164" x2="${AX}" y2="648"/>
+    <line class="ctr" x1="${AX}" y1="178" x2="${AX}" y2="626"/>
     ${section}
     ${dims}
-    <text class="h" x="${AX}" y="716" text-anchor="middle">KESİT</text>
-    <text class="ts" x="${AX}" y="736" text-anchor="middle">kilitli konum: tırnaklar yakaya basar · kesikli çizgi Parça 1 üst ucu</text>
+    <text class="h" x="${AX}" y="700" text-anchor="middle">KESİT</text>
+    <text class="ts" x="${AX}" y="720" text-anchor="middle">sıkılı konum · kesikli çizgi Parça 1 üst ucu</text>
   </g>
 
   <g>${views}
   </g>
 
   <g>${parts}
+  </g>
+
+  <g>${steps}
   </g>
 
   <g>

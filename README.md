@@ -30,5 +30,5 @@ Pirinç (CW511L) parçaların 360° döndürülebilir 3D modelleri, teknik çizi
 - `index.html`, `app.js`, `style.css`: Three.js görüntüleyici (statik site). **Modeller** menüsü modeli seçer. **Ayrık** anahtarı (`A` tuşu) parçaları ayırıp birleştirir, tek parçalı modelde kapalıdır. **Teknik çizim** anahtarı (`T` tuşu) ölçü/etiket katmanını ve çizim panelini açar; `#teknik` ile doğrudan açık gelir.
 - `model-kazan.js`, `model-rekor.js`, `model-montaj.js`: modeller. `ortak.js`: diş yüzeyleri ve teknik katman yardımcıları. Yeni model için dosya, `index.html` içinde import map ve menü satırı, `tools/onbellek.mjs` içinde liste kaydı eklenir.
 - `tools/build.mjs`: üretim paketi üreticisi (STEP için replicad / OpenCascade).
-- `tools/rekor.mjs`: rekor teknik çizimi. `tools/onbellek.mjs`: önbellek etiketleri.
+- `tools/rekor.mjs`: rekor teknik çizimi ve sökme yolu denetimi (`rekor-olculer.json` içindeki `sokme.yol`, boşluk 0,3 mm altına inerse uyarır). `tools/onbellek.mjs`: önbellek etiketleri.
 - `tools/cizim-sablon.svg`: kazan altı parçası teknik resim şablonu. Çizim geometrisi şematiktir (ölçeksiz); port sayısı veya yerleşimi değişirse şablon da elle güncellenir.

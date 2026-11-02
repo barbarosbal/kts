@@ -1,8 +1,8 @@
 {
   "parca": "Oynar Rekor",
-  "rev": "B",
+  "rev": "C",
   "tarih": "02.11.2026",
-  "revNot": "Tel kilit kaldırıldı: kesik yaka bilezik ağzından geçer, 90° çevrilince tutar.",
+  "revNot": "Bilezik ağzı düz yuvarlak: yaka kaydırılıp eğilerek çıkar, conta merkezlemeli.",
   "onayli": false,
   "durum": "Taslak — ölçüler öneri",
   "malzeme": "CW511L (CuZn38As) düşük kurşunlu, çinko kaybına dayanıklı pirinç",
@@ -11,20 +11,21 @@
   "genelTolerans": "ISO 2768-m",
 
   "olculer": {
-    "E": { "deger": 36,   "aciklama": "Boydan boya delik çapı" },
-    "N": { "deger": 44,   "aciklama": "Boyun çapı (çeltik)" },
-    "H": { "deger": 54,   "aciklama": "Toplam boy" },
-    "L": { "deger": 20,   "aciklama": "Üst diş boyu" },
-    "U": { "deger": 6,    "aciklama": "Görünen boyun boyu" },
-    "B": { "deger": 28,   "aciklama": "Bilezik boyu" },
-    "C": { "deger": 14,   "aciklama": "Bilezik iç diş boyu" },
-    "S": { "deger": 70,   "aciklama": "Bilezik altıgen anahtar ağzı" },
-    "D": { "deger": 58,   "aciklama": "Yaka çapı" },
-    "F": { "deger": 46,   "aciklama": "Yaka kesik ölçüsü (anahtar ağzı)" },
-    "T": { "deger": 6,    "aciklama": "Yaka kalınlığı" },
-    "W": { "deger": 46.5, "aciklama": "Bilezik ağzı dar ölçü" },
-    "A": { "deger": 58.6, "aciklama": "Bilezik ağzı geniş ölçü" },
-    "G": { "deger": 59,   "aciklama": "Bilezik iç çeltik çapı" }
+    "E": { "deger": 36, "aciklama": "Boydan boya delik çapı" },
+    "N": { "deger": 44, "aciklama": "Boyun çapı (çeltik)" },
+    "H": { "deger": 57, "aciklama": "Toplam boy" },
+    "L": { "deger": 20, "aciklama": "Üst diş boyu" },
+    "U": { "deger": 6,  "aciklama": "Görünen boyun boyu" },
+    "B": { "deger": 31, "aciklama": "Bilezik boyu" },
+    "C": { "deger": 12, "aciklama": "Bilezik iç diş boyu" },
+    "K": { "deger": 5,  "aciklama": "Parça 1 üst ucunun diş bitiminden içeri girişi" },
+    "S": { "deger": 75, "aciklama": "Bilezik altıgen anahtar ağzı" },
+    "W": { "deger": 55, "aciklama": "Bilezik ağzı çapı (düz yuvarlak)" },
+    "G": { "deger": 68, "aciklama": "Bilezik iç çeltik çapı" },
+    "D": { "deger": 59, "aciklama": "Yaka çapı" },
+    "F": { "deger": 46, "aciklama": "Yaka kesik ölçüsü (anahtar ağzı)" },
+    "R": { "deger": 12, "aciklama": "Yaka kesik köşe yarıçapı" },
+    "T": { "deger": 6,  "aciklama": "Yaka kalınlığı" }
   },
 
   "uclar": {
@@ -32,5 +33,12 @@
     "alt": { "dis": "G 1 1/2", "sizdirmazlik": "klingerit conta (alından)" }
   },
 
-  "conta": { "dis": 45, "ic": 40, "kalinlik": 2 }
+  "conta": { "dis": 45, "ic": 40, "kalinlik": 2 },
+  "merkezleme": { "cap": 39.5, "giris": 3 },
+  "pah": { "yakaUst": 0.5, "yakaAlt": 2, "agiz": 4 },
+
+  "sokme": {
+    "aciklama": "Bileziğin gövdeye göre yolu: yana (mm), eksen (mm), eğim (°). tools/rekor.mjs çarpışma denetler.",
+    "yol": [[0, 0, 0], [0, 1, 0], [-4, 1, 0], [-4, 0, 3], [-4, -1, 6], [-4, -1, 9], [-4, -2, 10.5], [-3.5, -2.5, 13.5], [-1, -3, 16.5], [2, -3.5, 18], [5, -4, 18], [5, -33, 18], [0, -38, 0]]
+  }
 }

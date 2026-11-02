@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
-import { Brush, Evaluator, INTERSECTION, SUBTRACTION } from 'three-bvh-csg';
+import { Brush, Evaluator, INTERSECTION } from 'three-bvh-csg';
 import { BSP, sizeOf, internalThread, threadedEnd, metin } from 'kts/ortak';
 
 // Tüm ölçüler rekor-olculer.json'dan gelir (mm). Parça ekseni +Y, orijin bilezik alt alnının merkezi.
-// Yakanın iki yanı kesiktir (Z), bileziğin ağzı aynı biçimdedir: kesikler hizalıyken yaka ağızdan
-// geçer, bilezik 90° çevrilince tırnaklar (X) yakanın üstüne basar. Model kilitli konumda kurulur.
+// Bilezik ağzı düz yuvarlaktır, yakanın iki yanı kesiktir. Parça 1 sökülünce bilezik yana kayar,
+// eğilir ve yaka ağızdan sıyrılır; bu yol olculer'deki sokme.yol, tools/rekor.mjs ile denetlenir.
 export const SPEC = await fetch(`rekor-olculer.json${new URL(import.meta.url).search}`).then((r) => r.json());
 const M = Object.fromEntries(Object.entries(SPEC.olculer).map(([k, v]) => [k, v.deger]));
 
@@ -16,13 +16,15 @@ const BORE_R = M.E / 2;
 const NECK_R = M.N / 2;
 const COLLAR_R = M.D / 2;
 const HEX_R = M.S / 2;
-const SPIGOT_Y = M.C + 1;                  // conta merkezleme çıkıntısı
-const FACE_Y = M.C + CONTA.kalinlik;       // gövde conta alnı
+const SPIGOT_R = SPEC.merkezleme.cap / 2;
+const SEAT_Y_ = M.C + M.K;                 // Parça 1 üst alnı
+const SPIGOT_Y = SEAT_Y_ - SPEC.merkezleme.giris;
+const FACE_Y = SEAT_Y_ + CONTA.kalinlik;   // gövde conta alnı
 const COLLAR_TOP = FACE_Y + M.T;           // bilezik tırnağı buraya basar
 const NECK_TOP = M.H - M.L;                // diş başlangıcı
 
 export const HEIGHT = M.H;
-export const SEAT_Y = M.C;                 // conta alt yüzü: Parça 1'in üst alnı buraya gelir
+export const SEAT_Y = SEAT_Y_;
 
 const lathe = (pts) => new THREE.LatheGeometry(pts.map(([r, y]) => new THREE.Vector2(r, y)), 192);
 const creased = (geo) => toCreasedNormals(geo, THREE.MathUtils.degToRad(30));
@@ -34,34 +36,60 @@ function evaluator() {
   return ev;
 }
 
-// Gövde (diş hariç): conta alnı + yaka + boyun çeltiği − yakanın iki yanı
+// Yaka dış çizgisi (üstten): daire, iki düz kesik (Z), köşeler yuvarlatılmış
+function collarOutline() {
+  const R = COLLAR_R;
+  const hf = M.F / 2;
+  const rc = M.R;
+  const ang = Math.asin((hf - rc) / (R - rc));
+  const cx = (R - rc) * Math.cos(ang);
+  const quarter = [];
+  for (let i = 0; i <= 28; i++) {
+    const a = (i / 28) * ang;
+    quarter.push([R * Math.cos(a), R * Math.sin(a)]);
+  }
+  for (let i = 1; i <= 14; i++) {
+    const a = ang + (i / 14) * (Math.PI / 2 - ang);
+    quarter.push([cx + rc * Math.cos(a), hf - rc + rc * Math.sin(a)]);
+  }
+  const mirrored = (sx, sz, list) => list.map(([x, z]) => [sx * x, sz * z]);
+  return [
+    ...quarter,
+    ...mirrored(-1, 1, quarter).reverse(),
+    ...mirrored(-1, -1, quarter),
+    ...mirrored(1, -1, quarter).reverse(),
+  ].map(([x, z]) => new THREE.Vector2(x, z));
+}
+
+// Gövde (diş hariç): merkezleme + conta alnı + yaka + boyun ∩ yaka dış çizgisi
 function buildBody() {
   const ev = evaluator();
-  const spigot = CONTA.ic / 2 - 0.25;
-  let body = new Brush(lathe([
+  const { yakaUst, yakaAlt } = SPEC.pah;
+  const ring = new Brush(lathe([
     [BORE_R, SPIGOT_Y],
-    [spigot, SPIGOT_Y],
-    [spigot, FACE_Y],
-    [COLLAR_R - 0.5, FACE_Y],
-    [COLLAR_R, FACE_Y + 0.5],
-    [COLLAR_R, COLLAR_TOP - 0.5],
-    [COLLAR_R - 0.5, COLLAR_TOP],
+    [SPIGOT_R - 0.5, SPIGOT_Y],
+    [SPIGOT_R, SPIGOT_Y + 0.5],
+    [SPIGOT_R, FACE_Y],
+    [COLLAR_R - yakaAlt, FACE_Y],
+    [COLLAR_R, FACE_Y + yakaAlt],
+    [COLLAR_R, COLLAR_TOP - yakaUst],
+    [COLLAR_R - yakaUst, COLLAR_TOP],
     [NECK_R, COLLAR_TOP],
     [NECK_R, NECK_TOP],
     [BORE_R, NECK_TOP],
     [BORE_R, SPIGOT_Y],
   ]));
-  body.updateMatrixWorld();
-  for (const s of [1, -1]) {
-    const box = new Brush(new THREE.BoxGeometry(80, M.T + 2, 20));
-    box.position.set(0, FACE_Y + M.T / 2, s * (M.F / 2 + 10));
-    box.updateMatrixWorld();
-    body = ev.evaluate(body, box, SUBTRACTION);
-  }
-  return creased(body.geometry);
+  ring.updateMatrixWorld();
+  const prism = new THREE.ExtrudeGeometry(new THREE.Shape(collarOutline()), { depth: M.H + 4, bevelEnabled: false, curveSegments: 1 })
+    .rotateX(-Math.PI / 2)
+    .translate(0, -2, 0);
+  prism.deleteAttribute('uv');
+  const cut = new Brush(prism);
+  cut.updateMatrixWorld();
+  return creased(ev.evaluate(ring, cut, INTERSECTION).geometry);
 }
 
-// Bilezik: pahlı halka ∩ altıgen − ağzın iki yanı (kalanlar tırnak)
+// Bilezik: düz yuvarlak ağızlı pahlı halka ∩ altıgen
 function buildNut() {
   const ev = evaluator();
   const corner = HEX_R / Math.cos(Math.PI / 6);
@@ -76,8 +104,8 @@ function buildNut() {
     [rOut, ch],
     [rOut, M.B - ch],
     [rFace, M.B],
-    [rW + 0.4, M.B],
-    [rW, M.B - 0.4],
+    [rW + SPEC.pah.agiz, M.B],
+    [rW, M.B - SPEC.pah.agiz],
     [rW, COLLAR_TOP],
     [M.G / 2, COLLAR_TOP],
     [M.G / 2, M.C],
@@ -88,23 +116,51 @@ function buildNut() {
   ring.updateMatrixWorld();
   const hex = new Brush(new THREE.CylinderGeometry(corner, corner, M.B + 2, 6).translate(0, M.B / 2, 0));
   hex.updateMatrixWorld();
-  let nut = ev.evaluate(ring, hex, INTERSECTION);
-
-  const h = M.B - COLLAR_TOP + 2;
-  const disk = new Brush(new THREE.CylinderGeometry(M.A / 2, M.A / 2, h, 128).translate(0, COLLAR_TOP - 1 + h / 2, 0));
-  disk.updateMatrixWorld();
-  const band = new Brush(new THREE.BoxGeometry(M.W, h + 2, 80).translate(0, COLLAR_TOP - 1 + h / 2, 0));
-  band.updateMatrixWorld();
-  nut = ev.evaluate(nut, ev.evaluate(disk, band, INTERSECTION), SUBTRACTION);
-  return creased(nut.geometry);
+  return creased(ev.evaluate(ring, hex, INTERSECTION).geometry);
 }
 
-export function parcaEtiketleri(a, ofset, tasima = 0) {
-  const y = (v, k) => tasima + v + ofset[k];
-  a.callout([0, y(M.H - 8, 'govde'), UST.major / 2], [-14, y(M.H + 4, 'govde'), 50], 'Gövde', `${SPEC.uclar.ust.dis} · ${SPEC.malzemeKisa}`);
-  a.callout([COLLAR_R, y(FACE_Y + M.T / 2, 'govde'), 0], [56, y(FACE_Y + 4, 'govde'), 8], `Yaka Ø${M.D}`, `Kesik ${M.F} · anahtar yeri`);
-  a.callout([0, y(M.B - 6, 'bilezik'), HEX_R], [-14, y(M.B - 2, 'bilezik'), 56], `Bilezik SW ${M.S}`, `${SPEC.uclar.alt.dis} iç diş`);
-  a.callout([CONTA.dis / 2, y(M.C + 1, 'conta'), 0], [52, y(M.C - 12, 'conta'), 8], 'Klingerit conta', `Ø${CONTA.dis} × Ø${CONTA.ic} × ${CONTA.kalinlik}`);
+// Sökme yolu boyunca poz; t ∈ [0, 1], yol uzunluğuna göre eşit hızda
+const YOL = SPEC.sokme.yol;
+const YOL_BOY = YOL.slice(1).reduce((list, p, i) => {
+  const q = YOL[i];
+  list.push(list[i] + Math.abs(p[0] - q[0]) + Math.abs(p[1] - q[1]) + Math.abs(p[2] - q[2]) * 0.4);
+  return list;
+}, [0]);
+
+function yolPozu(t) {
+  const s = t * YOL_BOY.at(-1);
+  let i = 0;
+  while (i < YOL.length - 2 && s > YOL_BOY[i + 1]) i++;
+  const u = (s - YOL_BOY[i]) / (YOL_BOY[i + 1] - YOL_BOY[i]);
+  return YOL[i].map((v, k) => v + (YOL[i + 1][k] - v) * u);
+}
+
+// Bileziği gövdeye göre poza koyar; eğim tırnak hizasından, Z ekseni çevresinde
+function bilezikKoy(nut, [sx, dy, th], taban, spin = 0) {
+  const a = THREE.MathUtils.degToRad(th);
+  nut.rotation.set(0, spin, a, 'ZYX');
+  nut.position.set(sx + Math.sin(a) * COLLAR_TOP, taban + dy + COLLAR_TOP * (1 - Math.cos(a)), 0);
+}
+
+const clamp = (x) => Math.min(1, Math.max(0, x));
+
+export function montajPozu({ govde, bilezik, conta }, e, taban, opt) {
+  const { gomulu = 0, kaldir = 0, ayir, contaKay, tur = 0, baslangic = 0.25 } = opt;
+  const a = clamp(e / baslangic);
+  const u = clamp((e - baslangic) / (1 - baslangic));
+  const lift = kaldir * a;
+  conta.position.y = taban + contaKay * a;
+  govde.position.y = taban + lift + ayir * u + gomulu;
+  bilezikKoy(bilezik, yolPozu(u), taban + lift + ayir * u + gomulu, tur * 2 * Math.PI * a);
+}
+
+export function parcaEtiketleri(a, konum) {
+  const { ust, alt } = SPEC.uclar;
+  const g = konum.govde;
+  a.callout([0, g + M.H - 8, UST.major / 2], [-14, g + M.H + 4, 50], 'Gövde', `${ust.dis} · ${SPEC.malzemeKisa}`);
+  a.callout([COLLAR_R, g + FACE_Y + M.T / 2, 0], [58, g + FACE_Y + 4, 8], `Yaka Ø${M.D}`, `Kesik ${M.F} · anahtar yeri`);
+  a.callout([0, konum.bilezik + M.B - 6, HEX_R], [-14, konum.bilezik + M.B - 2, 60], `Bilezik SW ${M.S}`, `${alt.dis} iç diş · ağız Ø${M.W}`);
+  a.callout([CONTA.dis / 2, konum.conta + M.C + 1, 0], [56, konum.conta + M.C - 10, 8], 'Klingerit conta', `Ø${CONTA.dis} × Ø${CONTA.ic} × ${CONTA.kalinlik}`);
 }
 
 function annotate(a) {
@@ -125,12 +181,12 @@ function annotate(a) {
   dim(x1, 0, M.H, 'H');
 
   a.callout([-rT * 0.7, M.H - 8, rT * 0.7], [-46, M.H + 10, 12], `${ust.dis} dış diş`, `Üst uç · ${ust.sizdirmazlik}`);
-  a.callout([-HEX_R, M.B / 2, 0], [-66, M.B / 2 + 6, 8], `Bilezik SW ${M.S}`, 'Kesik ağız · 90° çevrilip çıkar');
-  a.callout([0, 1, ALT.major / 2 + 3], [-10, -16, 50], `${alt.dis} iç diş`, `Alt uç · ${alt.sizdirmazlik}`);
+  a.callout([-HEX_R, M.B / 2, 0], [-70, M.B / 2 + 6, 8], `Bilezik SW ${M.S}`, `Ağız düz yuvarlak Ø${M.W}`);
+  a.callout([0, 1, ALT.major / 2 + 3], [-10, -16, 54], `${alt.dis} iç diş`, `Alt uç · ${alt.sizdirmazlik}`);
 }
 
-// Ayrık görünümde her parçanın eksen boyunca kayması
-const AYRIK = { govde: 40, bilezik: 16, conta: -13 };
+// Ayrık görünüm: conta aşağı iner, gövde yükselirken bilezik sökme yolunu izler
+const POZ = { taban: 0, ayir: 56, contaKay: -M.C - M.K + 1 };
 
 export function kur({ brass, conta }) {
   const govde = new THREE.Group();
@@ -144,12 +200,15 @@ export function kur({ brass, conta }) {
   bilezik.add(dis);
 
   const contaMesh = new THREE.Mesh(creased(lathe([
-    [CONTA.ic / 2, M.C],
-    [CONTA.dis / 2, M.C],
+    [CONTA.ic / 2, SEAT_Y_],
+    [CONTA.dis / 2, SEAT_Y_],
     [CONTA.dis / 2, FACE_Y],
     [CONTA.ic / 2, FACE_Y],
-    [CONTA.ic / 2, M.C],
+    [CONTA.ic / 2, SEAT_Y_],
   ])), conta);
+
+  const parts = { govde, bilezik, conta: contaMesh };
+  const son = YOL.at(-1)[1] + POZ.ayir;
 
   return {
     ad: SPEC.parca,
@@ -158,20 +217,17 @@ export function kur({ brass, conta }) {
     paket: null,
     cizim: {
       src: 'oynar-rekor-taslak.svg',
-      alt: 'Oynar rekor teknik çizimi: kesit, bilezik ağzı ve yaka görünüşleri, parça listesi, notlar',
+      alt: 'Oynar rekor teknik çizimi: kesit, bilezik ve yaka görünüşleri, parça listesi, sökme sırası',
     },
-    parcalar: [
-      { ad: 'govde', obj: govde, ayrik: AYRIK.govde },
-      { ad: 'bilezik', obj: bilezik, ayrik: AYRIK.bilezik, donus: 0.25 },
-      { ad: 'conta', obj: contaMesh, ayrik: AYRIK.conta },
-    ],
-    gecikme: 0.35,
+    parts,
+    parcalar: [{ obj: govde }, { obj: bilezik }, { obj: contaMesh }],
+    ayrikla: (e) => montajPozu(parts, e, POZ.taban, POZ),
     occluder: { r: HEX_R, y0: 0, y1: M.B },
-    golge: 120,
+    golge: 130,
     fit: (tech, ayrik) => (ayrik
-      ? { y: 47, h: tech ? 84 : 76, w: tech ? 110 : 66 }
-      : { y: M.H / 2, h: tech ? 66 : 52, w: tech ? 112 : 66 }),
+      ? { y: 57, h: tech ? 92 : 84, w: tech ? 114 : 70 }
+      : { y: M.H / 2, h: tech ? 70 : 56, w: tech ? 118 : 72 }),
     annotate,
-    annotateAyrik: (a) => parcaEtiketleri(a, AYRIK),
+    annotateAyrik: (a) => parcaEtiketleri(a, { govde: POZ.ayir, bilezik: son, conta: POZ.contaKay }),
   };
 }

@@ -199,21 +199,14 @@ techBtn.addEventListener('click', () => setTech(!tech));
 let burst = null;
 let burstE = 0;
 
-// gecikme: önce kilit dönüşü, sonra eksen boyunca ayrılma
 function applyBurst(e) {
   burstE = e;
-  const a = model.gecikme ?? 0;
-  const slide = Math.max(0, (e - a) / (1 - a));
-  const turn = a ? Math.min(1, e / a) : e;
-  for (const p of model.parcalar) {
-    p.obj.position.y = p.y0 + p.ayrik * slide;
-    p.obj.rotation.y = (p.donus ?? 0) * 2 * Math.PI * turn;
-  }
+  model.ayrikla(e);
 }
 
 function stepBurst(now) {
-  const t = Math.min(1, (now - burst.t0) / 1300);
-  const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const t = Math.min(1, (now - burst.t0) / 3200);
+  const e = t * t * (3 - 2 * t);
   applyBurst(lerp(burst.from, burst.to, e));
   if (t === 1) burst = null;
 }
@@ -259,7 +252,7 @@ function fillPage() {
   img.src = src;
   img.alt = model.cizim.alt;
 
-  const separable = model.parcalar.length > 1;
+  const separable = Boolean(model.ayrikla);
   splitBtn.disabled = !separable;
   splitBtn.title = separable ? 'Parçaları ayır (A)' : 'Tek parça';
 }
@@ -270,10 +263,8 @@ try {
     brass: new THREE.MeshStandardMaterial({ color: 0xd8b868, metalness: 1, roughness: 0.3 }),
     conta: new THREE.MeshStandardMaterial({ color: 0x55665c, metalness: 0, roughness: 0.85 }),
   });
-  for (const p of model.parcalar) {
-    p.y0 = p.obj.position.y;
-    scene.add(p.obj);
-  }
+  for (const p of model.parcalar) scene.add(p.obj);
+  model.ayrikla?.(0);
   scene.add(contactShadow(model.golge ?? 150));
   fillPage();
 
