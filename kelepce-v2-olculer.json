@@ -1,0 +1,85 @@
+{
+  "parca": "Kelepçe Sıkma Ucu v2",
+  "rev": "A",
+  "tarih": "02.11.2026",
+  "revNot": "İlk taslak: v1 Rev B kafa ve sapı, rulmanlı döner kovan. Turuncu: varsayım.",
+  "onayli": false,
+  "durum": "Kelepçe ölçüsü bekliyor",
+  "malzeme": "42CrMo4 (1.7225) ıslah çeliği",
+  "malzemeKisa": "42CrMo4",
+  "sertlik": "44–48 HRC",
+  "yuzey": "kumlama + siyah oksit",
+  "adet": "1–3 (prototip, fason)",
+  "genelTolerans": "ISO 2768-m",
+
+  "olculer": {
+    "H": { "deger": 120,  "aciklama": "Toplam boy" },
+    "D": { "deger": 32,   "aciklama": "Kafa çapı" },
+    "A": { "deger": 23,   "aciklama": "Ağız açıklığı, en az" },
+    "C": { "deger": 16,   "aciklama": "Tırnak boyu", "varsayim": true },
+    "U": { "deger": 3.5,  "aciklama": "Tırnak kalınlığı" },
+    "V": { "deger": 10,   "aciklama": "Tırnak eni", "varsayim": true },
+    "W": { "deger": 21,   "aciklama": "Alın yuvası çapı" },
+    "Y": { "deger": 2,    "aciklama": "Alın yuvası derinliği" },
+    "P": { "deger": 15,   "aciklama": "Orta cep çapı", "varsayim": true },
+    "Q": { "deger": 7,    "aciklama": "Orta cep derinliği, alından", "varsayim": true },
+    "J": { "deger": 4,    "aciklama": "Orta delik çapı" },
+    "S": { "deger": 10,   "aciklama": "SDS-Plus sap çapı" },
+    "L": { "deger": 40,   "aciklama": "SDS-Plus sap boyu (takma boyu)" },
+    "T": { "deger": 6,    "aciklama": "Sap bitiminden yatak yerine geçiş boyu" },
+    "N": { "deger": 9.5,  "aciklama": "Boyun çapı" },
+    "Z": { "deger": 13,   "aciklama": "Halka çapı" },
+    "K": { "deger": 44,   "aciklama": "Kovan boyu (tutma boyu)" },
+    "E": { "deger": 42,   "aciklama": "Kovan dış çapı, tırtıllı" },
+    "F": { "deger": 48,   "aciklama": "Siper çapı" }
+  },
+
+  "sds": {
+    "aciklama": "Kanal ölçüleri görselden oranlandı: gerçek bir SDS-Plus uçtan alınıp burada güncellenecek.",
+    "acik": { "en": 3.5, "derinlik": 2.5, "boy": 33, "cikisR": 8 },
+    "kilit": { "en": 5, "derinlik": 2, "bas": 6, "son": 30 }
+  },
+
+  "kavrama": {
+    "aciklama": "Üç ayaklı mandren çeneleri bu altıgene oturur. Köşeler sap çapında kalır, sap SDS mandrene girer.",
+    "sw": 8.7, "bas": 20.5, "son": 40.5
+  },
+
+  "yatak": {
+    "aciklama": "Mil yatak yeri: rulman iç bilezikleri dayama omzu ile segman arasında kalır.",
+    "cap": 20, "tolerans": "h6", "pah": 0.5,
+    "omuzCap": 22, "omuzBoy": 1
+  },
+
+  "rulman": {
+    "kod": "6804-2RS", "adet": 2,
+    "d": 20, "D": 32, "B": 7, "r": 0.3,
+    "aciklama": "Sabit bilyalı, iki yanı kauçuk keçeli. Bilezik ve bilye ölçüleri yalnız çizim içindir.",
+    "icBilezik": 23.4, "disBilezik": 28.6, "bilye": 3.5
+  },
+
+  "segman": {
+    "standart": "DIN 471", "olcu": "20 × 1,2",
+    "kalinlik": 1.2, "kanalCap": 19, "kanalEn": 1.3, "kenar": 1.6, "bosluk": 0.1,
+    "kulak": 4, "sirt": 2.6, "delik": 2
+  },
+
+  "kovan": {
+    "malzeme": "EN AW-6082 T6 alüminyum",
+    "malzemeKisa": "Al 6082-T6",
+    "yuzey": "siyah eloksal",
+    "aciklama": "Elde serbest döner; iki rulmanı ortadaki iç omuz ayırır. Ön ucundaki siper eli dönen kafadan uzak tutar.",
+    "yatakTolerans": "K7",
+    "icCap": 27,
+    "siper": 3,
+    "kavis": 1.5,
+    "pah": 1.5,
+    "tirtil": { "tip": "RGE 30°", "adim": 1.2, "derinlik": 0.45, "bas": 2.5, "bosluk": 1 }
+  },
+
+  "halka": { "konum": 2, "kalinlik": 2 },
+  "onKanal": { "konum": 3, "derinlik": 0.6 },
+  "pah": { "sap": 1, "govde": 1, "alin": 0.5, "halka": 0.3, "uc": { "ic": 1.5, "dis": 1, "yan": 2 } },
+
+  "ayrik": { "mil": 125, "onRulman": 16, "arkaRulman": -20, "segman": -40 }
+}

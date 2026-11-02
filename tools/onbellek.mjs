@@ -7,9 +7,9 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const FILES = [
-  'app.js', 'ortak.js', 'model-kazan.js', 'model-rekor.js', 'model-kelepce.js', 'style.css',
-  'olculer.json', 'rekor-olculer.json', 'kelepce-olculer.json',
-  'kazan-alti-parcasi-taslak.svg', 'oynar-rekor-taslak.svg', 'kelepce-ucu-taslak.svg',
+  'app.js', 'ortak.js', 'model-kazan.js', 'model-rekor.js', 'kelepce-ortak.js', 'model-kelepce.js', 'model-kelepce-v2.js',
+  'style.css', 'olculer.json', 'rekor-olculer.json', 'kelepce-olculer.json', 'kelepce-v2-olculer.json',
+  'kazan-alti-parcasi-taslak.svg', 'oynar-rekor-taslak.svg', 'kelepce-ucu-taslak.svg', 'kelepce-ucu-v2-taslak.svg',
 ];
 
 const h = createHash('sha1');

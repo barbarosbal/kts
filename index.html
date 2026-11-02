@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>KTS · Ratel Systems</title>
-  <meta name="description" content="Pirinç kazan altı parçası, oynar rekor ve kelepçe sıkma ucu: 360° döndürülebilir 3D model ve teknik çizim.">
+  <meta name="description" content="Pirinç kazan altı parçası, oynar rekor ve kelepçe sıkma uçları (v1, döner kovanlı v2): 360° döndürülebilir 3D model ve teknik çizim.">
   <meta name="theme-color" content="#101216">
   <link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
-  <link rel="stylesheet" href="style.css?v=51d5e24b">
+  <link rel="stylesheet" href="style.css?v=9d187d09">
   <script type="importmap">
   {
     "imports": {
@@ -15,10 +15,12 @@
       "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
       "three-mesh-bvh": "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.9.8/build/index.module.js",
       "three-bvh-csg": "https://cdn.jsdelivr.net/npm/three-bvh-csg@0.0.18/build/index.module.js",
-      "kts/ortak": "./ortak.js?v=51d5e24b",
-      "kts/kazan": "./model-kazan.js?v=51d5e24b",
-      "kts/rekor": "./model-rekor.js?v=51d5e24b",
-      "kts/kelepce": "./model-kelepce.js?v=51d5e24b"
+      "kts/ortak": "./ortak.js?v=9d187d09",
+      "kts/kazan": "./model-kazan.js?v=9d187d09",
+      "kts/rekor": "./model-rekor.js?v=9d187d09",
+      "kts/kelepce-ortak": "./kelepce-ortak.js?v=9d187d09",
+      "kts/kelepce": "./model-kelepce.js?v=9d187d09",
+      "kts/kelepce-v2": "./model-kelepce-v2.js?v=9d187d09"
     }
   }
   </script>
@@ -39,6 +41,7 @@
               <a href="?model=kazan" data-model="kazan"><b>Kazan Altı Parçası</b><span>Gövde, üç port</span></a>
               <a href="?model=rekor" data-model="rekor"><b>Oynar Rekor</b><span>Altıgen bilezik, kesik yaka</span></a>
               <a href="?model=kelepce" data-model="kelepce"><b>Kelepçe Sıkma Ucu</b><span>SDS-Plus + altıgen sap, iki tırnak</span></a>
+              <a href="?model=kelepce-v2" data-model="kelepce-v2"><b>Kelepçe Sıkma Ucu v2</b><span>Rulmanlı döner kovan, elle destek</span></a>
             </nav>
           </details>
           <a id="pkg" class="pkg" href="uretim/" hidden>Üretim paketi →</a>
@@ -78,6 +81,6 @@
       </div>
     </aside>
   </main>
-  <script type="module" src="app.js?v=51d5e24b"></script>
+  <script type="module" src="app.js?v=9d187d09"></script>
 </body>
 </html>

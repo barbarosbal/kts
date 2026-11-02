@@ -1,0 +1,329 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 990" width="1400" height="990" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0,1.5 L10,5 L0,8.5 z" fill="#111"/>
+    </marker>
+    <pattern id="h1" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="9" height="9" fill="#fff"/><line x1="0" y1="0" x2="0" y2="9" stroke="#111" stroke-width=".8"/></pattern>
+    <pattern id="h2" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="7" height="7" fill="#fff"/><line x1="0" y1="0" x2="0" y2="7" stroke="#111" stroke-width=".8"/></pattern>
+    <pattern id="h3" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="4" height="4" fill="#fff"/><line x1="0" y1="0" x2="0" y2="4" stroke="#111" stroke-width=".7"/></pattern>
+    <pattern id="kn" width="14" height="8.08" patternUnits="userSpaceOnUse"><path d="M0 0 L14 8.08 M0 8.08 L14 0" stroke="#111" stroke-width=".6" fill="none"/></pattern>
+    <style>
+      .vis{stroke:#111;stroke-width:2.2;stroke-linejoin:round}
+      polygon.vis:not([fill]){fill:#fff}
+      .thin{fill:none;stroke:#111;stroke-width:1}
+      .hid{fill:none;stroke:#111;stroke-width:1.2;stroke-dasharray:7 4}
+      .ctr{fill:none;stroke:#555;stroke-width:0.9;stroke-dasharray:22 4 3 4}
+      .dim{fill:none;stroke:#111;stroke-width:0.9}
+      .dima{fill:none;stroke:#111;stroke-width:0.9;marker-start:url(#arr);marker-end:url(#arr)}
+      .lead{fill:none;stroke:#111;stroke-width:0.9;marker-start:url(#arr)}
+      .grid{fill:none;stroke:#111;stroke-width:1}
+      .t{font-size:14px;fill:#111}
+      .tb{font-size:14px;font-weight:700;fill:#111}
+      .ts{font-size:12px;fill:#333}
+      .tn{font-size:13px;fill:#111}
+      .tl{font-size:10px;fill:#555;letter-spacing:.4px}
+      .h{font-size:18px;font-weight:700;fill:#111;letter-spacing:.5px}
+      .q{fill:#c2410c}
+      .bal{fill:#fff;stroke:#111;stroke-width:1.2}
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="990" fill="#fff"/>
+  <rect x="20" y="20" width="1360" height="950" class="grid" stroke-width="1.6"/>
+
+  <g>
+    <line class="ctr" x1="70" y1="214" x2="646" y2="214"/>
+    <polygon class="vis" fill="url(#h1)" points="96.0,214.0 96.0,196.4 99.5,192.0 122.4,192.0 124.0,195.1 125.5,196.9 127.1,198.3 128.6,199.2 130.2,199.9 131.8,200.4 133.3,200.7 134.9,200.8 215.5,200.8 217.1,200.7 218.6,200.4 220.2,199.9 221.8,199.2 223.3,198.3 224.9,196.9 226.4,195.1 228.0,192.0 272.0,192.0 273.1,193.1 280.8,193.1 280.8,186.7 282.1,185.4 288.3,185.4 289.6,186.7 289.6,193.1 298.4,193.1 298.4,172.2 300.6,170.0 305.4,170.0 305.4,172.2 311.2,172.2 311.2,170.0 505.2,170.0 505.2,165.6 509.6,165.6 509.6,148.0 514.0,143.6 537.8,143.6 540.4,146.2 540.4,148.0 619.6,148.0 624.0,152.4 624.0,156.8 617.4,163.4 553.6,163.4 553.6,167.8 544.8,167.8 544.8,181.0 522.8,181.0 522.8,205.2 509.6,205.2 504.3,214.0"/>
+    <polygon class="vis" fill="url(#h2)" points="311.6,141.4 311.6,128.2 318.2,121.6 485.4,121.6 487.1,121.4 488.7,120.7 490.1,119.7 491.1,118.3 491.8,116.7 492.0,115.0 492.0,111.9 492.1,111.0 492.5,110.2 493.0,109.4 493.8,108.9 494.6,108.5 495.5,108.4 501.7,108.4 502.6,108.5 503.4,108.9 504.2,109.4 504.7,110.2 505.1,111.0 505.2,111.9 505.2,141.4 503.0,143.6 474.4,143.6 474.4,154.6 342.4,154.6 342.4,143.6 313.8,143.6"/>
+    
+    <polygon class="vis" fill="url(#h3)" points="311.6,170.0 311.6,162.5 342.4,162.5 342.4,170.0"/>
+    <polygon class="vis" fill="url(#h3)" points="311.6,151.1 311.6,143.6 342.4,143.6 342.4,151.1"/>
+    <circle class="vis" style="fill:#fff;stroke-width:1.4" cx="327" cy="156.8" r="7.7"/>
+    <line class="thin" x1="312.9" y1="162.5" x2="312.9" y2="151.1"/>
+    <line class="thin" x1="341.1" y1="162.5" x2="341.1" y2="151.1"/>
+    
+    <polygon class="vis" fill="url(#h3)" points="474.4,170.0 474.4,162.5 505.2,162.5 505.2,170.0"/>
+    <polygon class="vis" fill="url(#h3)" points="474.4,151.1 474.4,143.6 505.2,143.6 505.2,151.1"/>
+    <circle class="vis" style="fill:#fff;stroke-width:1.4" cx="489.8" cy="156.8" r="7.7"/>
+    <line class="thin" x1="475.7" y1="162.5" x2="475.7" y2="151.1"/>
+    <line class="thin" x1="503.9" y1="162.5" x2="503.9" y2="151.1"/>
+    <polygon fill="#111" points="305.7,172.2 305.7,163.0 310.9,163.0 310.9,172.2"/>
+    <polygon class="vis" points="96.0,214.0 96.0,231.6 99.5,236.0 122.4,236.0 124.2,235.1 126.1,234.4 127.9,233.8 129.7,233.4 131.6,233.1 133.4,233.1 217.0,233.1 218.8,233.1 220.7,233.4 222.5,233.8 224.3,234.4 226.2,235.1 228.0,236.0 272.0,236.0 273.1,234.9 280.8,234.9 280.8,241.3 282.1,242.6 288.3,242.6 289.6,241.3 289.6,234.9 298.4,234.9 298.4,255.8 300.6,258.0 305.4,258.0 305.4,255.8 311.2,255.8 311.2,258.0 505.2,258.0 505.2,262.4 509.6,262.4 509.6,280.0 514.0,284.4 537.8,284.4 540.4,281.8 540.4,280.0 619.6,280.0 624.0,275.6 624.0,271.2 617.4,264.6 553.6,264.6 553.6,214.0"/>
+    <line class="thin" x1="96" y1="221.7" x2="215.6" y2="221.7"/>
+    <line class="thin" x1="215.6" y1="214" x2="215.6" y2="221.7"/>
+    <line class="thin" x1="186.2" y1="225.1" x2="274.2" y2="225.1"/>
+    <line class="thin" x1="186.2" y1="214" x2="186.2" y2="236"/>
+    <line class="thin" x1="274.2" y1="214" x2="274.2" y2="234.9"/>
+    <line class="thin" x1="280.8" y1="214" x2="280.8" y2="242.6"/>
+    <line class="thin" x1="289.6" y1="214" x2="289.6" y2="242.6"/>
+    <line class="thin" x1="300.6" y1="214" x2="300.6" y2="258"/>
+    <line class="thin" x1="514" y1="214" x2="514" y2="284.4"/>
+    <line class="thin" x1="540.4" y1="214" x2="540.4" y2="281.8"/>
+    <line class="thin" x1="553.6" y1="264.6" x2="553.6" y2="280"/>
+    <polygon class="vis" points="311.6,214.0 311.6,299.8 318.2,306.4 485.4,306.4 487.1,306.6 488.7,307.3 490.1,308.3 491.1,309.7 491.8,311.3 492.0,313.0 492.0,316.1 492.1,317.0 492.5,317.8 493.0,318.6 493.8,319.1 494.6,319.5 495.5,319.6 501.7,319.6 502.6,319.5 503.4,319.1 504.2,318.6 504.7,317.8 505.1,317.0 505.2,316.1 505.2,214.0"/>
+    <rect x="322.6" y="214" width="158.4" height="92.4" fill="url(#kn)"/>
+    <line class="thin" x1="318.2" y1="214" x2="318.2" y2="306.4"/>
+    <line class="thin" x1="495.5" y1="214" x2="495.5" y2="319.6"/>
+    <line class="thin" x1="501.7" y1="214" x2="501.7" y2="319.6"/>
+    <polygon class="vis" style="fill:#fff;stroke-width:1.4" points="305.7,258.0 305.7,265.0 310.9,265.0 310.9,258.0"/>
+    
+    <line class="dim" x1="322" y1="81" x2="308.3" y2="167.8"/>
+    <circle cx="308.3" cy="167.8" r="2.2" fill="#111"/>
+    <circle class="bal" cx="322" cy="70" r="11"/>
+    <text class="tb" x="322" y="75" text-anchor="middle">4</text>
+    
+    <line class="dim" x1="400" y1="81" x2="408.4" y2="130.4"/>
+    <circle cx="408.4" cy="130.4" r="2.2" fill="#111"/>
+    <circle class="bal" cx="400" cy="70" r="11"/>
+    <text class="tb" x="400" y="75" text-anchor="middle">2</text>
+    
+    <line class="dim" x1="480" y1="81" x2="489.8" y2="147.3"/>
+    <circle cx="489.8" cy="147.3" r="2.2" fill="#111"/>
+    <circle class="bal" cx="480" cy="70" r="11"/>
+    <text class="tb" x="480" y="75" text-anchor="middle">3</text>
+    
+    <line class="dim" x1="560" y1="81" x2="536" y2="165.6"/>
+    <circle cx="536" cy="165.6" r="2.2" fill="#111"/>
+    <circle class="bal" cx="560" cy="70" r="11"/>
+    <text class="tb" x="560" y="75" text-anchor="middle">1</text>
+    
+    <rect x="349.8" y="238.2" width="104" height="42" fill="#fff" stroke="#111" stroke-width=".8"/>
+    <text class="tb" x="401.8" y="256.2" text-anchor="middle">TIRTIL</text>
+    <text class="tb" x="401.8" y="274.2" text-anchor="middle">RGE 30° 1,2</text>
+    <line class="dim" x1="96" y1="240" x2="96" y2="372"/>
+    <line class="dim" x1="272" y1="240" x2="272" y2="346"/>
+    <line class="dim" x1="311.6" y1="303.8" x2="311.6" y2="346"/>
+    <line class="dim" x1="505.2" y1="320.1" x2="505.2" y2="346"/>
+    <line class="dim" x1="553.6" y1="284" x2="553.6" y2="346"/>
+    <line class="dim" x1="624" y1="279.6" x2="624" y2="372"/>
+    <line class="dim" x1="617.4" y1="163.4" x2="668" y2="163.4"/>
+    <line class="dim" x1="617.4" y1="264.6" x2="668" y2="264.6"/>
+    <line class="dim" x1="505.7" y1="108.4" x2="740" y2="108.4"/>
+    <line class="dim" x1="505.7" y1="319.6" x2="740" y2="319.6"/>
+    <line class="dim" x1="314.2" y1="121.6" x2="56" y2="121.6"/>
+    <line class="dim" x1="314.2" y1="306.4" x2="56" y2="306.4"/>
+    
+    <line class="dima" x1="96" y1="342" x2="272" y2="342"/>
+    <rect x="150" y="332" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="184" y="347" text-anchor="middle">L = 40</text>
+    
+    <line class="dima" x1="272" y1="342" x2="311.6" y2="342"/>
+    
+    <text class="tb" x="291.8" y="336" text-anchor="middle">9</text>
+    
+    <line class="dima" x1="311.6" y1="342" x2="505.2" y2="342"/>
+    <rect x="374.4" y="332" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="408.4" y="347" text-anchor="middle">K = 44</text>
+    
+    <line class="dima" x1="505.2" y1="342" x2="553.6" y2="342"/>
+    
+    <text class="tb" x="529.4" y="336" text-anchor="middle">(11)</text>
+    
+    <line class="dima" x1="553.6" y1="342" x2="624" y2="342"/>
+    
+    <text class="tb q" x="588.8" y="336" text-anchor="middle">C = 16</text>
+    
+    <line class="dima" x1="96" y1="368" x2="624" y2="368"/>
+    <rect x="326" y="358" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="360" y="373" text-anchor="middle">H = 120</text>
+    
+    <line class="dima" x1="664" y1="163.4" x2="664" y2="264.6"/>
+    <rect x="630" y="204" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="664" y="219" text-anchor="middle">A ≥ 23</text>
+    
+    <line class="dima" x1="736" y1="108.4" x2="736" y2="319.6"/>
+    <rect x="702" y="204" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="736" y="219" text-anchor="middle">ØF = 48</text>
+    
+    <line class="dima" x1="60" y1="121.6" x2="60" y2="306.4"/>
+    <rect x="26" y="204" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="60" y="219" text-anchor="middle">ØE = 42</text>
+    <text class="h" x="360" y="400" text-anchor="middle">MONTAJ · YARIM KESİT</text>
+    <text class="ts" x="360" y="418" text-anchor="middle">üst yarı kesit, alt yarı görünüş · kovan elde durur, mil içinde döner</text>
+  </g>
+
+  <g>
+    <line class="ctr" x1="70" y1="566" x2="646" y2="566"/>
+    <polygon class="vis" points="96.0,566.0 96.0,548.4 98.4,545.4 186.2,545.4 186.2,546.9 274.2,546.9 274.2,545.1 280.8,545.1 280.8,538.7 282.1,537.4 288.3,537.4 289.6,538.7 289.6,545.1 298.4,545.1 298.4,524.2 300.6,522.0 305.4,522.0 305.4,524.2 311.2,524.2 311.2,522.0 505.2,522.0 505.2,517.6 509.6,517.6 509.6,500.0 514.0,495.6 537.8,495.6 540.4,498.2 543.0,495.6 551.4,495.6 553.6,497.8 553.6,544.0 615.2,544.0 624.0,552.8 624.0,566.0 624.0,566.0 624.0,579.2 615.2,588.0 553.6,588.0 553.6,634.2 551.4,636.4 543.0,636.4 540.4,633.8 537.8,636.4 514.0,636.4 509.6,632.0 509.6,614.4 505.2,614.4 505.2,610.0 311.2,610.0 311.2,607.8 305.4,607.8 305.4,610.0 300.6,610.0 298.4,607.8 298.4,586.9 289.6,586.9 289.6,593.3 288.3,594.6 282.1,594.6 280.8,593.3 280.8,586.9 274.2,586.9 274.2,585.1 186.2,585.1 186.2,586.6 98.4,586.6 96.0,583.6 96.0,566.0"/>
+    <path class="thin" d="M133.4 555 H217 A11 11 0 0 1 217 577 H133.4 A11 11 0 0 1 133.4 555 Z"/>
+    <line class="hid" x1="96" y1="555" x2="215.6" y2="555"/>
+    <line class="hid" x1="96" y1="577" x2="215.6" y2="577"/>
+    <polyline class="hid" points="215.6,555.0 218.5,554.9 221.3,554.5 224.1,554.0 226.9,553.2 229.6,552.1 232.1,550.9 234.6,549.5 236.9,547.8"/>
+    <polyline class="hid" points="215.6,577.0 218.5,577.1 221.3,577.5 224.1,578.0 226.9,578.8 229.6,579.9 232.1,581.1 234.6,582.5 236.9,584.2"/>
+    <line class="thin" x1="280.8" y1="594.6" x2="280.8" y2="537.4"/>
+    <line class="thin" x1="289.6" y1="594.6" x2="289.6" y2="537.4"/>
+    <line class="thin" x1="300.6" y1="610" x2="300.6" y2="522"/>
+    <line class="thin" x1="514" y1="636.4" x2="514" y2="495.6"/>
+    <line class="thin" x1="540.4" y1="633.8" x2="540.4" y2="498.2"/>
+    <line class="thin" x1="553.6" y1="588" x2="553.6" y2="544"/>
+    <line class="thin" x1="540.4" y1="541.5" x2="553.6" y2="541.5"/>
+    <line class="thin" x1="540.4" y1="590.5" x2="553.6" y2="590.5"/>
+    <line class="thin" x1="619.6" y1="579.2" x2="619.6" y2="552.8"/>
+    <path class="dim" d="M206 514 V534 M206 598 V618"/>
+    <text class="tb" x="206" y="508" text-anchor="middle">A</text>
+    <text class="tb" x="206" y="634" text-anchor="middle">A</text>
+    
+    <polyline class="lead" points="175.2,557.6 175.2,446 359.2,446"/>
+    <text class="tb q" x="179.2" y="440">SDS-PLUS SAP Ø10 × 40</text>
+    <text class="ts" x="179.2" y="462">kilit 5 × 2 · açık 3,5 × 2,5</text>
+    
+    <polyline class="lead" points="308.3,524.2 396,446 580,446"/>
+    <text class="tb" x="400" y="440">SEGMAN KANALI Ø19 × 1,3</text>
+    <text class="ts" x="400" y="462">DIN 471 · yatak yeri başından 1,6</text>
+    
+    <polyline class="lead" points="507.4,517.6 596,472 760,472"/>
+    <text class="tb" x="600" y="466">DAYAMA OMZU Ø22 × 1</text>
+    <text class="ts" x="600" y="488">yalnız iç bileziğe basar</text>
+    
+    <line class="dima" x1="408.4" y1="522" x2="408.4" y2="610"/>
+    <rect x="374.4" y="556" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="408.4" y="571" text-anchor="middle">Ø20 h6</text>
+    <line class="dim" x1="96" y1="590.6" x2="96" y2="718"/>
+    <line class="dim" x1="272" y1="590.9" x2="272" y2="666"/>
+    <line class="dim" x1="298.4" y1="590.9" x2="298.4" y2="666"/>
+    <line class="dim" x1="311.2" y1="611.8" x2="311.2" y2="692"/>
+    <line class="dim" x1="505.2" y1="614" x2="505.2" y2="692"/>
+    <line class="dim" x1="553.6" y1="640.4" x2="553.6" y2="666"/>
+    <line class="dim" x1="624" y1="583.2" x2="624" y2="718"/>
+    <line class="dim" x1="615.2" y1="544" x2="664" y2="544"/>
+    <line class="dim" x1="615.2" y1="588" x2="664" y2="588"/>
+    <line class="dim" x1="553.6" y1="495.6" x2="732" y2="495.6"/>
+    <line class="dim" x1="553.6" y1="636.4" x2="732" y2="636.4"/>
+    <line class="dim" x1="52" y1="544" x2="104" y2="544"/>
+    <line class="dim" x1="52" y1="588" x2="104" y2="588"/>
+    
+    <line class="dima" x1="96" y1="662" x2="272" y2="662"/>
+    <rect x="150" y="652" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="184" y="667" text-anchor="middle">L = 40</text>
+    <line class="dima" x1="272" y1="662" x2="298.4" y2="662"/>
+    <text class="tb" x="285.2" y="680" text-anchor="middle">T = 6</text>
+    
+    <line class="dima" x1="298.4" y1="662" x2="505.2" y2="662"/>
+    <rect x="367.79999999999995" y="652" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="401.79999999999995" y="667" text-anchor="middle">47</text>
+    
+    <line class="dima" x1="505.2" y1="662" x2="553.6" y2="662"/>
+    
+    <text class="tb" x="529.4" y="656" text-anchor="middle">(11)</text>
+    
+    <line class="dima" x1="553.6" y1="662" x2="624" y2="662"/>
+    
+    <text class="tb q" x="588.8" y="656" text-anchor="middle">C = 16</text>
+    
+    <line class="dima" x1="311.2" y1="688" x2="505.2" y2="688"/>
+    <rect x="361.45" y="678" width="93.5" height="20" fill="#fff"/>
+    <text class="tb" x="408.2" y="693" text-anchor="middle">44,1 +0,1/0</text>
+    
+    <line class="dima" x1="96" y1="714" x2="624" y2="714"/>
+    <rect x="326" y="704" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="360" y="719" text-anchor="middle">H = 120</text>
+    
+    <line class="dima" x1="56" y1="544" x2="56" y2="588"/>
+    <rect x="22" y="556" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="56" y="571" text-anchor="middle">ØS = 10</text>
+    
+    <line class="dima" x1="660" y1="544" x2="660" y2="588"/>
+    <rect x="626" y="556" width="68" height="20" fill="#fff"/>
+    <text class="tb q" x="660" y="571" text-anchor="middle">V = 10</text>
+    
+    <line class="dima" x1="728" y1="495.6" x2="728" y2="636.4"/>
+    <rect x="694" y="556" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="728" y="571" text-anchor="middle">ØD = 32</text>
+    <text class="h" x="360" y="744" text-anchor="middle">MİL · YAN GÖRÜNÜŞ</text>
+    <text class="ts" x="360" y="762" text-anchor="middle">montaja göre 90° döndürülmüş · kafa boyu 10</text>
+  </g>
+
+  <g>
+    <line class="ctr" x1="772" y1="168" x2="1008" y2="168"/>
+    <line class="ctr" x1="890" y1="50" x2="890" y2="286"/>
+    <circle class="vis" style="fill:#fff" cx="890" cy="168" r="100.8"/>
+    <circle class="hid" cx="890" cy="168" r="88.2"/>
+    <polygon class="vis" style="fill:#fff" points="953.0,168.0 953.0,171.5 953.0,175.0 953.0,178.5 953.0,182.0 953.0,185.4 953.0,188.8 952.7,192.1 951.4,195.3 949.9,198.5 948.2,201.6 946.4,204.6 944.4,207.5 942.2,210.3 939.9,213.0 937.5,215.5 935.0,217.9 932.3,220.2 929.5,222.4 926.6,224.4 923.6,226.2 920.5,227.9 917.3,229.4 914.1,230.7 910.8,231.9 907.4,232.9 904.0,233.7 900.5,234.4 897.0,234.8 893.5,235.1 890.0,235.2 886.5,235.1 883.0,234.8 879.5,234.4 876.0,233.7 872.6,232.9 869.2,231.9 865.9,230.7 862.7,229.4 859.5,227.9 856.4,226.2 853.4,224.4 850.5,222.4 847.7,220.2 845.0,217.9 842.5,215.5 840.1,213.0 837.8,210.3 835.6,207.5 833.6,204.6 831.8,201.6 830.1,198.5 828.6,195.3 827.3,192.1 827.0,188.8 827.0,185.4 827.0,182.0 827.0,178.5 827.0,175.0 827.0,171.5 827.0,168.0 827.0,164.5 827.0,161.0 827.0,157.5 827.0,154.0 827.0,150.6 827.0,147.2 827.3,143.9 828.6,140.7 830.1,137.5 831.8,134.4 833.6,131.4 835.6,128.5 837.8,125.7 840.1,123.0 842.5,120.5 845.0,118.1 847.7,115.8 850.5,113.6 853.4,111.6 856.4,109.8 859.5,108.1 862.7,106.6 865.9,105.3 869.2,104.1 872.6,103.1 876.0,102.3 879.5,101.6 883.0,101.2 886.5,100.9 890.0,100.8 893.5,100.9 897.0,101.2 900.5,101.6 904.0,102.3 907.4,103.1 910.8,104.1 914.1,105.3 917.3,106.6 920.5,108.1 923.6,109.8 926.6,111.6 929.5,113.6 932.3,115.8 935.0,118.1 937.5,120.5 939.9,123.0 942.2,125.7 944.4,128.5 946.4,131.4 948.2,134.4 949.9,137.5 951.4,140.7 952.7,143.9 953.0,147.2 953.0,150.6 953.0,154.0 953.0,157.5 953.0,161.0 953.0,164.5"/>
+    <circle class="thin" cx="890" cy="168" r="44.1"/>
+    <circle class="vis" style="fill:none" cx="890" cy="168" r="31.5"/>
+    <circle class="thin" cx="890" cy="168" r="8.4"/>
+    
+    <polygon class="vis" style="fill:#fff" points="841.7,147.0 827.0,147.0 827.0,189.0 841.7,189.0"/>
+    <polygon class="thin" points="835.4,155.4 831.2,155.4 831.2,180.6 835.4,180.6"/>
+    <polygon class="vis" style="fill:#fff" points="938.3,147.0 953.0,147.0 953.0,189.0 938.3,189.0"/>
+    <polygon class="thin" points="944.6,155.4 948.8,155.4 948.8,180.6 944.6,180.6"/>
+    <line class="dim" x1="841.7" y1="143" x2="841.7" y2="42"/>
+    <line class="dim" x1="938.3" y1="143" x2="938.3" y2="42"/>
+    
+    <line class="dima" x1="841.7" y1="46" x2="938.3" y2="46"/>
+    <rect x="856" y="36" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="890" y="51" text-anchor="middle">A ≥ 23</text>
+    <text class="h" x="890" y="314" text-anchor="middle">AĞIZ</text>
+    <text class="ts" x="890" y="334" text-anchor="middle">uçtan bakış · dış düz yüzler arası 30</text>
+  </g>
+
+  <g>
+    <line class="ctr" x1="1072" y1="168" x2="1308" y2="168"/>
+    <line class="ctr" x1="1190" y1="50" x2="1190" y2="286"/>
+    <polygon class="vis" fill="url(#h1)" points="1238.0,168.0 1238.2,172.6 1238.9,177.1 1239.9,181.5 1241.4,185.9 1243.3,190.0 1245.6,194.0 1248.2,197.7 1251.2,201.2 1230.6,237.0 1229.4,237.6 1218.0,237.6 1218.0,208.0 1190.0,208.0 1190.0,208.0 1162.0,208.0 1162.0,237.6 1150.6,237.6 1149.4,237.0 1128.8,201.2 1131.8,197.7 1134.4,194.0 1136.7,190.0 1138.6,185.9 1140.1,181.5 1141.1,177.1 1141.8,172.6 1142.0,168.0 1142.0,168.0 1141.8,163.4 1141.1,158.9 1140.1,154.5 1138.6,150.1 1136.7,146.0 1134.4,142.0 1131.8,138.3 1128.8,134.8 1149.4,99.0 1150.6,98.4 1162.0,98.4 1162.0,128.0 1190.0,128.0 1190.0,128.0 1218.0,128.0 1218.0,98.4 1229.4,98.4 1230.6,99.0 1251.2,134.8 1248.2,138.3 1245.6,142.0 1243.3,146.0 1241.4,150.1 1239.9,154.5 1238.9,158.9 1238.2,163.4 1238.0,168.0"/>
+    <circle class="hid" cx="1190" cy="168" r="80"/>
+    <line class="dim" x1="1190" y1="98.4" x2="1330" y2="98.4"/>
+    <line class="dim" x1="1190" y1="237.6" x2="1330" y2="237.6"/>
+    
+    <line class="dima" x1="1326" y1="98.4" x2="1326" y2="237.6"/>
+    <rect x="1292" y="158" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="1326" y="173" text-anchor="middle">SW 8,7</text>
+    <text class="h" x="1190" y="314" text-anchor="middle">KESİT A–A</text>
+    <text class="ts" x="1190" y="334" text-anchor="middle">altıgen · kesikli daire sap Ø10 · köşeler bu çapta</text>
+  </g>
+
+  <g>
+    <text class="tb" x="790" y="372">PARÇA LİSTESİ</text>
+    <rect class="grid" x="784" y="382" width="572" height="120"/>
+    <path class="grid" d="M784 402 H1356 M784 422 H1356 M784 442 H1356 M784 462 H1356 M784 482 H1356 M820 382 V502 M1018 382 V502 M1064 382 V502"/>
+    <text class="tl" x="790" y="396">NO</text><text class="tl" x="826" y="396">PARÇA</text><text class="tl" x="1024" y="396">ADET</text><text class="tl" x="1070" y="396">MALZEME · STANDART</text>
+    <text class="tn" x="790" y="417">1</text><text class="tb" x="826" y="417">Mil</text><text class="tn" x="1024" y="417">1</text><text class="tn" x="1070" y="417">42CrMo4 · 44–48 HRC · siyah oksit</text>
+    <text class="tn" x="790" y="437">2</text><text class="tb" x="826" y="437">Döner kovan</text><text class="tn" x="1024" y="437">1</text><text class="tn" x="1070" y="437">EN AW-6082 T6 · siyah eloksal</text>
+    <text class="tn" x="790" y="457">3</text><text class="tb" x="826" y="457">Rulman 6804-2RS</text><text class="tn" x="1024" y="457">2</text><text class="tn" x="1070" y="457">20 × 32 × 7 · sabit bilyalı, iki yanı keçeli</text>
+    <text class="tn" x="790" y="477">4</text><text class="tb" x="826" y="477">Segman DIN 471 – 20 × 1,2</text><text class="tn" x="1024" y="477">1</text><text class="tn" x="1070" y="477">yay çeliği, fosfatlı</text>
+    <text class="tn" x="790" y="497">–</text><text class="tb" x="826" y="497">Yatak sabitleyici</text><text class="tn" x="1024" y="497">–</text><text class="tn" x="1070" y="497">anaerobik, orta mukavemet (ör. Loctite 641)</text>
+    <text class="tb" x="790" y="524">İŞLEME VE MONTAJ SIRASI</text>
+    <text class="tn" x="790" y="544">1. Mil torna: sap, halka, yatak yeri Ø20 (taşlama payı), kanal, omuz, kafa Ø32, alın ve cep.</text>
+    <text class="tn" x="790" y="562">2. Mil freze: SDS kanalları, altıgen SW 8,7, iki tırnak ve dış düz yüzler.</text>
+    <text class="tn" x="790" y="580">3. Isıl işlem 44–48 HRC; yatak yeri Ø20 h6 taşlanır; kumlama + siyah oksit.</text>
+    <text class="tn" x="790" y="598">4. Kovan torna: Ø42, siper Ø48, yatak yerleri Ø32 K7; tırtıl; siyah eloksal.</text>
+    <text class="tn" x="790" y="616">5. Rulmanlar kovana preslenir; kovan saptan mile sürülür, segman takılır.</text>
+    <text class="tn" x="790" y="634">6. Deneme: kovan elde serbest döner; matkapta 2 dk boşta, sonra kelepçede tork.</text>
+    <text class="tb q" x="790" y="660">ÜRETİMDEN ÖNCE DOĞRULANACAK</text>
+    <text class="tn" x="790" y="680">1. SDS kanal ölçüleri gerçek bir SDS-Plus uçtan; altıgenli sap SDS mandrende denenecek.</text>
+    <text class="tn" x="790" y="698">2. Tırnakların kelepçede oturduğu yer, C × V (16 × 10) ve orta cep Ø15 × 7.</text>
+    <text class="tn" x="790" y="716">3. Kelepçe çevresinde siper Ø48 için yer: siper tırnak ucundan 27 mm geride.</text>
+    <text class="tn" x="790" y="734">4. Mandren burnu ile kovan arası 9 mm: matkabın mandren burnu ölçülecek.</text>
+    <text class="tn" x="790" y="752">5. Gereken sıkma torku (N·m).</text>
+  </g>
+
+  <g>
+    <text class="tb" x="40" y="832">NOTLAR</text>
+    <text class="tn" x="40" y="854">1. Taslak: turuncu ölçüler varsayımdır, gerçek kelepçe ölçülmeden üretime verilmez. Çizim orantılıdır, değerler esastır.</text>
+    <text class="tn" x="40" y="871">2. Genel tolerans ISO 2768-m. Ağız A en az 23: +0,50 / 0. Kovanın mil üzerindeki eksenel boşluğu 0,1–0,3.</text>
+    <text class="tn" x="40" y="888">3. Mil: 42CrMo4, 44–48 HRC. Yatak yeri Ø20 h6, Ra 0,4, kumlamada maskelenir. Kafada salgı en çok 0,05.</text>
+    <text class="tn" x="40" y="905">4. Kovan: Al 6082-T6, siyah eloksal. Yatak yerleri Ø32 K7 × 7, eş eksenlik 0,02, maskeli; iç omuz Ø27.</text>
+    <text class="tn" x="40" y="922">5. Kovan alnı kafadan 1 mm geride kalır; dönen kafa ile duran kovan birbirine değmez.</text>
+    <text class="tn" x="40" y="939">6. SDS-Plus matkapta darbe kapalı kullanılır. El kovanı siperin arkasından tutar, ucu kelepçeye bastırır.</text>
+    <text class="tn" x="40" y="956">7. Üç ayaklı mandrende uç halkaya dayanana kadar sürülür, çeneler altıgene oturur. 1/4″ altıgen mandrene girmez.</text>
+  </g>
+
+  <g>
+    <rect x="780" y="780" width="580" height="175" class="grid" stroke-width="1.6"/>
+    <path class="grid" d="M780 830 H1360 M780 872 H1360 M780 914 H1360"/>
+    <path class="grid" d="M980 830 V914 M1180 830 V914"/>
+    <text x="795" y="814" font-size="22" font-weight="700" fill="#111" letter-spacing=".5">KELEPÇE SIKMA UCU v2</text>
+    <text class="ts" x="1345" y="814" text-anchor="end">Teknik resim</text>
+
+    <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">42CrMo4 + Al 6082</text>
+    <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
+    <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
+
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">A — taslak</text>
+    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">02.11.2026</text>
+    <text class="tl" x="1190" y="887">DURUM</text><text class="tb q" x="1190" y="906">TASLAK</text>
+
+    <text class="tl" x="790" y="929">REV A</text>
+    <text class="t" x="790" y="947">İlk taslak: v1 Rev B kafa ve sapı, rulmanlı döner kovan. Turuncu: varsayım.</text>
+  </g>
+</svg>
