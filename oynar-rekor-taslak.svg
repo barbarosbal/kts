@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 990" width="1400" height="990" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0,1.5 L10,5 L0,8.5 z" fill="#111"/>
+    </marker>
+    <pattern id="h1" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="9" height="9" fill="#fff"/><line x1="0" y1="0" x2="0" y2="9" stroke="#111" stroke-width=".8"/></pattern>
+    <pattern id="h2" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="9" height="9" fill="#fff"/><line x1="0" y1="0" x2="0" y2="9" stroke="#111" stroke-width=".8"/></pattern>
+    <style>
+      .vis{stroke:#111;stroke-width:2.2;stroke-linejoin:round}
+      circle.vis,polygon.vis:not([fill]){fill:none}
+      .thin{fill:none;stroke:#111;stroke-width:1}
+      .hid{fill:none;stroke:#111;stroke-width:1.2;stroke-dasharray:7 4}
+      .ctr{fill:none;stroke:#555;stroke-width:0.9;stroke-dasharray:22 4 3 4}
+      .dim{fill:none;stroke:#111;stroke-width:0.9}
+      .dima{fill:none;stroke:#111;stroke-width:0.9;marker-start:url(#arr);marker-end:url(#arr)}
+      .lead{fill:none;stroke:#111;stroke-width:0.9;marker-start:url(#arr)}
+      .grid{fill:none;stroke:#111;stroke-width:1}
+      .t{font-size:14px;fill:#111}
+      .tb{font-size:14px;font-weight:700;fill:#111}
+      .ts{font-size:12px;fill:#333}
+      .tn{font-size:13px;fill:#111}
+      .tl{font-size:10px;fill:#555;letter-spacing:.4px}
+      .h{font-size:18px;font-weight:700;fill:#111;letter-spacing:.5px}
+      .q{fill:#c2410c}
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="990" fill="#fff"/>
+  <rect x="20" y="20" width="1360" height="950" class="grid" stroke-width="1.6"/>
+
+  <g>
+    <line class="ctr" x1="350" y1="104" x2="350" y2="676"/>
+    
+    <polygon class="vis" fill="url(#h1)" points="206.0,140.0 176.2,140.0 161.5,155.6 173.0,164.9 160.9,174.1 172.4,183.3 160.3,192.6 171.9,201.8 159.7,211.1 171.3,220.3 159.2,229.5 170.7,238.8 158.6,248.0 170.1,257.2 158.0,266.5 169.6,275.7 174.0,300.0 174.0,312.0 186.0,312.0 186.0,384.0 174.0,384.0 174.0,424.0 177.7,424.6 181.1,426.3 183.7,428.9 185.4,432.3 186.0,436.0 185.4,439.7 183.7,443.1 181.1,445.7 177.7,447.4 174.0,448.0 174.0,488.0 178.0,492.0 206.0,492.0"/>
+    <polygon class="vis" fill="url(#h2)" points="152.4,620.0 113.2,620.0 110.0,618.2 110.0,397.8 113.2,396.0 170.0,396.0 173.2,399.2 173.2,424.0 169.5,424.6 166.1,426.3 163.5,428.9 161.8,432.3 161.2,436.0 161.8,439.7 163.5,443.1 166.1,445.7 169.5,447.4 173.2,448.0 173.2,476.0 154.0,476.0 154.0,508.0 158.8,508.0 170.6,517.2 158.8,526.5 170.6,535.7 158.8,544.9 170.6,554.2 158.8,563.4 170.6,572.7 158.8,581.9 170.6,591.1 158.8,613.6"/>
+    <polygon class="thin" style="fill:#555" points="190.0,508.0 170.0,508.0 170.0,492.0 190.0,492.0"/>
+    <circle cx="174" cy="436" r="12" fill="#111"/>
+    <path class="hid" d="M190 508 V676 M158.788 508 V676"/>
+    <polygon class="vis" fill="url(#h1)" points="494.0,140.0 523.8,140.0 538.5,155.6 527.0,164.9 539.1,174.1 527.6,183.3 539.7,192.6 528.1,201.8 540.3,211.1 528.7,220.3 540.8,229.5 529.3,238.8 541.4,248.0 529.9,257.2 542.0,266.5 530.4,275.7 526.0,300.0 526.0,312.0 514.0,312.0 514.0,384.0 526.0,384.0 526.0,424.0 522.3,424.6 518.9,426.3 516.3,428.9 514.6,432.3 514.0,436.0 514.6,439.7 516.3,443.1 518.9,445.7 522.3,447.4 526.0,448.0 526.0,488.0 522.0,492.0 494.0,492.0"/>
+    <polygon class="vis" fill="url(#h2)" points="547.6,620.0 586.8,620.0 590.0,618.2 590.0,397.8 586.8,396.0 530.0,396.0 526.8,399.2 526.8,424.0 530.5,424.6 533.9,426.3 536.5,428.9 538.2,432.3 538.8,436.0 538.2,439.7 536.5,443.1 533.9,445.7 530.5,447.4 526.8,448.0 526.8,476.0 546.0,476.0 546.0,508.0 541.2,508.0 529.4,517.2 541.2,526.5 529.4,535.7 541.2,544.9 529.4,554.2 541.2,563.4 529.4,572.7 541.2,581.9 529.4,591.1 541.2,613.6"/>
+    <polygon class="thin" style="fill:#555" points="510.0,508.0 530.0,508.0 530.0,492.0 510.0,492.0"/>
+    <circle cx="526" cy="436" r="12" fill="#111"/>
+    <path class="hid" d="M510 508 V676 M541.212 508 V676"/>
+    
+    <line class="dim" x1="174.788" y1="140" x2="37" y2="140"/>
+    <line class="dim" x1="170" y1="300" x2="67" y2="300"/>
+    <line class="dim" x1="106" y1="396" x2="67" y2="396"/>
+    <line class="dim" x1="106" y1="620" x2="37" y2="620"/>
+    
+    <line class="dima" x1="75" y1="300" x2="75" y2="140"/>
+    <rect x="50" y="210" width="50" height="20" fill="#fff"/>
+    <text class="tb" x="75" y="225" text-anchor="middle">L = 20</text>
+    
+    <line class="dima" x1="75" y1="396" x2="75" y2="300"/>
+    <rect x="50" y="338" width="50" height="20" fill="#fff"/>
+    <text class="tb" x="75" y="353" text-anchor="middle">U = 12</text>
+    
+    <line class="dima" x1="75" y1="620" x2="75" y2="396"/>
+    <rect x="50" y="498" width="50" height="20" fill="#fff"/>
+    <text class="tb" x="75" y="513" text-anchor="middle">B = 28</text>
+    
+    <line class="dima" x1="45" y1="620" x2="45" y2="140"/>
+    <rect x="20" y="370" width="50" height="20" fill="#fff"/>
+    <text class="tb" x="45" y="385" text-anchor="middle">H = 60</text>
+    <line class="dim" x1="206" y1="136" x2="206" y2="88"/>
+    <line class="dim" x1="494" y1="136" x2="494" y2="88"/>
+    <line class="dima" x1="206" y1="92" x2="494" y2="92"/>
+    <rect x="308" y="82" width="84" height="20" fill="#fff"/>
+    <text class="tb" x="350" y="97" text-anchor="middle">ØE = 36</text>
+    <line class="dim" x1="110" y1="624" x2="110" y2="696"/>
+    <line class="dim" x1="590" y1="624" x2="590" y2="696"/>
+    <line class="dima" x1="110" y1="692" x2="590" y2="692"/>
+    <rect x="308" y="682" width="84" height="20" fill="#fff"/>
+    <text class="tb" x="350" y="697" text-anchor="middle">SW 60</text>
+    
+    <polyline class="lead" points="541.212,204 612,156 762,156"/>
+    <text class="tb" x="616" y="150">R 1 1/2 DIŞ DİŞ</text>
+    <text class="ts" x="616" y="172">keten + teflon</text>
+    
+    <polyline class="lead" points="514,348 612,268 762,268"/>
+    <text class="tb" x="616" y="262">SW 41 ANAHTAR YÜZÜ</text>
+    <text class="ts" x="616" y="284">K = 41 · boy 9 · iki yüz</text>
+    
+    <polyline class="lead" points="526,312 612,212 762,212"/>
+    <text class="tb" x="616" y="206">BOYUN ÇELTİĞİ ØN = 44</text>
+    <text class="ts" x="616" y="228">diş çıkışı · f7</text>
+    
+    <polyline class="lead" points="538,436 612,362 762,362"/>
+    <text class="tb" x="616" y="356">TEL KİLİT Ø3</text>
+    <text class="ts" x="616" y="378">W = 5 · çeltik Ø41</text>
+    
+    <polyline class="lead" points="530,500 612,452 762,452"/>
+    <text class="tb" x="616" y="446">KLİNGERİT CONTA</text>
+    <text class="ts" x="616" y="468">Ø45 × Ø40 × 2</text>
+    
+    <polyline class="lead" points="541.212,572 612,542 762,542"/>
+    <text class="tb" x="616" y="536">G 1 1/2 İÇ DİŞ</text>
+    <text class="ts" x="616" y="558">C = 14 · Parça 1 üst ucu</text>
+    <text class="h" x="350" y="740" text-anchor="middle">KESİT</text>
+    <text class="ts" x="350" y="760" text-anchor="middle">anahtar yüzlerinden · tel kilitli, bilezik boşta · kesikli çizgi Parça 1 üst ucu</text>
+  </g>
+
+  <g>
+    <line class="ctr" x1="875" y1="250" x2="1265" y2="250"/>
+    <line class="ctr" x1="1070" y1="55" x2="1070" y2="445"/>
+    <polygon class="vis" points="1070.0,423.2 1220.0,336.6 1220.0,163.4 1070.0,76.8 920.0,163.4 920.0,336.6"/>
+    <circle class="thin" cx="1070" cy="250" r="148"/>
+    <circle class="vis" cx="1070" cy="250" r="119.5075"/>
+    <path class="thin" d="M1070 137.8875 A112.1125 112.1125 0 1 0 1182.1125 250"/>
+    <circle class="vis" cx="1070" cy="250" r="90"/>
+    <path class="hid" d="M967.5 210.07820144332172 V289.92179855667825 M1172.5 210.07820144332172 V289.92179855667825"/>
+    <path class="hid" d="M1070 352.75 H960.9586015344687 M1070 367.75 H960.9586015344687"/>
+    <polyline class="lead" points="1000.9586015344687,360.25 810,420 900,420"/>
+    <text class="ts" x="808" y="438">tel deliği, çeltiğe teğet</text>
+    <text class="h" x="1070" y="465" text-anchor="middle">ÜSTTEN GÖRÜNÜM</text>
+  </g>
+
+  <g>
+    <text class="tb" x="780" y="500">PARÇA LİSTESİ</text>
+    <rect x="780" y="508" width="580" height="26" fill="#eee"/>
+    <rect x="780" y="508" width="580" height="130" class="grid"/>
+    <path class="grid" d="M780 534 H1360 M780 560 H1360 M780 586 H1360 M780 612 H1360"/>
+    <path class="grid" d="M840 508 V638 M990 508 V638 M1070 508 V638 M1240 508 V638"/>
+    <g class="tb" font-size="13"><text x="790" y="526">No</text><text x="850" y="526">Parça</text><text x="1000" y="526">Adet</text><text x="1080" y="526">Malzeme</text><text x="1250" y="526">Ölçü</text></g>
+    <g class="tn"><text x="790" y="552">1</text><text x="850" y="552">Gövde</text><text x="1000" y="552">1</text><text x="1080" y="552">Pirinç CW511L</text><text x="1250" y="552">Boy 44</text><text x="790" y="578">2</text><text x="850" y="578">Bilezik</text><text x="1000" y="578">1</text><text x="1080" y="578">Pirinç CW511L</text><text x="1250" y="578">SW 60 × 28</text><text x="790" y="604">3</text><text x="850" y="604">Tel kilit</text><text x="1000" y="604">1</text><text x="1080" y="604">Paslanmaz A4</text><text x="1250" y="604">Ø3 × 138</text><text x="790" y="630">4</text><text x="850" y="630">Conta</text><text x="1000" y="630">1</text><text x="1080" y="630">Klingerit</text><text x="1250" y="630">Ø45 × Ø40 × 2</text></g>
+  </g>
+
+  <g>
+    <text class="tb" x="40" y="832">NOTLAR</text>
+    <text class="tn" x="40" y="854">1. Taslak: ölçüler öneridir, onaydan sonra kesinleşir. Kesit orantılı çizildi; değerler esastır.</text>
+    <text class="tn" x="40" y="874">2. Genel tolerans ISO 2768-m. Boyun ØN 44 f7, bilezik sırt deliği Ø44,2 H8: bilezik serbest dönmeli.</text>
+    <text class="tn" x="40" y="894">3. Üst uç R 1 1/2 (ISO 7-1, konik 1:16), keten + teflon. Bilezik G 1 1/2 (ISO 228-1), Parça 1 üst dişine oturur.</text>
+    <text class="tn" x="40" y="914">4. Montaj: bilezik gövdeye conta tarafından geçirilir, tel Ø3 teğet delikten çeltiğe sürülür, delik kapatılır.</text>
+    <text class="tn" x="40" y="934">5. Conta alnı düz, çapaksız, Ra 1,6. Keskin kenarlar 0,3–0,5 × 45°.</text>
+    <text class="tn" x="40" y="954">6. Malzeme: CW511L (CuZn38As) düşük kurşunlu, çinko kaybına dayanıklı pirinç, EN 10204 3.1 sertifikalı.</text>
+  </g>
+
+  <g>
+    <rect x="780" y="780" width="580" height="175" class="grid" stroke-width="1.6"/>
+    <path class="grid" d="M780 830 H1360 M780 872 H1360 M780 914 H1360"/>
+    <path class="grid" d="M980 830 V914 M1180 830 V914"/>
+    <text x="795" y="814" font-size="22" font-weight="700" fill="#111" letter-spacing=".5">OYNAR REKOR</text>
+    <text class="ts" x="1345" y="814" text-anchor="end">Teknik resim</text>
+
+    <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">Pirinç CW511L</text>
+    <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
+    <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
+
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">A — taslak</text>
+    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">02.11.2026</text>
+    <text class="tl" x="1190" y="887">DURUM</text><text class="tb q" x="1190" y="906">TASLAK</text>
+
+    <text class="tl" x="790" y="929">REV A</text>
+    <text class="t" x="790" y="947">İlk taslak: tel kilitli altıgen bilezik, ölçüler öneri.</text>
+  </g>
+</svg>

@@ -2,7 +2,6 @@
 // Kullanım: cd tools && npm install && npm run build
 import { readFile, writeFile, readdir, rm, stat, mkdir } from 'node:fs/promises';
 import { existsSync, mkdtempSync } from 'node:fs';
-import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import { tmpdir } from 'node:os';
@@ -649,21 +648,6 @@ async function fileSizes() {
   return sizes;
 }
 
-// Sitedeki varlık linklerine içerik özeti ekler (GitHub Pages 10 dk önbellek tutar)
-async function bustCache() {
-  const h = createHash('sha1');
-  for (const f of ['app.js', 'style.css', 'olculer.json', 'kazan-alti-parcasi-taslak.svg']) h.update(await readFile(path.join(ROOT, f)));
-  const v = h.digest('hex').slice(0, 8);
-  const indexPath = path.join(ROOT, 'index.html');
-  const html = await readFile(indexPath, 'utf8');
-  await writeFile(indexPath, html
-    .replace(/\?v=[\w-]+/g, `?v=${v}`)
-    .replace(/· Rev [A-Z]+( taslak)?<\/p>/, `· Rev ${spec.rev}${spec.onayli ? '' : ' taslak'}</p>`)
-    .replace(/Pirinç [A-Z0-9]+ ·/g, `Pirinç ${spec.malzemeKisa} ·`)
-    .replace(/(Teknik çizim · Rev )[A-Z]+/g, `$1${spec.rev}`));
-  return v;
-}
-
 // ---------------- çalıştır ----------------
 const warnings = checks();
 for (const w of warnings) console.warn(`UYARI: ${w}`);
@@ -693,4 +677,4 @@ execFileSync(TAR, ['-a', '-c', '-f', path.join(OUT, FILES.zip), '-C', OUT, ...pa
 console.log(`ZIP   ${FILES.zip}`);
 
 await writeFile(planPath, planHtml(info, await fileSizes()));
-console.log(`HTML  uretim/index.html · önbellek etiketi ${await bustCache()}`);
+console.log('HTML  uretim/index.html');

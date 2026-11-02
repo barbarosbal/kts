@@ -4,7 +4,8 @@
   "type": "module",
   "description": "olculer.json'dan STEP, DXF, teknik resim ve üretim paketi üretir",
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs && npm run site",
+    "site": "node rekor.mjs && node onbellek.mjs"
   },
   "devDependencies": {
     "replicad": "1.1.0",

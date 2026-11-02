@@ -3,18 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Kazan Altı Parçası · KTS</title>
-  <meta name="description" content="Pirinç kazan altı parçası: 360° döndürülebilir 3D model ve teknik çizim.">
+  <title>KTS · Ratel Systems</title>
+  <meta name="description" content="Pirinç kazan altı parçası ve oynar rekor: 360° döndürülebilir 3D model ve teknik çizim.">
   <meta name="theme-color" content="#101216">
   <link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
-  <link rel="stylesheet" href="style.css?v=deea57f2">
+  <link rel="stylesheet" href="style.css?v=b28036e0">
   <script type="importmap">
   {
     "imports": {
       "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
       "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
       "three-mesh-bvh": "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.9.8/build/index.module.js",
-      "three-bvh-csg": "https://cdn.jsdelivr.net/npm/three-bvh-csg@0.0.18/build/index.module.js"
+      "three-bvh-csg": "https://cdn.jsdelivr.net/npm/three-bvh-csg@0.0.18/build/index.module.js",
+      "kts/ortak": "./ortak.js?v=b28036e0",
+      "kts/kazan": "./model-kazan.js?v=b28036e0",
+      "kts/rekor": "./model-rekor.js?v=b28036e0",
+      "kts/montaj": "./model-montaj.js?v=b28036e0"
     }
   }
   </script>
@@ -26,9 +30,19 @@
         <a class="brand" href="https://ratel.systems" target="_blank" rel="noopener">
           <img src="brand/ratel-lockup-dark.svg" alt="Ratel Systems" width="127" height="22">
         </a>
-        <h1>Kazan Altı Parçası</h1>
-        <p>Pirinç CW511L · CNC · Rev H</p>
-        <a class="pkg" href="uretim/">Üretim paketi →</a>
+        <h1 id="model-ad">&nbsp;</h1>
+        <p id="model-alt">&nbsp;</p>
+        <div class="actions">
+          <details id="models" class="models">
+            <summary>Modeller</summary>
+            <nav aria-label="Modeller">
+              <a href="?model=kazan" data-model="kazan"><b>Kazan Altı Parçası</b><span>Gövde, üç port</span></a>
+              <a href="?model=rekor" data-model="rekor"><b>Oynar Rekor</b><span>Altıgen bilezik, tel kilit</span></a>
+              <a href="?model=montaj" data-model="montaj"><b>Montaj</b><span>Rekor + kazan altı parçası</span></a>
+            </nav>
+          </details>
+          <a id="pkg" class="pkg" href="uretim/" hidden>Üretim paketi →</a>
+        </div>
       </header>
 
       <div class="toolbar">
@@ -38,6 +52,10 @@
           <button data-view="top">Üst</button>
           <button data-view="bottom">Alt</button>
         </div>
+        <button id="split" class="switch" role="switch" aria-checked="false" title="Parçaları ayır (A)">
+          <span class="track"><span class="thumb"></span></span>
+          <span>Ayrık</span>
+        </button>
         <button id="tech" class="switch" role="switch" aria-checked="false" title="Teknik çizim (T)">
           <span class="track"><span class="thumb"></span></span>
           <span>Teknik çizim</span>
@@ -50,16 +68,16 @@
 
     <aside id="sheet" aria-label="Teknik çizim" aria-hidden="true">
       <div class="sheet-bar">
-        <strong>Teknik çizim · Rev H</strong>
-        <a href="kazan-alti-parcasi-taslak.svg?v=deea57f2" target="_blank" rel="noopener">Yeni sekmede aç ↗</a>
+        <strong id="sheet-rev">Teknik çizim</strong>
+        <a id="sheet-open" target="_blank" rel="noopener">Yeni sekmede aç ↗</a>
       </div>
       <div class="sheet-body">
-        <a href="kazan-alti-parcasi-taslak.svg?v=deea57f2" target="_blank" rel="noopener" title="Büyütmek için tıkla">
-          <img src="kazan-alti-parcasi-taslak.svg?v=deea57f2" alt="Kazan altı parçası teknik çizimi: üstten ve yan görünüm, port listesi, notlar" loading="lazy">
+        <a id="sheet-link" target="_blank" rel="noopener" title="Büyütmek için tıkla">
+          <img id="sheet-img" alt="Teknik çizim" loading="lazy">
         </a>
       </div>
     </aside>
   </main>
-  <script type="module" src="app.js?v=deea57f2"></script>
+  <script type="module" src="app.js?v=b28036e0"></script>
 </body>
 </html>

@@ -1,0 +1,35 @@
+{
+  "parca": "Oynar Rekor",
+  "rev": "A",
+  "tarih": "02.11.2026",
+  "revNot": "İlk taslak: tel kilitli altıgen bilezik, ölçüler öneri.",
+  "onayli": false,
+  "durum": "Taslak — ölçüler öneri",
+  "malzeme": "CW511L (CuZn38As) düşük kurşunlu, çinko kaybına dayanıklı pirinç",
+  "malzemeKisa": "CW511L",
+  "adet": "1–10 (prototip, fason)",
+  "genelTolerans": "ISO 2768-m",
+
+  "olculer": {
+    "E": { "deger": 36, "aciklama": "Boydan boya delik çapı" },
+    "N": { "deger": 44, "aciklama": "Boyun çapı (çeltik)" },
+    "H": { "deger": 60, "aciklama": "Toplam boy" },
+    "L": { "deger": 20, "aciklama": "Üst diş boyu" },
+    "U": { "deger": 12, "aciklama": "Görünen boyun boyu" },
+    "B": { "deger": 28, "aciklama": "Bilezik boyu" },
+    "C": { "deger": 14, "aciklama": "Bilezik iç diş boyu" },
+    "S": { "deger": 60, "aciklama": "Bilezik altıgen anahtar ağzı" },
+    "K": { "deger": 41, "aciklama": "Boyun anahtar yüzü ağzı" },
+    "A": { "deger": 9,  "aciklama": "Anahtar yüzü boyu" },
+    "T": { "deger": 3,  "aciklama": "Tel kilit çapı" },
+    "W": { "deger": 5,  "aciklama": "Bilezik üst alnı – tel ekseni" }
+  },
+
+  "uclar": {
+    "ust": { "dis": "R 1 1/2", "sizdirmazlik": "keten + teflon" },
+    "alt": { "dis": "G 1 1/2", "sizdirmazlik": "klingerit conta (alından)" }
+  },
+
+  "conta": { "dis": 45, "ic": 40, "kalinlik": 2 },
+  "tel": { "malzeme": "Paslanmaz A4" }
+}

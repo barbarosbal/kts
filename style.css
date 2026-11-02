@@ -75,9 +75,15 @@ html, body {
   color: var(--muted);
   font-size: 13px;
 }
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+  margin-top: 10px;
+}
 .pkg {
   display: inline-block;
-  margin-top: 10px;
   padding: 5px 10px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -89,6 +95,64 @@ html, body {
   pointer-events: auto;
 }
 .pkg:hover { border-color: var(--brass); }
+.pkg[hidden] { display: none; }
+
+.models {
+  position: relative;
+  pointer-events: auto;
+}
+.models summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--fg);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+.models summary::-webkit-details-marker { display: none; }
+.models summary::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  margin-top: -3px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform .15s;
+}
+.models[open] summary::after { margin-top: 3px; transform: rotate(-135deg); }
+.models summary:hover, .models[open] summary { border-color: var(--brass); }
+.models summary:focus-visible { outline: 2px solid var(--tech); outline-offset: 2px; }
+.models nav {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  display: grid;
+  gap: 2px;
+  width: 232px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: rgba(20, 23, 29, .97);
+}
+.models nav a {
+  display: block;
+  padding: 7px 10px;
+  border-radius: 7px;
+  color: var(--fg);
+  text-decoration: none;
+}
+.models nav a:hover { background: rgba(255, 255, 255, .07); }
+.models nav a:focus-visible { outline: 2px solid var(--tech); outline-offset: -2px; }
+.models nav a[aria-current] { background: rgba(217, 180, 90, .14); }
+.models nav b { display: block; font-size: 13px; font-weight: 600; }
+.models nav span { color: var(--muted); font-size: 11px; }
 
 .toolbar {
   position: absolute;
@@ -159,6 +223,7 @@ html, body {
 }
 .switch[aria-checked="true"] .track { background: #2f86c7; }
 .switch[aria-checked="true"] .thumb { transform: translateX(14px); }
+.switch:disabled { opacity: .45; cursor: not-allowed; }
 .switch:focus-visible, .views button:focus-visible { outline: 2px solid var(--tech); outline-offset: 2px; }
 
 .hint {
@@ -257,7 +322,7 @@ html, body {
 
 /* 3D alanı daralınca (mobil ya da çizim paneli açıkken) araç çubuğu alta iner */
 @container stage (max-width: 700px) {
-  .toolbar { top: auto; bottom: 14px; right: 50%; transform: translateX(50%); }
+  .toolbar { top: auto; bottom: 14px; left: 12px; right: 12px; flex-wrap: wrap; justify-content: center; gap: 8px; }
   .hint { display: none; }
   .title h1 { font-size: 17px; }
   .brand { margin-bottom: 8px; }
@@ -274,6 +339,11 @@ html, body {
   .toolbar { gap: 6px; }
   .views button { padding: 6px 7px; }
   .switch { gap: 6px; padding: 6px 8px 6px 6px; font-size: 12px; }
+}
+
+/* Basık 3D alanında etiketler tek satıra iner */
+@container stage (max-height: 420px) {
+  .tag span { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
