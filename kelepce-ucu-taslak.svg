@@ -1,0 +1,210 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 990" width="1400" height="990" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+      <path d="M0,1.5 L10,5 L0,8.5 z" fill="#111"/>
+    </marker>
+    <pattern id="h1" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="9" height="9" fill="#fff"/><line x1="0" y1="0" x2="0" y2="9" stroke="#111" stroke-width=".8"/></pattern>
+    <style>
+      .vis{stroke:#111;stroke-width:2.2;stroke-linejoin:round}
+      polygon.vis:not([fill]){fill:#fff}
+      .thin{fill:none;stroke:#111;stroke-width:1}
+      .hid{fill:none;stroke:#111;stroke-width:1.2;stroke-dasharray:7 4}
+      .ctr{fill:none;stroke:#555;stroke-width:0.9;stroke-dasharray:22 4 3 4}
+      .dim{fill:none;stroke:#111;stroke-width:0.9}
+      .dima{fill:none;stroke:#111;stroke-width:0.9;marker-start:url(#arr);marker-end:url(#arr)}
+      .lead{fill:none;stroke:#111;stroke-width:0.9;marker-start:url(#arr)}
+      .grid{fill:none;stroke:#111;stroke-width:1}
+      .t{font-size:14px;fill:#111}
+      .tb{font-size:14px;font-weight:700;fill:#111}
+      .ts{font-size:12px;fill:#333}
+      .tn{font-size:13px;fill:#111}
+      .tl{font-size:10px;fill:#555;letter-spacing:.4px}
+      .h{font-size:18px;font-weight:700;fill:#111;letter-spacing:.5px}
+      .q{fill:#c2410c}
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1400" height="990" fill="#fff"/>
+  <rect x="20" y="20" width="1360" height="950" class="grid" stroke-width="1.6"/>
+
+  <g>
+    <line class="ctr" x1="94" y1="196" x2="662" y2="196"/>
+    <polygon class="vis" points="120.0,175.2 126.4,167.2 181.3,167.2 182.8,169.9 184.8,172.3 187.2,174.2 190.0,175.6 192.9,176.5 196.0,176.8 199.1,176.5 202.0,175.6 204.8,174.2 207.2,172.3 209.2,169.9 210.7,167.2 320.0,167.2 320.0,167.2 328.0,167.2 384.0,108.0 632.0,108.0 640.0,116.0 640.0,136.0 632.0,144.0 540.0,144.0 537.7,144.2 535.4,144.9 533.3,146.0 531.5,147.5 530.0,149.3 528.9,151.4 528.2,153.7 528.0,156.0 528.0,196.0 528.0,196.0 528.0,236.0 528.2,238.3 528.9,240.6 530.0,242.7 531.5,244.5 533.3,246.0 535.4,247.1 537.7,247.8 540.0,248.0 632.0,248.0 640.0,256.0 640.0,276.0 632.0,284.0 384.0,284.0 328.0,224.8 320.0,224.8 320.0,224.8 210.7,224.8 209.2,222.1 207.2,219.7 204.8,217.8 202.0,216.4 199.1,215.5 196.0,215.2 192.9,215.5 190.0,216.4 187.2,217.8 184.8,219.7 182.8,222.1 181.3,224.8 126.4,224.8 120.0,216.8"/>
+    <line class="thin" x1="320" y1="224.8" x2="320" y2="167.2"/>
+    <line class="thin" x1="328" y1="224.8" x2="328" y2="167.2"/>
+    <line class="thin" x1="384" y1="284" x2="384" y2="108"/>
+    
+    <line class="thin" x1="632" y1="256" x2="632" y2="284"/>
+    <line class="thin" x1="126.4" y1="210.6646968374165" x2="181.33575777614132" y2="210.6646968374165"/>
+    <line class="thin" x1="210.6642422238587" y1="210.6646968374165" x2="320" y2="210.6646968374165"/>
+    <line class="thin" x1="632" y1="136" x2="632" y2="108"/>
+    <line class="thin" x1="126.4" y1="181.3353031625835" x2="181.33575777614132" y2="181.3353031625835"/>
+    <line class="thin" x1="210.6642422238587" y1="181.3353031625835" x2="320" y2="181.3353031625835"/>
+    <line class="thin" x1="181.33575777614132" y1="224.8" x2="181.33575777614132" y2="167.2"/>
+    <line class="thin" x1="210.6642422238587" y1="224.8" x2="210.6642422238587" y2="167.2"/>
+    <line class="dim" x1="120" y1="228.8" x2="120" y2="338"/>
+    <line class="dim" x1="320" y1="228.8" x2="320" y2="310"/>
+    <line class="dim" x1="528" y1="204" x2="528" y2="310"/>
+    <line class="dim" x1="640" y1="280" x2="640" y2="338"/>
+    <line class="dim" x1="632" y1="144" x2="686" y2="144"/>
+    <line class="dim" x1="632" y1="248" x2="686" y2="248"/>
+    
+    <line class="dima" x1="120" y1="306" x2="320" y2="306"/>
+    <rect x="186" y="296" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="220" y="311" text-anchor="middle">L = 25</text>
+    
+    <line class="dima" x1="528" y1="306" x2="640" y2="306"/>
+    <rect x="550" y="296" width="68" height="20" fill="#fff"/>
+    <text class="tb q" x="584" y="311" text-anchor="middle">C = 14</text>
+    
+    <line class="dima" x1="120" y1="334" x2="640" y2="334"/>
+    <rect x="346" y="324" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="380" y="339" text-anchor="middle">H = 65</text>
+    
+    <line class="dima" x1="682" y1="144" x2="682" y2="248"/>
+    <rect x="648" y="186" width="68" height="20" fill="#fff"/>
+    <text class="tb q" x="682" y="201" text-anchor="middle">A = 13</text>
+    
+    <polyline class="lead" points="532.8,148.8 406,50 640,50"/>
+    <text class="tb" x="410" y="44">ÇATAL DİBİ R 1,5</text>
+    <text class="ts" x="410" y="66">keskin köşe bırakılmaz</text>
+    
+    <polyline class="lead" points="160,170.6 96,50 330,50"/>
+    <text class="tb" x="100" y="44">1/4″ ALTIGEN SAP</text>
+    <text class="ts" x="100" y="66">E 6.3 · matkap ve vidalama · SW 6,35</text>
+    <text class="h" x="380" y="372" text-anchor="middle">ÖN GÖRÜNÜŞ</text>
+  </g>
+
+  <g>
+    <line class="ctr" x1="94" y1="540" x2="662" y2="540"/>
+    <polygon class="vis" points="120.0,519.2 123.7,514.6 183.4,514.6 185.0,516.4 186.9,517.9 189.0,519.2 191.2,520.1 193.6,520.6 196.0,520.8 198.4,520.6 200.8,520.1 203.0,519.2 205.1,517.9 207.0,516.4 208.6,514.6 320.0,514.6 320.0,511.2 328.0,511.2 384.0,452.0 632.0,452.0 640.0,460.0 640.0,620.0 632.0,628.0 384.0,628.0 328.0,568.8 320.0,568.8 320.0,565.4 208.6,565.4 207.0,563.6 205.1,562.1 203.0,560.8 200.8,559.9 198.4,559.4 196.0,559.2 193.6,559.4 191.2,559.9 189.0,560.8 186.9,562.1 185.0,563.6 183.4,565.4 123.7,565.4 120.0,560.8"/>
+    <line class="thin" x1="328" y1="568.8" x2="328" y2="511.2"/>
+    <line class="thin" x1="384" y1="628" x2="384" y2="452"/>
+    <line class="thin" x1="632" y1="628" x2="632" y2="452"/>
+    <line class="thin" x1="183.3524705969901" y1="565.4" x2="183.3524705969901" y2="514.6"/>
+    <line class="thin" x1="208.6475294030099" y1="565.4" x2="208.6475294030099" y2="514.6"/>
+    <line class="hid" x1="528" y1="610.9929573971954" x2="528" y2="469.00704260280463"/>
+    <line class="hid" x1="540" y1="610.9929573971954" x2="540" y2="469.00704260280463"/>
+    <line class="hid" x1="632" y1="610.9929573971954" x2="632" y2="469.00704260280463"/>
+    <line class="hid" x1="528" y1="469.00704260280463" x2="640" y2="469.00704260280463"/>
+    <line class="hid" x1="528" y1="610.9929573971954" x2="640" y2="610.9929573971954"/>
+    <path class="dim" d="M256 452 V500.6 M256 579.4 V628"/>
+    <text class="tb" x="256" y="444" text-anchor="middle">A</text>
+    <text class="tb" x="256" y="648" text-anchor="middle">A</text>
+    <line class="dim" x1="120" y1="569.4" x2="120" y2="654"/>
+    <line class="dim" x1="196" y1="569.4" x2="196" y2="654"/>
+    <line class="dim" x1="320" y1="572.8" x2="320" y2="654"/>
+    <line class="dim" x1="384" y1="632" x2="384" y2="654"/>
+    <line class="dim" x1="76" y1="514.6" x2="116" y2="514.6"/>
+    <line class="dim" x1="76" y1="565.4" x2="116" y2="565.4"/>
+    <line class="dim" x1="632" y1="452" x2="686" y2="452"/>
+    <line class="dim" x1="632" y1="628" x2="686" y2="628"/>
+    
+    <line class="dima" x1="120" y1="650" x2="196" y2="650"/>
+    
+    <text class="tb q" x="158" y="644" text-anchor="middle">K = 9,5</text>
+    
+    <line class="dima" x1="320" y1="650" x2="384" y2="650"/>
+    
+    <text class="tb" x="352" y="644" text-anchor="middle">T = 8</text>
+    
+    <line class="dima" x1="80" y1="514.6" x2="80" y2="565.4"/>
+    <rect x="46" y="530" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="80" y="545" text-anchor="middle">SW 6,35</text>
+    
+    <line class="dima" x1="682" y1="452" x2="682" y2="628"/>
+    <rect x="648" y="530" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="682" y="545" text-anchor="middle">ØD = 22</text>
+    
+    <polyline class="lead" points="196,520.8 96,404 330,404"/>
+    <text class="tb q" x="100" y="398">BİLYE KANALI Ø4,8 × R2</text>
+    <text class="ts" x="100" y="420">gerçek E 6.3 bite göre kontrol edilir</text>
+    
+    <polyline class="lead" points="592,469.00704260280463 406,404 640,404"/>
+    <text class="tb" x="410" y="398">TIRNAK 4,5 × 17,7</text>
+    <text class="ts" x="410" y="420">kesikli çizgi: çatal kanalı arkada</text>
+    <text class="h" x="380" y="688" text-anchor="middle">YAN GÖRÜNÜŞ</text>
+    <text class="ts" x="380" y="708" text-anchor="middle">ön görünüşe göre 90° döndürülmüş</text>
+  </g>
+
+  <g>
+    <line class="ctr" x1="812" y1="196" x2="1048" y2="196"/>
+    <line class="ctr" x1="930" y1="78" x2="930" y2="314"/>
+    <circle class="vis" style="fill:none" cx="930" cy="196" r="88"/>
+    <polygon class="vis" style="fill:#fff" points="990.0,143.1 993.1,146.8 995.9,150.7 998.5,154.7 1000.9,158.9 1003.0,163.3 1004.8,167.7 1006.4,172.3 1007.7,176.9 1008.7,181.6 1009.4,186.4 1009.9,191.2 1010.0,196.0 1009.9,200.8 1009.4,205.6 1008.7,210.4 1007.7,215.1 1006.4,219.7 1004.8,224.3 1003.0,228.7 1000.9,233.1 998.5,237.3 995.9,241.3 993.1,245.2 990.0,248.9"/>
+    <polygon class="vis" style="fill:#fff" points="870.0,143.1 866.9,146.8 864.1,150.7 861.5,154.7 859.1,158.9 857.0,163.3 855.2,167.7 853.6,172.3 852.3,176.9 851.3,181.6 850.6,186.4 850.1,191.2 850.0,196.0 850.1,200.8 850.6,205.6 851.3,210.4 852.3,215.1 853.6,219.7 855.2,224.3 857.0,228.7 859.1,233.1 861.5,237.3 864.1,241.3 866.9,245.2 870.0,248.9"/>
+    
+    <line class="thin" x1="878" y1="125.0070426028046" x2="878" y2="266.99295739719537"/>
+    <line class="hid" x1="890" y1="125.0070426028046" x2="890" y2="266.99295739719537"/>
+    <line class="thin" x1="982" y1="125.0070426028046" x2="982" y2="266.99295739719537"/>
+    <line class="hid" x1="970" y1="125.0070426028046" x2="970" y2="266.99295739719537"/>
+    <line class="dim" x1="878" y1="121.0070426028046" x2="878" y2="72"/>
+    <line class="dim" x1="982" y1="121.0070426028046" x2="982" y2="72"/>
+    
+    <line class="dima" x1="878" y1="76" x2="982" y2="76"/>
+    <rect x="896" y="66" width="68" height="20" fill="#fff"/>
+    <text class="tb q" x="930" y="81" text-anchor="middle">A = 13</text>
+    <text class="h" x="930" y="342" text-anchor="middle">ÇATAL UCU</text>
+    <text class="ts" x="930" y="362" text-anchor="middle">uçtan bakış · tırnak 4,5 × 17,7</text>
+  </g>
+
+  <g>
+    <line class="ctr" x1="1082" y1="196" x2="1318" y2="196"/>
+    <line class="ctr" x1="1200" y1="78" x2="1200" y2="314"/>
+    <polygon class="vis" fill="url(#h1)" points="1291.7,196.0 1245.8,275.4 1154.2,275.4 1108.3,196.0 1154.2,116.6 1245.8,116.6"/>
+    <circle class="thin" cx="1200" cy="196" r="90"/>
+    <circle class="hid" cx="1200" cy="196" r="60"/>
+    <line class="dim" x1="1248" y1="116.625" x2="1330" y2="116.625"/>
+    <line class="dim" x1="1248" y1="275.375" x2="1330" y2="275.375"/>
+    
+    <line class="dima" x1="1326" y1="116.625" x2="1326" y2="275.375"/>
+    <rect x="1292" y="186" width="68" height="20" fill="#fff"/>
+    <text class="tb" x="1326" y="201" text-anchor="middle">SW 6,35</text>
+    <text class="h" x="1200" y="342" text-anchor="middle">KESİT A–A</text>
+    <text class="ts" x="1200" y="362" text-anchor="middle">köşe Ø7,2 · kesikli daire kanal dibi Ø4,8</text>
+  </g>
+
+  <g>
+    <text class="tb" x="780" y="414">İŞLEME SIRASI</text>
+    <text class="tn" x="780" y="436">1. Torna: gövde Ø22, geçiş, Ø7,2 sap, bilye kanalı.</text>
+    <text class="tn" x="780" y="456">2. Freze (bölücülü): altıgenin 6 yüzeyi, SW 6,35 × 25.</text>
+    <text class="tn" x="780" y="476">3. Freze: çatal kanalı 13 × 14, dip köşe R 1,5, ağız pahı 1 × 45°.</text>
+    <text class="tn" x="780" y="496">4. Isıl işlem: su verme + temperleme, 44–48 HRC.</text>
+    <text class="tn" x="780" y="516">5. Yüzey: siyah oksit. Altıgen ve çatal ölçüsü işlem sonrası kontrol edilir.</text>
+    <text class="tn" x="780" y="536">6. Deneme: vidalama mandreninde kilitlenme, sonra gerçek kelepçede tork testi.</text>
+    <text class="tb q" x="780" y="584">ÜRETİMDEN ÖNCE DOĞRULANACAK</text>
+    <text class="tn" x="780" y="606">1. Kelepçe mekanizması: çatal kulakları döndürüyor mu, sıkma vida / somundan mı?</text>
+    <text class="tn" x="780" y="626">2. Çatal açıklığı A ve derinliği C (şimdilik 13 × 14).</text>
+    <text class="tn" x="780" y="646">3. Gereken sıkma torku (N·m).</text>
+    <text class="tn" x="780" y="666">4. Gövde Ø22 ve boy 65 kelepçenin çevresine sığıyor mu?</text>
+  </g>
+
+  <g>
+    <text class="tb" x="40" y="832">NOTLAR</text>
+    <text class="tn" x="40" y="854">1. Taslak: turuncu ölçüler varsayımdır, gerçek kelepçe ölçülmeden üretime verilmez. Çizim orantılıdır, değerler esastır.</text>
+    <text class="tn" x="40" y="871">2. Genel tolerans ISO 2768-m. Altıgen SW 6,35 +0 / −0,10. Çatal açıklığı A +0,20 / +0,05.</text>
+    <text class="tn" x="40" y="888">3. Sap ISO 1173 E 6.3 (1/4″) uyumlu olacak. Kanal konumu ve çapı ön değerdir, gerçek bir E 6.3 bite göre kontrol edilir.</text>
+    <text class="tn" x="40" y="905">4. Gövde ile altıgen ekseni arasında salgı en çok 0,10. Malzeme: 42CrMo4 (1.7225) ıslah çeliği.</text>
+    <text class="tn" x="40" y="922">5. Sertlik 44–48 HRC, yüzey siyah oksit. Keskin kenarlar 0,3 × 45°.</text>
+    <text class="tn" x="40" y="939">6. En zayıf kesit Ø4,8 kanal boynu, akma torku yaklaşık 15 N·m. Tork ayarlı kullanılır, darbeli vidalamaya uygun değildir.</text>
+  </g>
+
+  <g>
+    <rect x="780" y="780" width="580" height="175" class="grid" stroke-width="1.6"/>
+    <path class="grid" d="M780 830 H1360 M780 872 H1360 M780 914 H1360"/>
+    <path class="grid" d="M980 830 V914 M1180 830 V914"/>
+    <text x="795" y="814" font-size="22" font-weight="700" fill="#111" letter-spacing=".5">KELEPÇE SIKMA UCU</text>
+    <text class="ts" x="1345" y="814" text-anchor="end">Teknik resim</text>
+
+    <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">Çelik 42CrMo4</text>
+    <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
+    <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
+
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">A — taslak</text>
+    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">02.11.2026</text>
+    <text class="tl" x="1190" y="887">DURUM</text><text class="tb q" x="1190" y="906">TASLAK</text>
+
+    <text class="tl" x="790" y="929">REV A</text>
+    <text class="t" x="790" y="947">İlk taslak. Turuncu ölçüler varsayım: kelepçe ölçülmeden üretime verilmez.</text>
+  </g>
+</svg>

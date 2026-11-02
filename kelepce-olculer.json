@@ -1,0 +1,32 @@
+{
+  "parca": "Kelepçe Sıkma Ucu",
+  "rev": "A",
+  "tarih": "02.11.2026",
+  "revNot": "İlk taslak. Turuncu ölçüler varsayım: kelepçe ölçülmeden üretime verilmez.",
+  "onayli": false,
+  "durum": "Kelepçe ölçüsü bekliyor",
+  "malzeme": "42CrMo4 (1.7225) ıslah çeliği",
+  "malzemeKisa": "42CrMo4",
+  "sertlik": "44–48 HRC",
+  "yuzey": "siyah oksit",
+  "akma": 1200,
+  "adet": "1–3 (prototip, fason)",
+  "genelTolerans": "ISO 2768-m",
+
+  "olculer": {
+    "H": { "deger": 65,   "aciklama": "Toplam boy" },
+    "D": { "deger": 22,   "aciklama": "Gövde çapı" },
+    "A": { "deger": 13,   "aciklama": "Çatal açıklığı", "varsayim": true },
+    "C": { "deger": 14,   "aciklama": "Çatal derinliği", "varsayim": true },
+    "R": { "deger": 1.5,  "aciklama": "Çatal dibi köşe yarıçapı" },
+    "S": { "deger": 6.35, "aciklama": "Altıgen anahtar ağzı (1/4 inç)" },
+    "E": { "deger": 7.2,  "aciklama": "Altıgen köşe çapı (tornalanmış sap)" },
+    "L": { "deger": 25,   "aciklama": "Altıgen boyu" },
+    "T": { "deger": 8,    "aciklama": "Altıgen bitiminden gövdeye geçiş boyu" },
+    "K": { "deger": 9.5,  "aciklama": "Bilye kanalı merkezi, sap ucundan", "varsayim": true },
+    "G": { "deger": 4.8,  "aciklama": "Bilye kanalı dip çapı", "varsayim": true }
+  },
+
+  "kanal": { "yaricap": 2 },
+  "pah": { "sap": 1, "govde": 1, "agiz": 1 }
+}

@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node build.mjs && npm run rekor",
     "rekor": "node rekor.mjs && node rekor-paket.mjs && node onbellek.mjs",
-    "site": "node rekor.mjs && node onbellek.mjs"
+    "site": "node rekor.mjs && node kelepce.mjs && node onbellek.mjs"
   },
   "devDependencies": {
     "replicad": "1.1.0",
