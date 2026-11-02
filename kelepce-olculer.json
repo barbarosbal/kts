@@ -1,32 +1,48 @@
 {
   "parca": "Kelepçe Sıkma Ucu",
-  "rev": "A",
+  "rev": "B",
   "tarih": "02.11.2026",
-  "revNot": "İlk taslak. Turuncu ölçüler varsayım: kelepçe ölçülmeden üretime verilmez.",
+  "revNot": "Görsele göre yeni biçim, ağız en az 23, SDS-Plus sap + altıgen kavrama. Turuncu: varsayım.",
   "onayli": false,
   "durum": "Kelepçe ölçüsü bekliyor",
   "malzeme": "42CrMo4 (1.7225) ıslah çeliği",
   "malzemeKisa": "42CrMo4",
   "sertlik": "44–48 HRC",
-  "yuzey": "siyah oksit",
-  "akma": 1200,
+  "yuzey": "kumlama + siyah oksit",
   "adet": "1–3 (prototip, fason)",
   "genelTolerans": "ISO 2768-m",
 
   "olculer": {
-    "H": { "deger": 65,   "aciklama": "Toplam boy" },
-    "D": { "deger": 22,   "aciklama": "Gövde çapı" },
-    "A": { "deger": 13,   "aciklama": "Çatal açıklığı", "varsayim": true },
-    "C": { "deger": 14,   "aciklama": "Çatal derinliği", "varsayim": true },
-    "R": { "deger": 1.5,  "aciklama": "Çatal dibi köşe yarıçapı" },
-    "S": { "deger": 6.35, "aciklama": "Altıgen anahtar ağzı (1/4 inç)" },
-    "E": { "deger": 7.2,  "aciklama": "Altıgen köşe çapı (tornalanmış sap)" },
-    "L": { "deger": 25,   "aciklama": "Altıgen boyu" },
-    "T": { "deger": 8,    "aciklama": "Altıgen bitiminden gövdeye geçiş boyu" },
-    "K": { "deger": 9.5,  "aciklama": "Bilye kanalı merkezi, sap ucundan", "varsayim": true },
-    "G": { "deger": 4.8,  "aciklama": "Bilye kanalı dip çapı", "varsayim": true }
+    "H": { "deger": 77,   "aciklama": "Toplam boy" },
+    "D": { "deger": 32,   "aciklama": "Gövde çapı" },
+    "A": { "deger": 23,   "aciklama": "Ağız açıklığı, en az" },
+    "C": { "deger": 16,   "aciklama": "Tırnak boyu", "varsayim": true },
+    "U": { "deger": 3.5,  "aciklama": "Tırnak kalınlığı" },
+    "V": { "deger": 10,   "aciklama": "Tırnak eni", "varsayim": true },
+    "W": { "deger": 21,   "aciklama": "Alın yuvası çapı" },
+    "Y": { "deger": 2,    "aciklama": "Alın yuvası derinliği" },
+    "P": { "deger": 15,   "aciklama": "Orta cep çapı", "varsayim": true },
+    "Q": { "deger": 7,    "aciklama": "Orta cep derinliği, alından", "varsayim": true },
+    "J": { "deger": 4,    "aciklama": "Orta delik çapı" },
+    "S": { "deger": 10,   "aciklama": "SDS-Plus sap çapı" },
+    "L": { "deger": 40,   "aciklama": "SDS-Plus sap boyu (takma boyu)" },
+    "T": { "deger": 5,    "aciklama": "Sap bitiminden gövdeye geçiş boyu" },
+    "N": { "deger": 9.5,  "aciklama": "Boyun çapı" },
+    "Z": { "deger": 13,   "aciklama": "Halka çapı" }
   },
 
-  "kanal": { "yaricap": 2 },
-  "pah": { "sap": 1, "govde": 1, "agiz": 1 }
+  "sds": {
+    "aciklama": "Kanal ölçüleri görselden oranlandı: gerçek bir SDS-Plus uçtan alınıp burada güncellenecek.",
+    "acik": { "en": 3.5, "derinlik": 2.5, "boy": 33, "cikisR": 8 },
+    "kilit": { "en": 5, "derinlik": 2, "bas": 6, "son": 30 }
+  },
+
+  "kavrama": {
+    "aciklama": "Üç ayaklı mandren çeneleri bu altıgene oturur. Köşeler sap çapında kalır, sap SDS mandrene girer.",
+    "sw": 8.7, "bas": 20.5, "son": 40.5
+  },
+
+  "halka": { "konum": 2, "kalinlik": 2 },
+  "onKanal": { "konum": 3, "derinlik": 0.6 },
+  "pah": { "sap": 1, "govde": 1, "alin": 0.5, "halka": 0.3, "uc": { "ic": 1.5, "dis": 1, "yan": 2 } }
 }

@@ -262,7 +262,7 @@ try {
   model = mod.kur({
     brass: new THREE.MeshStandardMaterial({ color: 0xd8b868, metalness: 1, roughness: 0.3 }),
     conta: new THREE.MeshStandardMaterial({ color: 0x55665c, metalness: 0, roughness: 0.85 }),
-    celik: new THREE.MeshStandardMaterial({ color: 0x8f959d, metalness: 1, roughness: 0.44 }),
+    celik: new THREE.MeshStandardMaterial({ color: 0x7d838b, metalness: 1, roughness: 0.5 }),
   });
   for (const p of model.parcalar) scene.add(p.obj);
   model.ayrikla?.(0);
