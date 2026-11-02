@@ -142,7 +142,7 @@
   <g>
     <text class="tb" x="40" y="832">NOTLAR</text>
     <text class="tn" x="40" y="854">1. Ölçüler onaylıdır. Kesit orantılı çizildi; değerler esastır.</text>
-    <text class="tn" x="40" y="871">2. Genel tolerans ISO 2768-m. Ağız ØW ile boyun arasındaki boşluk bileziğin sökülmesi içindir, doldurulmaz.</text>
+    <text class="tn" x="40" y="871">2. Genel tolerans ISO 2768-m. Kritik: ØD 59 0/−0,2, ØW 55 +0,2/0, ØG 68 +0,3/0, F 46 0/−0,2, T 6 0/−0,1, merkezleme 0/−0,1. Bilezik sıkma 80 Nm'yi geçmez.</text>
     <text class="tn" x="40" y="888">3. Üst uç R 1 1/2 (ISO 7-1, konik 1:16), keten + teflon. Bilezik G 1 1/2 (ISO 228-1), Parça 1 üst dişine oturur.</text>
     <text class="tn" x="40" y="905">4. Sızdırmazlık: conta merkezlemeye oturur, merkezleme Ø39,5 Parça 1 deliğine 3 mm girer; bilezik her açıda aynı sıkar.</text>
     <text class="tn" x="40" y="922">5. Yaka alt pahı 2 × 45° ve ağız üst pahı 4 × 45° sökme için gereklidir. Yaka üst pahı 0,5 geçilmez: tırnak buraya basar.</text>

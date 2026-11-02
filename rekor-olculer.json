@@ -9,6 +9,10 @@
   "malzemeKisa": "CW511L",
   "adet": "1–10 (prototip, fason)",
   "genelTolerans": "ISO 2768-m",
+  "calismaKosulu": "Basınçlı sıcak su, kısa süreli 100–120 °C zirve",
+  "isletmeBasinci": { "min": 10, "max": 12 },
+  "testBasinci": 18,
+  "sikma": { "onerilen": 70, "azami": 80 },
 
   "olculer": {
     "E": { "deger": 36, "aciklama": "Boydan boya delik çapı" },
@@ -35,6 +39,7 @@
 
   "conta": { "dis": 45, "ic": 40, "kalinlik": 2 },
   "merkezleme": { "cap": 39.5, "giris": 3 },
+  "tolerans": { "D": "0/−0,2", "W": "+0,2/0", "G": "+0,3/0", "F": "0/−0,2", "T": "0/−0,1", "merkezleme": "0/−0,1", "celtikYuksekligi": "+0,2/0" },
   "pah": { "yakaUst": 0.5, "yakaAlt": 2, "agiz": 4 },
 
   "sokme": {

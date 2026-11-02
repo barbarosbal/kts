@@ -17,7 +17,7 @@ export function kur(malzeme) {
     ad: 'Montaj',
     alt: `Oynar rekor + kazan altı parçası · Rev ${rekor.SPEC.rev}${rekor.SPEC.onayli ? '' : ' taslak'}`,
     rev: rekor.SPEC.rev,
-    paket: null,
+    paket: r.paket,
     cizim: r.cizim,
     parcalar: [...k.parcalar, ...r.parcalar],
     ayrikla: (e) => rekor.montajPozu(r.parts, e, TASIMA, POZ),

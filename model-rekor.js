@@ -214,7 +214,7 @@ export function kur({ brass, conta }) {
     ad: SPEC.parca,
     alt: `Pirinç ${SPEC.malzemeKisa} · CNC · Rev ${SPEC.rev}${SPEC.onayli ? '' : ' taslak'}`,
     rev: SPEC.rev,
-    paket: null,
+    paket: 'uretim/rekor/',
     cizim: {
       src: 'oynar-rekor-taslak.svg',
       alt: 'Oynar rekor teknik çizimi: kesit, bilezik ve yaka görünüşleri, parça listesi, sökme sırası',

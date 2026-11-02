@@ -2,9 +2,10 @@
   "name": "kts-tools",
   "private": true,
   "type": "module",
-  "description": "olculer.json'dan STEP, DXF, teknik resim ve üretim paketi üretir",
+  "description": "olculer.json ve rekor-olculer.json'dan STEP, DXF, teknik resim ve üretim paketi üretir",
   "scripts": {
-    "build": "node build.mjs && npm run site",
+    "build": "node build.mjs && npm run rekor",
+    "rekor": "node rekor.mjs && node rekor-paket.mjs && node onbellek.mjs",
     "site": "node rekor.mjs && node onbellek.mjs"
   },
   "devDependencies": {

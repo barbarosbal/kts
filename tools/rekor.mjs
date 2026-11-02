@@ -1,62 +1,13 @@
 // rekor-olculer.json → oynar-rekor-taslak.svg (teknik çizim sayfası) + sökme yolu denetimi
 // Kullanım: cd tools && npm run site
-import { readFile, writeFile } from 'node:fs/promises';
+import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import {
+  ROOT, spec, M, BSP, ust, alt, CONTA, BORE_R, NECK_R, COLLAR_R, HEX_R, SPIGOT_R, SEAT_Y, SPIGOT_Y, FACE_Y,
+  COLLAR_TOP, NECK_TOP, LIP, CH_U, CH_B, CH_A, collarOutline, inCollar, contactArea,
+} from './rekor-olcu.mjs';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const spec = JSON.parse(await readFile(path.join(ROOT, 'rekor-olculer.json'), 'utf8'));
-const M = Object.fromEntries(Object.entries(spec.olculer).map(([k, v]) => [k, v.deger]));
-
-const BSP = { major: 47.803, minor: 44.845, pitch: 25.4 / 11, gauge: 12.7 };
-const { ust, alt } = spec.uclar;
-const CONTA = spec.conta;
 const fmt = (n) => String(n).replace('.', ',');
-
-const BORE_R = M.E / 2;
-const NECK_R = M.N / 2;
-const COLLAR_R = M.D / 2;
-const HEX_R = M.S / 2;
-const SPIGOT_R = spec.merkezleme.cap / 2;
-const SEAT_Y = M.C + M.K;
-const SPIGOT_Y = SEAT_Y - spec.merkezleme.giris;
-const FACE_Y = SEAT_Y + CONTA.kalinlik;
-const COLLAR_TOP = FACE_Y + M.T;
-const NECK_TOP = M.H - M.L;
-const LIP = M.B - COLLAR_TOP;
-const CH_U = spec.pah.yakaUst;
-const CH_B = spec.pah.yakaAlt;
-const CH_A = spec.pah.agiz;
-
-// Yaka dış çizgisi: x, z
-function collarOutline(n = 24) {
-  const hf = M.F / 2;
-  const rc = M.R;
-  const ang = Math.asin((hf - rc) / (COLLAR_R - rc));
-  const cx = (COLLAR_R - rc) * Math.cos(ang);
-  const quarter = [];
-  for (let i = 0; i <= n; i++) {
-    const a = (i / n) * ang;
-    quarter.push([COLLAR_R * Math.cos(a), COLLAR_R * Math.sin(a)]);
-  }
-  for (let i = 1; i <= n / 2; i++) {
-    const a = ang + ((2 * i) / n) * (Math.PI / 2 - ang);
-    quarter.push([cx + rc * Math.cos(a), hf - rc + rc * Math.sin(a)]);
-  }
-  const m = (sx, sz, list) => list.map(([x, z]) => [sx * x, sz * z]);
-  return [...quarter, ...m(-1, 1, quarter).reverse(), ...m(-1, -1, quarter), ...m(1, -1, quarter).reverse()];
-}
-
-// Nokta yaka dış çizgisinin içinde mi?
-function inCollar(x, z) {
-  if (Math.abs(z) > M.F / 2 || Math.hypot(x, z) > COLLAR_R) return false;
-  const ef = M.F / 2 - M.R;
-  const cx = Math.sqrt((COLLAR_R - M.R) ** 2 - ef ** 2);
-  const [ax, az] = [Math.abs(x), Math.abs(z)];
-  if (az <= ef || ax <= cx) return true;
-  if (Math.atan2(az - ef, ax - cx) < Math.atan2(ef, cx)) return true;
-  return Math.hypot(ax - cx, az - ef) <= M.R;
-}
 
 // ---------------- sökme yolu denetimi ----------------
 // Gövde noktaları bileziğin katı bölgesine girmeden yol tamamlanıyor mu? En küçük boşluğu bulur.
@@ -123,17 +74,6 @@ function checkPath() {
     worst = m;
   }
   return { worst, at: worst ? null : blockedAt(0.05) };
-}
-
-function contactArea() {
-  const d = 0.05;
-  let n = 0;
-  for (let x = -COLLAR_R; x <= COLLAR_R; x += d) {
-    for (let z = -COLLAR_R; z <= COLLAR_R; z += d) {
-      if (Math.hypot(x, z) >= M.W / 2 && Math.hypot(x, z) <= COLLAR_R - CH_U && inCollar(x, z)) n++;
-    }
-  }
-  return n * d * d;
 }
 
 const path0 = checkPath();
@@ -321,9 +261,10 @@ const steps = `
     <text class="ts" x="780" y="674">Yol simülasyonla denendi: en dar yerde ${fmt(path0.worst)} mm boşluk. Parça 1 takılıyken bilezik kaymaz.</text>`;
 
 // ---------------- notlar ----------------
+const t = spec.tolerans;
 const NOTES = [
   `${spec.onayli ? 'Ölçüler onaylıdır.' : 'Taslak: ölçüler öneridir, onaydan sonra kesinleşir.'} Kesit orantılı çizildi; değerler esastır.`,
-  `Genel tolerans ${spec.genelTolerans}. Ağız ØW ile boyun arasındaki boşluk bileziğin sökülmesi içindir, doldurulmaz.`,
+  `Genel tolerans ${spec.genelTolerans}. Kritik: ØD ${M.D} ${t.D}, ØW ${M.W} ${t.W}, ØG ${M.G} ${t.G}, F ${M.F} ${t.F}, T ${M.T} ${t.T}, merkezleme ${t.merkezleme}. Bilezik sıkma ${spec.sikma.azami} Nm'yi geçmez.`,
   `Üst uç ${ust.dis} (ISO 7-1, konik 1:16), ${ust.sizdirmazlik}. Bilezik ${alt.dis} (ISO 228-1), Parça 1 üst dişine oturur.`,
   `Sızdırmazlık: conta merkezlemeye oturur, merkezleme Ø${fmt(spec.merkezleme.cap)} Parça 1 deliğine ${spec.merkezleme.giris} mm girer; bilezik her açıda aynı sıkar.`,
   `Yaka alt pahı ${CH_B} × 45° ve ağız üst pahı ${CH_A} × 45° sökme için gereklidir. Yaka üst pahı ${fmt(CH_U)} geçilmez: tırnak buraya basar.`,

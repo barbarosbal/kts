@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Üretim Paketi · Oynar Rekor Rev C</title>
+<link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">
+<style>
+  :root { --ink: #0f1a1c; --muted: #5b6670; --line: #d9dde1; --soft: #f4f5f6; --q: #c2410c; --accent: #9a6b12; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; color: var(--ink); font: 14px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 980px; margin: 0 auto; padding: 32px 20px 64px; }
+  header { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; border-bottom: 2px solid var(--ink); padding-bottom: 16px; }
+  header img { height: 24px; display: block; margin-bottom: 14px; }
+  h1 { margin: 0; font-size: 26px; letter-spacing: -.2px; }
+  .meta { color: var(--muted); margin-top: 4px; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; background: #e7f6ec; color:#17663a; white-space: nowrap; }
+  .back { color: var(--muted); font-size: 13px; text-decoration: none; }
+  .back:hover { color: var(--ink); }
+  h2 { font-size: 18px; margin: 36px 0 10px; padding-top: 4px; }
+  h2 small { color: var(--muted); font-weight: 400; font-size: 13px; margin-left: 6px; }
+  p { margin: 8px 0; }
+  .q { color: var(--q); font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 13px; }
+  th, td { text-align: left; vertical-align: top; padding: 7px 9px; border-bottom: 1px solid var(--line); }
+  th { background: var(--soft); font-weight: 600; white-space: nowrap; }
+  td:first-child { white-space: nowrap; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin: 12px 0; }
+  .dl { display: block; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; color: inherit; text-decoration: none; }
+  .dl:hover { border-color: var(--ink); }
+  .dl b { display: block; }
+  .dl span { color: var(--muted); font-size: 12px; }
+  .dl.main { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .dl.main span { color: #c9d1d6; }
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .facts div { padding: 10px 14px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .facts small { display: block; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
+  .facts b { font-size: 15px; }
+  ol.open { padding-left: 20px; }
+  ol.open li { margin: 6px 0; }
+  .callout { border-left: 3px solid var(--accent); background: #fbf7ee; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 12px 0; }
+  .note { color: var(--muted); font-size: 12px; }
+  footer { margin-top: 48px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); padding-top: 12px; }
+  @media print {
+    @page { size: A4; margin: 14mm 12mm; }
+    body { font-size: 11px; }
+    main { padding: 0; max-width: none; }
+    .noprint { display: none !important; }
+    h2 { break-after: avoid; margin-top: 22px; }
+    table, .callout, .facts { break-inside: avoid; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div>
+    <img src="../../brand/ratel-lockup.svg" alt="Ratel Systems">
+    <h1>Üretim Paketi — Oynar Rekor</h1>
+    <div class="meta">Rev C · 02.11.2026 · CW511L (CuZn38As) düşük kurşunlu, çinko kaybına dayanıklı pirinç · 1–10 (prototip, fason)</div>
+  </div>
+  <div style="text-align:right">
+    <span class="badge">Ölçüler onaylı</span><br>
+    <a class="back noprint" href="../../?model=rekor">← 3D model</a>
+  </div>
+</header>
+
+<section class="noprint">
+  <h2>İndir</h2>
+  <div class="grid">
+    <a class="dl main" href="oynar-rekor-revC-uretim-paketi.zip" download><b>Paketin tamamı (ZIP)</b><span>Fason atölyeye gönderilecek dosya · 391 KB</span></a>
+    <a class="dl " href="oynar-rekor-revC-govde.step" download><b>STEP · Gövde</b><span>CAM için, AP242, mm · 117 KB</span></a>
+    <a class="dl " href="oynar-rekor-revC-bilezik.step" download><b>STEP · Bilezik</b><span>CAM için, AP242, mm · 62 KB</span></a>
+    <a class="dl " href="oynar-rekor-revC-montaj.step" download><b>STEP · Montaj</b><span>Gövde, bilezik, conta birlikte · 190 KB</span></a>
+    <a class="dl " href="oynar-rekor-revC-teknik-resim.pdf" download><b>Teknik resim (PDF)</b><span>A3, ölçülü · 327 KB</span></a>
+    <a class="dl " href="oynar-rekor-revC.dxf" download><b>DXF</b><span>Kesitler ve görünüşler, 1:1, mm · 8 KB</span></a>
+    <a class="dl " href="oynar-rekor-revC-uretim-plani.pdf" download><b>Üretim planı (PDF)</b><span>Bu sayfanın baskısı · 245 KB</span></a>
+  </div>
+</section>
+
+<h2>1. Özet</h2>
+<div class="facts">
+  <div><small>Parça</small><b>Oynar Rekor</b></div>
+  <div><small>Revizyon</small><b>C · 02.11.2026</b></div>
+  <div><small>Malzeme</small><b>CW511L</b></div>
+  <div><small>Adet</small><b>1–10 (prototip, fason)</b></div>
+  <div><small>Takım</small><b>Gövde + bilezik + conta</b></div>
+  <div><small>Ağırlık (tahmini)</small><b>0,25 kg gövde · 0,57 kg bilezik</b></div>
+  <div><small>Genel tolerans</small><b>ISO 2768-m</b></div>
+  <div><small>Bağlantı</small><b>R 1 1/2 dış / G 1 1/2 iç</b></div>
+  <div><small>İşletme / test basıncı</small><b>10–12 bar / 18 bar</b></div>
+</div>
+
+<h2>2. Açık konular <small>siparişten önce kapatılacak</small></h2>
+<ol class="open">
+  <li><b>Prototip testi:</b> sızdırmazlık ve sökme hareketi hesap ve simülasyonla doğrulandı. Sipariş öncesi ilk parçada Parça 1 ile 18 bar test ve elle sökme denemesi yapılacak.</li>
+  <li><b>Çözülme payı:</b> sökerken Parça 1 ya da gövde en az 3 mm eksen boyunca çekilebilmeli. Tesisatta bu pay olduğu teyit edilecek.</li>
+  <li><b>Çalışma sıcaklığı:</b> basınçlı sıcak su, kısa süreli 100–120 °C zirve bildirildi; normal ve azami sıcaklık ile conta sınıfı teyit edilecek.</li>
+  <li><b>Yüzey ve markalama:</b> doğal pirinç mi, nikel kaplama mı? Lazer markalama (logo, rev, parti no) istenecek mi?</li>
+</ol>
+
+<h2>3. Çalışma prensibi ve üretilebilirlik</h2>
+<p><b>Bilezik sökülebilir, gövde yerinde kalır.</b> Gövdenin üst dişi bağlıyken bilezik Parça 1'den sökülür, sonra gövdeden de tamamen çıkarılır. Bilezik ağzı çentiksiz, düz yuvarlaktır (Ø55). Yaka (Ø59) ağızdan büyüktür, bu yüzden tırnak yakaya basar ve sıkma her açıda aynıdır. Yakanın iki yanı 46 mm'ye kesik olduğu için bilezik 5 mm yana kaydırılıp 18° eğilince yaka ağızdan sıyrılır.</p>
+<table><thead><tr><th>Adım</th><th>Sökme</th><th>Takma</th></tr></thead><tbody><tr><td>1</td><td>Bilezik Parça 1'den sökülür. Merkezleme deliğinden çıkar, conta alınır.</td><td>Gövde üst dişe sıkılır (bilezik takılı değilken, yaka kesiklerinden SW 46).</td></tr><tr><td>2</td><td>Bilezik 5 mm yana kaydırılır, yakanın bir ucu ağız içine girer.</td><td>Bilezik eğik tutularak yakanın bir ucundan geçirilir.</td></tr><tr><td>3</td><td>Bilezik 18° eğilir, yaka ağızdan sıyrılır.</td><td>Bilezik doğrultulur, tırnak yakanın üstüne gelir.</td></tr><tr><td>4</td><td>Bilezik aşağı alınır. Üst diş hiç açılmaz.</td><td>Conta merkezlemeye takılır, bilezik Parça 1'e 70 Nm ile sıkılır.</td></tr></tbody></table>
+<ul>
+  <li><b>Sızdırmazlık:</b> conta 45 × 40 × 2 merkezleme çıkıntısına oturur. Çıkıntı Ø39,5 Parça 1 deliğine 3 mm girer: conta içeri kaçmaz, gövde eksende kalır ve Parça 1 takılıyken bilezik yana kayamaz. Yaka kesikleri (46) conta dış çapından (Ø45) geniştir, conta alnı tam destekli kalır.</li>
+  <li><b>Kritik pahlar:</b> yaka alt pahı 2 × 45° ve ağız üst pahı 4 × 45° sökme için gereklidir. Yaka üst pahı en fazla 0,5 mm olmalı; bu pah büyürse tırnağın bastığı yüzey kaybolur.</li>
+  <li><b>Sıkma momenti:</b> bilezik SW 75 ile 70 Nm sıkılır, 80 Nm geçilmez. Conta oturması için yaklaşık 60 Nm yeterlidir. Uzun anahtarla aşırı sıkma yaka kulaklarını eğer.</li>
+  <li><b>Gövde bağlama:</b> yaka tarafı ince olduğu için ikinci bağlamada Ø59 çapı yumuşak çeneyle tutulur, anahtar yüzleri son işlem olarak frezelenir.</li>
+  <li><b>Bilezik iç çeltiği:</b> ØG 68 × 13 mm çeltik, ağız Ø55 içinden iç kanal kateriyle açılır. Radyal derinlik 6,5 mm, erişim 19 mm. Diş bu çeltiğe serbest çıkar, ayrı kanal gerekmez.</li>
+  <li><b>Ham altıgen:</b> SW 75 CW511L altıgen çubuk bulunamazsa Ø90 yuvarlaktan altı yüz frezelenir.</li>
+</ul>
+<p><b>Malzeme:</b> parça suyla temas ettiği için CW511L seçildi: kurşun oranı %0,2'nin altında, çinko kaybına dayanıklı (EN ISO 6509). Kurşunlu pirince göre daha zor işlenir, çapak eğilimi fazladır.</p>
+
+<h2>Dayanım kontrolü <small>el hesabı</small></h2>
+<table><thead><tr><th>Durum</th><th>Gerilme</th><th>İzin verilen</th><th>Emniyet</th></tr></thead><tbody><tr><td>12 bar, boyun (et 4 mm)</td><td>6,6 MPa</td><td>140 MPa</td><td>≈ 21,2 kat</td></tr><tr><td>18 bar test, diş dibi (et 4,4 mm)</td><td>9,1 MPa</td><td>140 MPa</td><td>≈ 15,3 kat</td></tr><tr><td>9,3 kN çekme, boyun</td><td>18,5 MPa</td><td>140 MPa</td><td>≈ 7,6 kat</td></tr><tr><td>9,3 kN, tırnak–yaka teması (155 mm²)</td><td>59,9 MPa</td><td>140 MPa</td><td>≈ 2,3 kat</td></tr><tr><td>9,3 kN, yaka kulağı eğilmesi (T = 6)</td><td>93,2 MPa</td><td>140 MPa</td><td>≈ 1,5 kat</td></tr><tr><td>9,3 kN, tırnak kesmesi (6 mm)</td><td>7,3 MPa</td><td>81 MPa</td><td>≈ 11,2 kat</td></tr><tr><td>9,3 kN, iç diş kesmesi (12 mm)</td><td>9,2 MPa</td><td>81 MPa</td><td>≈ 8,9 kat</td></tr><tr><td>200 Nm sıkma, boyun burulması</td><td>21,7 MPa</td><td>81 MPa</td><td>≈ 3,7 kat</td></tr></tbody></table>
+<p class="note">Tasarım yükü 9,3 kN: conta oturması 6,5 kN (30 MPa, Parça 1 üst alın halkası) + 18 bar test basıncı 2,8 kN. Akma için muhafazakâr 140 MPa kabul edildi; kesin değer malzeme sertifikasından alınır. En düşük emniyet yaka kulağı eğilmesindedir; hesap kulağı konsol kiriş sayar, gerçekte yayılma nedeniyle daha iyidir. Bu nedenle sıkma momenti sınırlandı ve ilk parçada test şarttır.</p>
+
+<h2>4. Ölçüler <small>rekor-olculer.json</small></h2>
+<table><thead><tr><th>Harf</th><th>Değer (mm)</th><th>Tolerans</th><th>Açıklama</th></tr></thead><tbody><tr><td><b>ØE</b></td><td>36</td><td>ISO 2768-m</td><td>Boydan boya delik çapı</td></tr><tr><td><b>ØN</b></td><td>44</td><td>ISO 2768-m</td><td>Boyun çapı (çeltik)</td></tr><tr><td><b>H</b></td><td>57</td><td>ISO 2768-m</td><td>Toplam boy</td></tr><tr><td><b>L</b></td><td>20</td><td>ISO 2768-m</td><td>Üst diş boyu</td></tr><tr><td><b>U</b></td><td>6</td><td>ISO 2768-m</td><td>Görünen boyun boyu</td></tr><tr><td><b>B</b></td><td>31</td><td>ISO 2768-m</td><td>Bilezik boyu</td></tr><tr><td><b>C</b></td><td>12</td><td>ISO 2768-m</td><td>Bilezik iç diş boyu</td></tr><tr><td><b>K</b></td><td>5</td><td>ISO 2768-m</td><td>Parça 1 üst ucunun diş bitiminden içeri girişi</td></tr><tr><td><b>S</b></td><td>75</td><td>ISO 2768-m</td><td>Bilezik altıgen anahtar ağzı</td></tr><tr><td><b>ØW</b></td><td>55</td><td>+0,2/0</td><td>Bilezik ağzı çapı (düz yuvarlak)</td></tr><tr><td><b>ØG</b></td><td>68</td><td>+0,3/0</td><td>Bilezik iç çeltik çapı</td></tr><tr><td><b>ØD</b></td><td>59</td><td>0/−0,2</td><td>Yaka çapı</td></tr><tr><td><b>F</b></td><td>46</td><td>0/−0,2</td><td>Yaka kesik ölçüsü (anahtar ağzı)</td></tr><tr><td><b>R</b></td><td>12</td><td>ISO 2768-m</td><td>Yaka kesik köşe yarıçapı</td></tr><tr><td><b>T</b></td><td>6</td><td>0/−0,1</td><td>Yaka kalınlığı</td></tr></tbody></table>
+<p class="note">Merkezleme Ø39,5 0/−0,1, bilezik iç çeltik yüksekliği 13 +0,2/0. Toleranslar sökme yolundaki 0,4 mm boşluğu korumak için tek yönlü verildi: anma ölçüsü en kötü durumdur.</p>
+
+<h2>5. Ham malzeme</h2>
+<table><thead><tr><th>Parça</th><th>Ham</th><th>Kesim boyu</th><th>Ham ağırlık</th><th>10 adet için</th></tr></thead><tbody><tr><td>Gövde</td><td>Ø60 yuvarlak çubuk</td><td>50 mm (boy 43 + alın ve kesme payı)</td><td>1,2 kg</td><td>≈ 0,53 m</td></tr><tr><td>Bilezik</td><td>SW 75 altıgen çubuk (yedek Ø90 yuvarlak)</td><td>38 mm (boy 31 + alın ve kesme payı)</td><td>1,57 kg</td><td>≈ 0,41 m</td></tr><tr><td>Conta</td><td>Klingerit, 2 mm</td><td>Ø45 × Ø40, hazır kesim</td><td>—</td><td>10 adet + yedek</td></tr></tbody></table>
+<p class="note">Çubuklar CW511L, EN 12164 / EN 12168, EN 10204 3.1 sertifikalı.</p>
+
+<h2>6. Operasyon planı <small>fason, prototip</small></h2>
+<h3>Gövde</h3>
+<table><thead><tr><th>Op</th><th>Tezgah / bağlama</th><th>İşlem</th><th>Takım</th></tr></thead><tbody><tr><td>10</td><td>CNC torna — 1. bağlama, yaka tarafı dışarıda</td><td>Alın · merkezleme Ø39,5 × 3 0/−0,1 · conta alnı finiş, Ra 1,6, düz · yaka ØD 59 0/−0,2 · alt pah 2 × 45° · üst pah 0,5 × 45° · delik ØE 36 (boydan) · kesme</td><td>T01, T02, T03, T04, T05</td></tr><tr><td>20</td><td>CNC torna — 2. bağlama, ters, Ø59 yumuşak çene</td><td>Boy alma · boyun çeltiği ØN 44 · dış çap · R 1 1/2 dış diş (11 TPI, 1:16 konik, boyun çeltiğine çıkar) · pah · iç pah</td><td>T01, T02, T06</td></tr><tr><td>30</td><td>CNC freze / C eksenli torna</td><td>Yakanın iki yanı F = 46 0/−0,2, köşeler R12 (kontur)</td><td>T07</td></tr><tr><td>40</td><td>Tezgah dışı</td><td>Çapak alma, yıkama, kurutma</td><td>Çapak alma takımı</td></tr></tbody></table>
+<h3>Bilezik</h3>
+<table><thead><tr><th>Op</th><th>Tezgah / bağlama</th><th>İşlem</th><th>Takım</th></tr></thead><tbody><tr><td>10</td><td>CNC torna — 1. bağlama, üst alın dışarıda</td><td>Alın · 30° altıgen pahı · punta + Ø30 ön delik (boydan) · ağız ØW 55 +0,2/0 · üst pah 4 × 45° · iç çeltik ØG 68 +0,3/0, yükseklik 13 +0,2/0 · kesme</td><td>T01, T02, T03, T04, T05, T08</td></tr><tr><td>20</td><td>CNC torna — 2. bağlama, ters, altıgen yumuşak çene</td><td>Boy alma B = 31 · 30° altıgen pahı · diş dibi deliği Ø45,25 · G 1 1/2 iç diş C = 12 (11 TPI, çeltiğe serbest çıkar) · giriş pahı</td><td>T01, T03, T09</td></tr><tr><td>30</td><td>Tezgah dışı</td><td>Çapak alma, yıkama, kurutma</td><td>Çapak alma takımı</td></tr></tbody></table>
+<h3>Takım montajı ve test</h3>
+<table><thead><tr><th>Op</th><th>İşlem</th><th>Not</th></tr></thead><tbody><tr><td>50</td><td>Kontrol planı, ardından sökme denemesi: bilezik gövdeye takılır ve 5 mm + 18° ile çıkarılır</td><td>Elle, zorlamadan olmalı</td></tr><tr><td>60</td><td>Parça 1 ile 18 bar sızdırmazlık testi, 70 Nm sıkma</td><td>İlk parça ve her adet</td></tr><tr><td>70</td><td>Diş koruma kapakları, parça başı poşet, etiket (parça, rev, adet)</td><td>—</td></tr></tbody></table>
+
+<h2>7. Takım listesi <small>CW511L için tahmini başlangıç değerleri</small></h2>
+<table><thead><tr><th>T</th><th>Takım</th><th>Kullanım</th><th>Vc (m/dk)</th><th>İlerleme</th></tr></thead><tbody><tr><td>T01</td><td>Dış tornalama kateri 35° (VCGT tipi, keskin)</td><td>Kaba + finiş, conta alnı</td><td>180–300</td><td>0,08–0,20 mm/dev</td></tr><tr><td>T02</td><td>Kesme kateri 3 mm</td><td>Kesme, boyun çeltiği</td><td>100–180</td><td>0,05–0,10 mm/dev</td></tr><tr><td>T03</td><td>İç tornalama bıçağı (Ø36 ve üzeri)</td><td>ØE, ØW, iç pahlar</td><td>150–220</td><td>0,06–0,12 mm/dev</td></tr><tr><td>T04</td><td>Punta matkabı 90°</td><td>Merkezleme</td><td>60–100</td><td>0,05–0,10 mm/dev</td></tr><tr><td>T05</td><td>Matkap Ø30 (ağzı köreltilmiş, 0° talaş açısı)</td><td>Ön delik</td><td>60–100</td><td>0,08–0,15 mm/dev</td></tr><tr><td>T06</td><td>Dış diş kateri 55° (Whitworth)</td><td>R 1 1/2 (11 TPI, adım 2,309)</td><td>80–140</td><td>Adım</td></tr><tr><td>T07</td><td>Parmak freze Ø16, 3 ağız (pirinç/alüminyum)</td><td>Yaka kesikleri, köşe R12</td><td>100–180</td><td>0,03–0,06 mm/diş</td></tr><tr><td>T08</td><td>İç kanal kateri, en az 7,5 mm radyal, erişim 21 mm</td><td>İç çeltik ØG 68</td><td>100–160</td><td>0,03–0,06 mm/dev</td></tr><tr><td>T09</td><td>İç diş kateri 55° (Whitworth)</td><td>G 1 1/2 (11 TPI)</td><td>80–140</td><td>Adım</td></tr></tbody></table>
+<p class="note">Değerler başlangıç içindir; atölye kendi takım ve tezgahına göre ayarlar. CW511L kurşunlu pirince göre uzun talaş ve fazla çapak verebilir: ilerleme düşük tutulur, takım keskin olmalıdır.</p>
+
+<h2>8. Kontrol planı <small>prototipte %100</small></h2>
+<table><thead><tr><th>No</th><th>Karakteristik</th><th>Kabul kriteri</th><th>Yöntem / ekipman</th><th>Kayıt</th></tr></thead><tbody><tr><td>1</td><td>Malzeme</td><td>CW511L, Pb ≤ %0,2, çinko kaybına dayanıklı (EN ISO 6509)</td><td>EN 10204 3.1 sertifikası</td><td>Sertifika</td></tr><tr><td>2</td><td>Gövde boyları</td><td>L 20, U 6, T 6 0/−0,1</td><td>Kumpas, yükseklik mihengiri</td><td>Ölçüm raporu</td></tr><tr><td>3</td><td>Yaka</td><td>ØD 59 0/−0,2, F 46 0/−0,2, köşe R12</td><td>Mikrometre, kumpas, radyüs mastarı</td><td>Ölçüm raporu</td></tr><tr><td>4</td><td>Yaka pahları</td><td>Alt 2 × 45°, üst en fazla 0,5 × 45°</td><td>Profil projektörü / pah ölçer</td><td>Ölçüm raporu</td></tr><tr><td>5</td><td>Merkezleme</td><td>Ø39,5 0/−0,1, boy 3</td><td>Mikrometre</td><td>Ölçüm raporu</td></tr><tr><td>6</td><td>Delik, boyun</td><td>ØE 36, ØN 44, boyun eti 4 mm</td><td>Kumpas, iç ölçer</td><td>Ölçüm raporu</td></tr><tr><td>7</td><td>Üst dış diş R 1 1/2</td><td>ISO 7-1, konik 1:16</td><td>R 1 1/2 konik halka mastar</td><td>Ölçüm raporu</td></tr><tr><td>8</td><td>Bilezik</td><td>SW 75, B 31, tırnak 6</td><td>Kumpas</td><td>Ölçüm raporu</td></tr><tr><td>9</td><td>Bilezik ağzı</td><td>ØW 55 +0,2/0, üst pah 4 × 45°, çentik yok</td><td>İç mikrometre</td><td>Ölçüm raporu</td></tr><tr><td>10</td><td>İç çeltik</td><td>ØG 68 +0,3/0, yükseklik 13 +0,2/0</td><td>İç kanal mastarı / kumpas</td><td>Ölçüm raporu</td></tr><tr><td>11</td><td>İç diş G 1 1/2</td><td>ISO 228-1, sınıf A (öneri), boy 12</td><td>Tampon mastar, geçer/geçmez</td><td>Ölçüm raporu</td></tr><tr><td>12</td><td>Conta alnı</td><td>Düz, çapaksız, radyal çizik yok, Ra ≤ 1,6</td><td>Görsel + pürüzlülük numunesi</td><td>Ölçüm raporu</td></tr><tr><td>13</td><td>Sökme denemesi</td><td>Bilezik 5 mm + 18° ile elle takılıp çıkar</td><td>Her takım</td><td>Kontrol listesi</td></tr><tr><td>14</td><td>Sızdırmazlık</td><td>Parça 1 ile 70 Nm, 18 bar (1,5 × 12 bar), 60 s, kaçak yok</td><td>Hidrostatik test (su ile); basınçlı hava kullanılmaz</td><td>Test kaydı</td></tr><tr><td>15</td><td>İlk parça muayenesi</td><td>Tüm karakteristikler</td><td>Ölçüm tablosu + fotoğraf</td><td>İlk parça raporu</td></tr></tbody></table>
+
+<h2>9. Teklif talebi <small>fason atölyeye</small></h2>
+<p>Ekteki STEP modeller ve teknik resme göre Oynar Rekor (Rev C) takımı için fiyat rica ediyoruz.</p>
+<table><thead><tr><th>Kalem</th><th>İstek</th></tr></thead><tbody><tr><td>Adet</td><td>1, 5 ve 10 takım için ayrı birim fiyat (gövde + bilezik)</td></tr><tr><td>Malzeme</td><td>CW511L (CuZn38As) düşük kurşunlu, çinko kaybına dayanıklı pirinç, EN 10204 3.1 sertifikalı · Ø60 yuvarlak ve SW 75 altıgen temin edilebiliyor mu belirtin</td></tr><tr><td>Çalışma koşulu</td><td>Basınçlı sıcak su, kısa süreli 100–120 °C zirve, işletme 10–12 bar; azami sıcaklık teyit edilecek</td></tr><tr><td>Kalite</td><td>ISO 2768-m · 4. bölümdeki kritik toleranslar · diş mastar kontrolü (R 1 1/2 halka, G 1 1/2 tampon) · ilk parça ölçüm raporu</td></tr><tr><td>Teslim</td><td>Çapaksız ve temiz; diş koruma kapaklı, parça başı poşet, etiketli</td></tr><tr><td>Teklifte görmek istediklerimiz</td><td>Birim fiyat, kurulum / programlama bedeli, malzeme, mastar bedeli, termin, teklif geçerlilik süresi, ödeme koşulu</td></tr><tr><td>Not</td><td>Ölçüler onaylıdır (Rev C). Yaka ve ağız pahları sökme için kritiktir, değiştirilmeden uygulanmalıdır; işlenemeyen bir nokta varsa teklif öncesi bildirin.</td></tr></tbody></table>
+
+<footer>Oynar Rekor · Rev C · 02.11.2026 · Bu sayfa ve ekleri <code>rekor-olculer.json</code> dosyasından üretildi.</footer>
+</main>
+</body>
+</html>
