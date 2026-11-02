@@ -1,8 +1,8 @@
 {
   "parca": "Kelepçe Sıkma Ucu v2",
-  "rev": "A",
+  "rev": "B",
   "tarih": "02.11.2026",
-  "revNot": "İlk taslak: v1 Rev B kafa ve sapı, rulmanlı döner kovan. Turuncu: varsayım.",
+  "revNot": "İnce kovan Ø37, yumuşak geçişli Ø40 siper, tırtıl 0,8. Turuncu: varsayım.",
   "onayli": false,
   "durum": "Kelepçe ölçüsü bekliyor",
   "malzeme": "42CrMo4 (1.7225) ıslah çeliği",
@@ -30,8 +30,8 @@
     "N": { "deger": 9.5,  "aciklama": "Boyun çapı" },
     "Z": { "deger": 13,   "aciklama": "Halka çapı" },
     "K": { "deger": 44,   "aciklama": "Kovan boyu (tutma boyu)" },
-    "E": { "deger": 42,   "aciklama": "Kovan dış çapı, tırtıllı" },
-    "F": { "deger": 48,   "aciklama": "Siper çapı" }
+    "E": { "deger": 37,   "aciklama": "Kovan dış çapı, tırtıllı" },
+    "F": { "deger": 40,   "aciklama": "Siper çapı" }
   },
 
   "sds": {
@@ -68,13 +68,14 @@
     "malzeme": "EN AW-6082 T6 alüminyum",
     "malzemeKisa": "Al 6082-T6",
     "yuzey": "siyah eloksal",
-    "aciklama": "Elde serbest döner; iki rulmanı ortadaki iç omuz ayırır. Ön ucundaki siper eli dönen kafadan uzak tutar.",
+    "aciklama": "Elde serbest döner; iki rulmanı ortadaki iç omuz ayırır. Ön uçta yumuşakça genişleyen siper eli dönen kafadan uzak tutar. siper: siper bölgesi boyu, kavis: genişleme boyu, siperR: ön kenar yuvarlatması, arkaR: arka kenar yuvarlatması.",
     "yatakTolerans": "K7",
     "icCap": 27,
-    "siper": 3,
-    "kavis": 1.5,
-    "pah": 1.5,
-    "tirtil": { "tip": "RGE 30°", "adim": 1.2, "derinlik": 0.45, "bas": 2.5, "bosluk": 1 }
+    "siper": 5,
+    "kavis": 3,
+    "siperR": 1,
+    "arkaR": 1.2,
+    "tirtil": { "tip": "RGE 30°", "adim": 0.8, "derinlik": 0.3, "bas": 2.5, "bosluk": 1.5 }
   },
 
   "halka": { "konum": 2, "kalinlik": 2 },

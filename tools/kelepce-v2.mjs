@@ -31,7 +31,7 @@ const ZINCIR = Y_C - Y_K1;                 // segman kanalı ön duvarından day
 const KV_R = M.E / 2;
 const SIPER_R = M.F / 2;
 const YUVA_R = RL.D / 2;
-const TIRTIL_SON = M.K - KV.siper - KV.kavis - KV.tirtil.bosluk;
+const TIRTIL_SON = M.K - KV.siper - KV.tirtil.bosluk;
 
 // ---------------- denetim ----------------
 const uyar = (kosul, metin) => { if (kosul) console.warn(`UYARI: ${metin}`); };
@@ -43,6 +43,8 @@ uyar(YT.omuzCap >= RL.icBilezik || YT.omuzCap <= YT.cap, `dayama omzu Ø${YT.omu
 uyar(M.K < 2 * RL.B + 10, `kovan ${M.K} mm, iki rulman ve iç omuz için kısa`);
 uyar(MANDREN < 8, `kovan mandren burnuna ${fmt(MANDREN)} mm, parmak sıkışır`);
 uyar(SIPER_R <= KV_R, `siper Ø${M.F}, kovandan (Ø${M.E}) büyük değil`);
+uyar(KV_R - YUVA_R - KV.tirtil.derinlik < 2, `kovan et kalınlığı rulman yuvasında ${fmt(+(KV_R - YUVA_R - KV.tirtil.derinlik).toFixed(2))} mm, 2 mm altında`);
+uyar(KV.siper < KV.kavis + KV.siperR, 'siper bölgesi, genişleme ve ön yuvarlatmadan kısa');
 console.log(`UC v2 ağız ≥ ${M.A} · kovan Ø${M.E} × ${M.K} · ${RL.adet} × ${RL.kod} · toplam boy ${M.H} · kafa ${fmt(G)} · mandren boşluğu ${fmt(MANDREN)} mm`);
 
 // ---------------- profiller ----------------
@@ -69,20 +71,24 @@ const kesitYari = [[0, 0], ...sapKesitYol, ...boyunGovde, ...tirnakKalinlik, ...
 const disYari = [[0, 0], ...sapDisYol, ...boyunGovde, ...tirnakKalinlik, [0, FACE_Y]];
 const yanYari = [[0, 0], ...sapYanYol, ...boyunGovde.slice(2), ...tirnakEn];
 
-// Kovan: dış çizgi (arka pahtan siperin ön yuvarlatmasına), ve kesiti (yatak yerleri, iç omuz)
-const R1 = 0.8;                            // siper kenar yuvarlatması
-const YS = Y_R + M.K - KV.siper;           // siper arka yüzü
+// Kovan: dış çizgi (arka yuvarlatmadan siperin ön yuvarlatmasına), ve kesiti (yatak yerleri, iç omuz)
+const R1 = KV.siperR;                      // siper ön kenar yuvarlatması
+const RA = KV.arkaR;                       // arka kenar yuvarlatması
+const YS = Y_R + M.K - KV.siper;           // siper genişlemesinin başı
+const YF = YS + KV.kavis;                  // siper düz bölgesinin başı
 const yay = (cr, cy, rho, a0, a1, n = 6) => Array.from({ length: n }, (_, i) => {
   const a = a0 + ((a1 - a0) * (i + 1)) / n;
   return [cr + rho * Math.cos(a), cy + rho * Math.sin(a)];
 });
+const siperEgrisi = Array.from({ length: 12 }, (_, i) => {
+  const t = (i + 1) / 12;
+  return [KV_R + ((SIPER_R - KV_R) * (1 - Math.cos(Math.PI * t))) / 2, YS + KV.kavis * t];
+});
 const kovanDis = [
-  [KV_R - KV.pah, Y_R],
-  [KV_R, Y_R + KV.pah],
-  [KV_R, YS - KV.kavis],
-  ...yay(KV_R + KV.kavis, YS - KV.kavis, KV.kavis, Math.PI, Math.PI / 2),
-  [SIPER_R - R1, YS],
-  ...yay(SIPER_R - R1, YS + R1, R1, -Math.PI / 2, 0),
+  [KV_R - RA, Y_R],
+  ...yay(KV_R - RA, Y_R + RA, RA, -Math.PI / 2, 0),
+  [KV_R, YS],
+  ...siperEgrisi,
   [SIPER_R, Y_C - R1],
   ...yay(SIPER_R - R1, Y_C - R1, R1, 0, Math.PI / 2),
 ];
@@ -166,8 +172,8 @@ const montaj = `
     ${cross(A1, FACE_Y, -MOUTH_X, -OUTER_X)}
     <polygon class="vis" points="${yari(A1, kovanGorunus, -1)}"/>
     ${tirtil}
-    ${cross(A1, Y_R + KV.pah, 0, -KV_R)}
-    ${cross(A1, YS + R1, 0, -SIPER_R)}
+    ${cross(A1, Y_R + RA, 0, -KV_R)}
+    ${cross(A1, YF, 0, -SIPER_R)}
     ${cross(A1, Y_C - R1, 0, -SIPER_R)}
     ${segmanDis}
     ${balon(4, 322, 70, [vx(SEG_Y0 + 0.6), vy(A1, KANAL_R + 1)])}
@@ -177,7 +183,7 @@ const montaj = `
     ${tirtilEtiket}
     ${extV(vx(0), vy(A1, -SAP_R) + 4, A1 + 158)}
     ${extV(vx(M.L), vy(A1, -SAP_R) + 4, A1 + 132)}
-    ${extV(vx(Y_R), vy(A1, -(KV_R - KV.pah)) + 4, A1 + 132)}
+    ${extV(vx(Y_R), vy(A1, -(KV_R - RA)) + 4, A1 + 132)}
     ${extV(vx(Y_C), vy(A1, -(SIPER_R - R1)) + 4, A1 + 132)}
     ${extV(vx(FACE_Y), vy(A1, -OUTER_X) + 4, A1 + 132)}
     ${extV(X1, vy(A1, -OUTER_X + UC_D) + 4, A1 + 158)}
@@ -185,8 +191,8 @@ const montaj = `
     ${extH(vx(M.H - UC_I), X1 + 44, vy(A1, -MOUTH_X))}
     ${extH(vx(Y_C - R1) + 4, X1 + 116, vy(A1, SIPER_R))}
     ${extH(vx(Y_C - R1) + 4, X1 + 116, vy(A1, -SIPER_R))}
-    ${extH(vx(Y_R + KV.pah) - 4, vx(0) - 40, vy(A1, KV_R))}
-    ${extH(vx(Y_R + KV.pah) - 4, vx(0) - 40, vy(A1, -KV_R))}
+    ${extH(vx(Y_R + RA) - 4, vx(0) - 40, vy(A1, KV_R))}
+    ${extH(vx(Y_R + RA) - 4, vx(0) - 40, vy(A1, -KV_R))}
     ${hdim(vx(0), vx(M.L), A1 + 128, `L = ${fmt(M.L)}`)}
     ${hdim(vx(M.L), vx(Y_R), A1 + 128, fmt(MANDREN))}
     ${hdim(vx(Y_R), vx(Y_C), A1 + 128, `K = ${fmt(M.K)}`)}

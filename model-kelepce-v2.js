@@ -93,28 +93,33 @@ const KV_R = M.E / 2;
 const SIPER_R = M.F / 2;
 const YUVA_R = RL.D / 2;
 const TIRTIL_BAS = KV.tirtil.bas;
-const TIRTIL_SON = M.K - KV.siper - KV.kavis - KV.tirtil.bosluk;
+const TIRTIL_SON = M.K - KV.siper - KV.tirtil.bosluk;
+
+// Siper: tırtıl bitiminden kosinüs eğrisiyle genişler, kısa düz bölge, ön kenar yuvarlatması
+function siperEgrisi(y0, n = 12) {
+  return Array.from({ length: n }, (_, i) => {
+    const t = (i + 1) / n;
+    return [KV_R + ((SIPER_R - KV_R) * (1 - Math.cos(Math.PI * t))) / 2, y0 + KV.kavis * t];
+  });
+}
 
 function kovanProfili() {
-  const { pah, siper, kavis } = KV;
+  const { siperR, arkaR } = KV;
   const k = 0.5;                           // rulman yuvası giriş pahı
-  const r1 = 0.8;                          // siper kenar yuvarlatması
-  const ys = M.K - siper;                  // siper arka yüzü
+  const ys = M.K - KV.siper;               // siper genişlemesinin başı
   // Saat yönünün tersi: arka alından dışa, tırtıl bölgesi atlanır, dış yüzden sipere, ön alından deliğe
   const arka = [
     [YUVA_R + k, 0],
-    [KV_R - pah, 0],
-    [KV_R, pah],
+    [KV_R - arkaR, 0],
+    ...yay(KV_R - arkaR, arkaR, arkaR, -Math.PI / 2, 0).slice(1),
     [KV_R, TIRTIL_BAS],
   ];
   const on = [
     [KV_R, TIRTIL_SON],
-    [KV_R, ys - kavis],
-    ...yay(KV_R + kavis, ys - kavis, kavis, Math.PI, Math.PI / 2).slice(1),
-    [SIPER_R - r1, ys],
-    ...yay(SIPER_R - r1, ys + r1, r1, -Math.PI / 2, 0).slice(1),
-    [SIPER_R, M.K - r1],
-    ...yay(SIPER_R - r1, M.K - r1, r1, 0, Math.PI / 2).slice(1),
+    [KV_R, ys],
+    ...siperEgrisi(ys),
+    [SIPER_R, M.K - siperR],
+    ...yay(SIPER_R - siperR, M.K - siperR, siperR, 0, Math.PI / 2).slice(1),
     [YUVA_R + k, M.K],
     [YUVA_R, M.K - k],
     [YUVA_R, M.K - RL.B],
@@ -259,7 +264,7 @@ function annotate(a) {
   hdim(M.H + 7, MOUTH_X, `A ≥ ${metin(M.A)}`);
 
   a.callout([-OUTER_X, M.H - 6, 0], [-44, M.H + 2, 6], `Tırnak ${metin(M.V)} × ${metin(M.U)}`, 'En ve boy varsayım');
-  a.callout([-SIPER_R, Y_C - 1.5, 0], [-54, Y_C + 6, 6], `Siper Ø${metin(M.F)}`, 'Eli dönen kafadan uzak tutar');
+  a.callout([-SIPER_R, Y_C - 2, 0], [-50, Y_C + 6, 6], `Siper Ø${metin(M.F)}`, 'Eli dönen kafadan uzak tutar');
   a.callout([-KV_R, (Y_R + Y_C) / 2 + 6, 0], [-56, (Y_R + Y_C) / 2 + 8, 6], `Döner kovan Ø${metin(M.E)} × ${metin(M.K)}`, `${KV.malzemeKisa} · ${KV.yuzey} · tırtıl`);
   a.callout([-KV_R, Y_R + RL.B / 2, 0], [-54, Y_R - 4, 6], `${RL.adet} × ${RL.kod}`, `Rulman ${RL.d} × ${RL.D} × ${RL.B} · ${SG.standart} segman`);
   const { sw, bas, son } = SPEC.kavrama;
@@ -337,7 +342,7 @@ export function kur({ celik }) {
     parcalar: Object.values(parts).map((obj) => ({ obj })),
     ayrikla: (e) => ayrikla(parts, e),
     occluder: { r: KV_R, y0: Y_R, y1: Y_C },
-    golge: 110,
+    golge: 100,
     fit: (tech, ayrik) => (ayrik
       ? { y: 128, h: tech ? 150 : 134, w: tech ? 120 : 64 }
       : { y: M.H / 2, h: tech ? 92 : 80, w: tech ? 112 : 56 }),
