@@ -12,6 +12,7 @@
   "et": 4,
   "isletmeBasinci": { "min": 10, "max": 12 },
   "testBasinci": 18,
+  "calismaKosulu": "Basınçlı sıcak su, kısa süreli 100–120 °C zirve",
 
   "olculer": {
     "D":  { "deger": 48,  "aciklama": "Gövde dış çapı (et = (ØD − ØE) / 2)" },
