@@ -9,8 +9,8 @@ Pirinç (CW511L) parçaların ve çelik (42CrMo4) sıkma uçlarının 360° dön
 
 - `olculer.json`: kazan altı parçası. 3D görüntüleyici, STEP, DXF, teknik resim ve üretim planı bu dosyadan üretilir.
 - `rekor-olculer.json`: oynar rekor (ölçüler onaylı). 3D görüntüleyici, STEP, DXF, teknik resim ve üretim planı bu dosyadan üretilir.
-- `kelepce-olculer.json`: kelepçe sıkma ucu (taslak, `varsayim` işaretli ölçüler gerçek kelepçe ölçülünce kesinleşir). 3D görüntüleyici ve teknik çizim bu dosyadan üretilir; üretim paketi henüz yok.
-- `kelepce-v2-olculer.json`: kelepçe sıkma ucu v2, ayrı ürün (taslak). Mil v1 Rev B kafa ve sapını taşır; kafanın arkasında iki rulmanla (6804-2RS) serbest dönen tırtıllı alüminyum kovan vardır, el kovanı tutup ucu kelepçenin dibinden destekler. Kafa, tırnak ve SDS ölçüleri v1 ile ayrı tutulur: kelepçe ölçülünce iki dosya da güncellenir. `ayrik` görüntüleyicideki ayrık görünümün ötelemeleridir.
+- `kelepce-olculer.json`: kelepçe sıkma ucu (taslak, `varsayim` işaretli ölçüler gerçek kelepçe ölçülünce kesinleşir). 3D görüntüleyici ve teknik çizim bu dosyadan üretilir; üretim paketi henüz yok. `markalama` alanı gövdeye sarılan Ratel logosunun (`brand/ratel-lockup.svg`, lazer markalama) yüksekliğini ve yerini tutar.
+- `kelepce-v2-olculer.json`: kelepçe sıkma ucu v2, ayrı ürün (taslak). Mil v1 ile aynı kafa ve sapı taşır (logo yok); kafanın arkasında iki rulmanla (6804-2RS) serbest dönen tırtıllı alüminyum kovan vardır, el kovanı tutup ucu kelepçenin dibinden destekler. Kafa, tırnak ve SDS ölçüleri v1 ile ayrı tutulur: kelepçe ölçülünce iki dosya da güncellenir. `ayrik` görüntüleyicideki ayrık görünümün ötelemeleridir.
 
 Ölçü değişince:
 

@@ -1,8 +1,8 @@
 {
   "parca": "Kelepçe Sıkma Ucu",
-  "rev": "B",
+  "rev": "C",
   "tarih": "02.11.2026",
-  "revNot": "Görsele göre yeni biçim, ağız en az 23, SDS-Plus sap + altıgen kavrama. Turuncu: varsayım.",
+  "revNot": "Gövdeye Ratel logosu, lazer markalama. Turuncu: varsayım.",
   "onayli": false,
   "durum": "Kelepçe ölçüsü bekliyor",
   "malzeme": "42CrMo4 (1.7225) ıslah çeliği",
@@ -40,6 +40,13 @@
   "kavrama": {
     "aciklama": "Üç ayaklı mandren çeneleri bu altıgene oturur. Köşeler sap çapında kalır, sap SDS mandrene girer.",
     "sw": 8.7, "bas": 20.5, "son": 40.5
+  },
+
+  "markalama": {
+    "aciklama": "Ratel logosu, tek renk lazer markalama. Gövde çevresine sarılır, tırnaklardan birinin altında ortalanır; siyah oksitten sonra döner eksenli lazerle işlenir.",
+    "logo": "brand/ratel-lockup.svg",
+    "yukseklik": 5,
+    "alt": 4
   },
 
   "halka": { "konum": 2, "kalinlik": 2 },

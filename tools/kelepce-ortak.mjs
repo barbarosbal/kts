@@ -248,9 +248,9 @@ export function kesitA(u, CX, NY, HS) {
 }
 
 // ---------------- sayfa ----------------
-// bloklar: çizim grupları; desen: ek tarama desenleri; antet: { ad, malzeme }
-export function sayfa(spec, { bloklar, notlar, desen = '', stil = '', antet }) {
-  const notes = notlar.map((t, i) => `<text class="tn" x="40" y="${854 + i * 17}">${i + 1}. ${t}</text>`).join('\n    ');
+// bloklar: çizim grupları; desen: ek tarama desenleri; not: NOTLAR başlığı ve satır yerleşimi; antet: { ad, malzeme }
+export function sayfa(spec, { bloklar, notlar, not = { baslik: 832, ilk: 854, adim: 17 }, desen = '', stil = '', antet }) {
+  const notes = notlar.map((t, i) => `<text class="tn" x="40" y="${not.ilk + i * not.adim}">${i + 1}. ${t}</text>`).join('\n    ');
   const durumKisa = spec.onayli ? 'ONAYLI' : 'TASLAK';
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 990" width="1400" height="990" font-family="Arial, Helvetica, sans-serif">
   <defs>
@@ -285,7 +285,7 @@ ${bloklar.map((b) => `
   </g>
 `).join('')}
   <g>
-    <text class="tb" x="40" y="832">NOTLAR</text>
+    <text class="tb" x="40" y="${not.baslik}">NOTLAR</text>
     ${notes}
   </g>
 
