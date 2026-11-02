@@ -141,7 +141,7 @@
 
   <g>
     <text class="tb" x="40" y="832">NOTLAR</text>
-    <text class="tn" x="40" y="854">1. Taslak: ölçüler öneridir, onaydan sonra kesinleşir. Kesit orantılı çizildi; değerler esastır.</text>
+    <text class="tn" x="40" y="854">1. Ölçüler onaylıdır. Kesit orantılı çizildi; değerler esastır.</text>
     <text class="tn" x="40" y="871">2. Genel tolerans ISO 2768-m. Ağız ØW ile boyun arasındaki boşluk bileziğin sökülmesi içindir, doldurulmaz.</text>
     <text class="tn" x="40" y="888">3. Üst uç R 1 1/2 (ISO 7-1, konik 1:16), keten + teflon. Bilezik G 1 1/2 (ISO 228-1), Parça 1 üst dişine oturur.</text>
     <text class="tn" x="40" y="905">4. Sızdırmazlık: conta merkezlemeye oturur, merkezleme Ø39,5 Parça 1 deliğine 3 mm girer; bilezik her açıda aynı sıkar.</text>
@@ -161,11 +161,11 @@
     <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
     <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
 
-    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">C — taslak</text>
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">C — onaylı</text>
     <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">02.11.2026</text>
-    <text class="tl" x="1190" y="887">DURUM</text><text class="tb q" x="1190" y="906">TASLAK</text>
+    <text class="tl" x="1190" y="887">DURUM</text><text class="tb" x="1190" y="906">ONAYLI</text>
 
     <text class="tl" x="790" y="929">REV C</text>
-    <text class="t" x="790" y="947">Bilezik ağzı düz yuvarlak: yaka kaydırılıp eğilerek çıkar, conta merkezlemeli.</text>
+    <text class="t" x="790" y="947">Ölçüler onaylandı. Bilezik ağzı düz yuvarlak, yaka kaydırılıp eğilerek çıkar.</text>
   </g>
 </svg>

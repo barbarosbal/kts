@@ -8,7 +8,7 @@ Pirinç (CW511L) parçaların 360° döndürülebilir 3D modelleri, teknik çizi
 ## Ölçüler tek yerde
 
 - `olculer.json`: kazan altı parçası. 3D görüntüleyici, STEP, DXF, teknik resim ve üretim planı bu dosyadan üretilir.
-- `rekor-olculer.json`: oynar rekor (taslak). 3D görüntüleyici ve teknik çizim bu dosyadan üretilir; üretim paketi henüz yok.
+- `rekor-olculer.json`: oynar rekor (ölçüler onaylı). 3D görüntüleyici ve teknik çizim bu dosyadan üretilir; üretim paketi henüz yok.
 
 Ölçü değişince:
 

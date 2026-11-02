@@ -322,7 +322,7 @@ const steps = `
 
 // ---------------- notlar ----------------
 const NOTES = [
-  'Taslak: ölçüler öneridir, onaydan sonra kesinleşir. Kesit orantılı çizildi; değerler esastır.',
+  `${spec.onayli ? 'Ölçüler onaylıdır.' : 'Taslak: ölçüler öneridir, onaydan sonra kesinleşir.'} Kesit orantılı çizildi; değerler esastır.`,
   `Genel tolerans ${spec.genelTolerans}. Ağız ØW ile boyun arasındaki boşluk bileziğin sökülmesi içindir, doldurulmaz.`,
   `Üst uç ${ust.dis} (ISO 7-1, konik 1:16), ${ust.sizdirmazlik}. Bilezik ${alt.dis} (ISO 228-1), Parça 1 üst dişine oturur.`,
   `Sızdırmazlık: conta merkezlemeye oturur, merkezleme Ø${fmt(spec.merkezleme.cap)} Parça 1 deliğine ${spec.merkezleme.giris} mm girer; bilezik her açıda aynı sıkar.`,

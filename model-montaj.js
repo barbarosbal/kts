@@ -15,7 +15,7 @@ export function kur(malzeme) {
 
   return {
     ad: 'Montaj',
-    alt: `Oynar rekor + kazan altı parçası · Rev ${rekor.SPEC.rev} taslak`,
+    alt: `Oynar rekor + kazan altı parçası · Rev ${rekor.SPEC.rev}${rekor.SPEC.onayli ? '' : ' taslak'}`,
     rev: rekor.SPEC.rev,
     paket: null,
     cizim: r.cizim,
