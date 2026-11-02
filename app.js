@@ -199,16 +199,20 @@ techBtn.addEventListener('click', () => setTech(!tech));
 let burst = null;
 let burstE = 0;
 
+// gecikme: önce kilit dönüşü, sonra eksen boyunca ayrılma
 function applyBurst(e) {
   burstE = e;
+  const a = model.gecikme ?? 0;
+  const slide = Math.max(0, (e - a) / (1 - a));
+  const turn = a ? Math.min(1, e / a) : e;
   for (const p of model.parcalar) {
-    p.obj.position.y = p.y0 + p.ayrik * e;
-    p.obj.rotation.y = (p.donus ?? 0) * 2 * Math.PI * e;
+    p.obj.position.y = p.y0 + p.ayrik * slide;
+    p.obj.rotation.y = (p.donus ?? 0) * 2 * Math.PI * turn;
   }
 }
 
 function stepBurst(now) {
-  const t = Math.min(1, (now - burst.t0) / 900);
+  const t = Math.min(1, (now - burst.t0) / 1300);
   const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   applyBurst(lerp(burst.from, burst.to, e));
   if (t === 1) burst = null;
@@ -264,7 +268,6 @@ try {
   const mod = await import(`kts/${MODEL_ID}`);
   model = mod.kur({
     brass: new THREE.MeshStandardMaterial({ color: 0xd8b868, metalness: 1, roughness: 0.3 }),
-    steel: new THREE.MeshStandardMaterial({ color: 0xd6dade, metalness: 1, roughness: 0.28 }),
     conta: new THREE.MeshStandardMaterial({ color: 0x55665c, metalness: 0, roughness: 0.85 }),
   });
   for (const p of model.parcalar) {

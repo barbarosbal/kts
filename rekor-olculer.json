@@ -1,8 +1,8 @@
 {
   "parca": "Oynar Rekor",
-  "rev": "A",
+  "rev": "B",
   "tarih": "02.11.2026",
-  "revNot": "İlk taslak: tel kilitli altıgen bilezik, ölçüler öneri.",
+  "revNot": "Tel kilit kaldırıldı: kesik yaka bilezik ağzından geçer, 90° çevrilince tutar.",
   "onayli": false,
   "durum": "Taslak — ölçüler öneri",
   "malzeme": "CW511L (CuZn38As) düşük kurşunlu, çinko kaybına dayanıklı pirinç",
@@ -11,18 +11,20 @@
   "genelTolerans": "ISO 2768-m",
 
   "olculer": {
-    "E": { "deger": 36, "aciklama": "Boydan boya delik çapı" },
-    "N": { "deger": 44, "aciklama": "Boyun çapı (çeltik)" },
-    "H": { "deger": 60, "aciklama": "Toplam boy" },
-    "L": { "deger": 20, "aciklama": "Üst diş boyu" },
-    "U": { "deger": 12, "aciklama": "Görünen boyun boyu" },
-    "B": { "deger": 28, "aciklama": "Bilezik boyu" },
-    "C": { "deger": 14, "aciklama": "Bilezik iç diş boyu" },
-    "S": { "deger": 60, "aciklama": "Bilezik altıgen anahtar ağzı" },
-    "K": { "deger": 41, "aciklama": "Boyun anahtar yüzü ağzı" },
-    "A": { "deger": 9,  "aciklama": "Anahtar yüzü boyu" },
-    "T": { "deger": 3,  "aciklama": "Tel kilit çapı" },
-    "W": { "deger": 5,  "aciklama": "Bilezik üst alnı – tel ekseni" }
+    "E": { "deger": 36,   "aciklama": "Boydan boya delik çapı" },
+    "N": { "deger": 44,   "aciklama": "Boyun çapı (çeltik)" },
+    "H": { "deger": 54,   "aciklama": "Toplam boy" },
+    "L": { "deger": 20,   "aciklama": "Üst diş boyu" },
+    "U": { "deger": 6,    "aciklama": "Görünen boyun boyu" },
+    "B": { "deger": 28,   "aciklama": "Bilezik boyu" },
+    "C": { "deger": 14,   "aciklama": "Bilezik iç diş boyu" },
+    "S": { "deger": 70,   "aciklama": "Bilezik altıgen anahtar ağzı" },
+    "D": { "deger": 58,   "aciklama": "Yaka çapı" },
+    "F": { "deger": 46,   "aciklama": "Yaka kesik ölçüsü (anahtar ağzı)" },
+    "T": { "deger": 6,    "aciklama": "Yaka kalınlığı" },
+    "W": { "deger": 46.5, "aciklama": "Bilezik ağzı dar ölçü" },
+    "A": { "deger": 58.6, "aciklama": "Bilezik ağzı geniş ölçü" },
+    "G": { "deger": 59,   "aciklama": "Bilezik iç çeltik çapı" }
   },
 
   "uclar": {
@@ -30,6 +32,5 @@
     "alt": { "dis": "G 1 1/2", "sizdirmazlik": "klingerit conta (alından)" }
   },
 
-  "conta": { "dis": 45, "ic": 40, "kalinlik": 2 },
-  "tel": { "malzeme": "Paslanmaz A4" }
+  "conta": { "dis": 45, "ic": 40, "kalinlik": 2 }
 }
