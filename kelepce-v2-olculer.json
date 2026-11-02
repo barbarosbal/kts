@@ -1,8 +1,8 @@
 {
   "parca": "Kelepçe Sıkma Ucu v2",
-  "rev": "B",
+  "rev": "C",
   "tarih": "02.11.2026",
-  "revNot": "İnce kovan Ø37, yumuşak geçişli Ø40 siper, tırtıl 0,8. Turuncu: varsayım.",
+  "revNot": "Kovanın arka düz bandına Ratel logosu, lazer markalama. Turuncu: varsayım.",
   "onayli": false,
   "durum": "Kelepçe ölçüsü bekliyor",
   "malzeme": "42CrMo4 (1.7225) ıslah çeliği",
@@ -75,7 +75,14 @@
     "kavis": 3,
     "siperR": 1,
     "arkaR": 1.2,
-    "tirtil": { "tip": "RGE 30°", "adim": 0.8, "derinlik": 0.3, "bas": 2.5, "bosluk": 1.5 }
+    "tirtil": { "tip": "RGE 30°", "adim": 0.8, "derinlik": 0.3, "bas": 10.5, "bosluk": 1.5 }
+  },
+
+  "markalama": {
+    "aciklama": "Ratel logosu, tek renk lazer markalama. Kovanın arka düz bandına sarılır (tırtıl bu bandın önünden başlar); siyah eloksal üstünde beyaz çıkar. alt: kovan arka alnından logonun alt kenarına. Kovan serbest döndüğü için çevredeki yeri önemsizdir; görüntüleyicide açılışta kameraya bakar.",
+    "logo": "brand/ratel-lockup.svg",
+    "yukseklik": 5,
+    "alt": 3
   },
 
   "halka": { "konum": 2, "kalinlik": 2 },

@@ -238,6 +238,52 @@ function segmanGeometrisi() {
     .rotateX(-Math.PI / 2);
 }
 
+// ---------------- markalama ----------------
+// Ratel logosu: lazer markalama, kovanın arka düz bandına sarılır; siyah eloksal üstünde beyaz.
+// Logo tek renk maskeye çevrilir, kovan yüzeyinin hemen üstündeki ince bir bantta gösterilir.
+const MARK = SPEC.markalama;
+const LOGO = await (async () => {
+  try {
+    const img = new Image();
+    img.src = MARK.logo;
+    await img.decode();
+    const c = document.createElement('canvas');
+    c.width = 4096;
+    c.height = Math.round((c.width * img.naturalHeight) / img.naturalWidth);
+    const g = c.getContext('2d');
+    g.drawImage(img, 0, 0, c.width, c.height);
+    g.globalCompositeOperation = 'source-in';
+    g.fillStyle = '#fff';
+    g.fillRect(0, 0, c.width, c.height);
+    return c;
+  } catch (err) {
+    console.warn('Logo yüklenemedi', err);
+    return null;
+  }
+})();
+const MARK_MERKEZ = THREE.MathUtils.degToRad(-50);  // açılıştaki izometrik kameraya bakar
+
+function logoBandi() {
+  const aci = (MARK.yukseklik * LOGO.width) / LOGO.height / KV_R;
+  const r = KV_R + 0.02;
+  const tex = new THREE.CanvasTexture(LOGO);
+  tex.anisotropy = 8;
+  const geo = new THREE.CylinderGeometry(r, r, MARK.yukseklik, 128, 1, true, MARK_MERKEZ - aci / 2, aci)
+    .translate(0, MARK.alt + MARK.yukseklik / 2, 0);
+  const mat = new THREE.MeshStandardMaterial({
+    color: 0xe8eaed,
+    map: tex,
+    metalness: 0.1,
+    roughness: 0.55,
+    transparent: true,
+    depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -4,
+  });
+  return new THREE.Mesh(geo, mat);
+}
+
 // ---------------- teknik katman ----------------
 function annotate(a) {
   const dim = (x, y0, y1, name) => a.dim(x, y0, y1, `${name} = ${metin(M[name])}`);
@@ -266,6 +312,11 @@ function annotate(a) {
   a.callout([-OUTER_X, M.H - 6, 0], [-44, M.H + 2, 6], `Tırnak ${metin(M.V)} × ${metin(M.U)}`, 'En ve boy varsayım');
   a.callout([-SIPER_R, Y_C - 2, 0], [-50, Y_C + 6, 6], `Siper Ø${metin(M.F)}`, 'Eli dönen kafadan uzak tutar');
   a.callout([-KV_R, (Y_R + Y_C) / 2 + 6, 0], [-56, (Y_R + Y_C) / 2 + 8, 6], `Döner kovan Ø${metin(M.E)} × ${metin(M.K)}`, `${KV.malzemeKisa} · ${KV.yuzey} · tırtıl`);
+  if (LOGO) {
+    const y = Y_R + MARK.alt + MARK.yukseklik / 2;
+    a.callout([KV_R * Math.sin(MARK_MERKEZ - 0.35), y, KV_R * Math.cos(MARK_MERKEZ - 0.35)], [-58, Y_R + 12, 6],
+      'Ratel logosu', `lazer markalama · h ${metin(MARK.yukseklik)} · beyaz`);
+  }
   a.callout([-KV_R, Y_R + RL.B / 2, 0], [-54, Y_R - 4, 6], `${RL.adet} × ${RL.kod}`, `Rulman ${RL.d} × ${RL.D} × ${RL.B} · ${SG.standart} segman`);
   const { sw, bas, son } = SPEC.kavrama;
   a.callout([-SAP_R, 32, 0], [-40, 26, 6], 'Altıgen kavrama', `SW ${metin(sw)} × ${metin(son - bas)} · mandren çeneleri`);
@@ -313,6 +364,7 @@ export function kur({ celik }) {
   kovan.add(new THREE.Mesh(creased(lathe(arka)), eloksal));
   kovan.add(new THREE.Mesh(creased(lathe(on)), eloksal));
   kovan.add(new THREE.Mesh(tirtilYuzeyi(), eloksal));
+  if (LOGO) kovan.add(logoBandi());
   kovan.position.y = Y_R;
 
   const rulman = () => {

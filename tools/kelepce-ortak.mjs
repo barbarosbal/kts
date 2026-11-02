@@ -247,6 +247,84 @@ export function kesitA(u, CX, NY, HS) {
     <text class="ts" x="${CX}" y="${NY + 166}" text-anchor="middle">altıgen · kesikli daire sap Ø${fmt(M.S)} · köşeler bu çapta</text>`;
 }
 
+// ---------------- logo ----------------
+// Lazer markalama logosu: SVG dosyası ve viewBox ölçüsü (logo birimi)
+export async function logoOku(dosya) {
+  const svg = await readFile(path.join(ROOT, dosya), 'utf8');
+  const [, , LW, LH] = svg.match(/viewBox="([^"]+)"/)[1].trim().split(/[\s,]+/).map(Number);
+  return { svg, LW, LH };
+}
+
+// Ramer–Douglas–Peucker: çizimde görünmeyecek kadar küçük kırılmalar atılır
+function sadelestir(pts, tol) {
+  if (pts.length < 3) return pts;
+  const [ax, ay] = pts[0];
+  const [bx, by] = pts.at(-1);
+  const len = Math.hypot(bx - ax, by - ay) || 1e-9;
+  let iMax = 0;
+  let dMax = 0;
+  for (let i = 1; i < pts.length - 1; i++) {
+    const [px, py] = pts[i];
+    const d = Math.abs((bx - ax) * (ay - py) - (ax - px) * (by - ay)) / len;
+    if (d > dMax) [iMax, dMax] = [i, d];
+  }
+  if (dMax <= tol) return [pts[0], pts.at(-1)];
+  return [...sadelestir(pts.slice(0, iMax + 1), tol).slice(0, -1), ...sadelestir(pts.slice(iMax), tol)];
+}
+
+// Logo yolları yalnız M, L, C içerir; eğriler parçalara bölünüp izdüşürülür
+function logoYol(d, logoNokta) {
+  const tok = d.match(/[MLCZz]|-?\d*\.?\d+(?:e-?\d+)?/g);
+  const halkalar = [];
+  let cur = null;
+  let p = [0, 0];
+  let cmd = null;
+  for (let i = 0; i < tok.length;) {
+    if (/[A-Za-z]/.test(tok[i])) cmd = tok[i++];
+    const n = () => +tok[i++];
+    if (cmd === 'M') {
+      p = [n(), n()];
+      cur = [logoNokta(...p)];
+      halkalar.push(cur);
+      cmd = 'L';
+    } else if (cmd === 'L') {
+      p = [n(), n()];
+      cur.push(logoNokta(...p));
+    } else if (cmd === 'C') {
+      const [c1, c2, e] = [[n(), n()], [n(), n()], [n(), n()]];
+      for (const t of [1 / 3, 2 / 3, 1]) {
+        const k = 1 - t;
+        cur.push(logoNokta(
+          k ** 3 * p[0] + 3 * k * k * t * c1[0] + 3 * k * t * t * c2[0] + t ** 3 * e[0],
+          k ** 3 * p[1] + 3 * k * k * t * c1[1] + 3 * k * t * t * c2[1] + t ** 3 * e[1],
+        ));
+      }
+      p = e;
+    } else {
+      i++;
+    }
+  }
+  // Kapalı halkada uçlar çakışır: en uzak noktadan ikiye bölünüp ayrı ayrı sadeleştirilir
+  const halka = (h) => {
+    const [x0, y0] = h[0];
+    let k = 1;
+    h.forEach(([x, y], i) => { if (Math.hypot(x - x0, y - y0) > Math.hypot(h[k][0] - x0, h[k][1] - y0)) k = i; });
+    return [...sadelestir(h.slice(0, k + 1), 0.12).slice(0, -1), ...sadelestir(h.slice(k), 0.12)];
+  };
+  return halkalar
+    .map(halka)
+    .filter((h) => h.length > 2)
+    .map((h) => `M${h.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(' ')}Z`)
+    .join('');
+}
+
+// Logonun her yolu nokta(u, v) ile çizime izdüşürülür (u sağa, v aşağı, logo birimi)
+export function logoYollari(svg, nokta) {
+  return [...svg.matchAll(/<path[^>]*\sd="([^"]+)"/g)]
+    .map((m) => `<path class="mark" fill-rule="evenodd" d="${logoYol(m[1], nokta)}"/>`)
+    .join('\n    ');
+}
+
 // ---------------- sayfa ----------------
 // bloklar: çizim grupları; desen: ek tarama desenleri; not: NOTLAR başlığı ve satır yerleşimi; antet: { ad, malzeme }
 export function sayfa(spec, { bloklar, notlar, not = { baslik: 832, ilk: 854, adim: 17 }, desen = '', stil = '', antet }) {

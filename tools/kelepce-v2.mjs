@@ -2,7 +2,7 @@
 // Kullanım: cd tools && npm run site
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { ROOT, oku, fmt, uc, gorunus, hdim, vdim, extV, extH, note, agiz, kesitA, sayfa } from './kelepce-ortak.mjs';
+import { ROOT, oku, fmt, uc, gorunus, hdim, vdim, extV, extH, note, agiz, kesitA, sayfa, logoOku, logoYollari } from './kelepce-ortak.mjs';
 
 const spec = await oku('kelepce-v2-olculer.json');
 const U = uc(spec);
@@ -45,6 +45,16 @@ uyar(MANDREN < 8, `kovan mandren burnuna ${fmt(MANDREN)} mm, parmak sıkışır`
 uyar(SIPER_R <= KV_R, `siper Ø${M.F}, kovandan (Ø${M.E}) büyük değil`);
 uyar(KV_R - YUVA_R - KV.tirtil.derinlik < 2, `kovan et kalınlığı rulman yuvasında ${fmt(+(KV_R - YUVA_R - KV.tirtil.derinlik).toFixed(2))} mm, 2 mm altında`);
 uyar(KV.siper < KV.kavis + KV.siperR, 'siper bölgesi, genişleme ve ön yuvarlatmadan kısa');
+// Logo kovanın arka düz bandında: arka yuvarlatma ile tırtıl başı arasında, kenarlara en az 1 mm
+const MARK = spec.markalama;
+const LOGO = await logoOku(MARK.logo);
+const MK = MARK.yukseklik / LOGO.LH;       // logo birimi → mm
+const MARK_YAY = LOGO.LW * MK;             // çevre yönünde yay boyu
+const MARK_ACI = Math.round((MARK_YAY / KV_R) * (180 / Math.PI));
+const MARK_UST = MARK.alt + MARK.yukseklik; // kovan arka alnından
+uyar(MARK.alt < KV.arkaR + 1 || MARK_UST > KV.tirtil.bas - 1, `logo (${MARK.alt}–${MARK_UST}) kovanın düz bandından (${KV.arkaR}–${KV.tirtil.bas}) taşıyor ya da kenara 1 mm'den yakın`);
+uyar(MARK_ACI > 120, `logo kovanda ${MARK_ACI}° sarıyor, uçları okunmaz`);
+console.log(`LOGO  ${MARK.yukseklik} × ${MARK_YAY.toFixed(1)} yay (${MARK_ACI}°) · kovan arka alnından ${MARK.alt}`);
 console.log(`UC v2 ağız ≥ ${M.A} · kovan Ø${M.E} × ${M.K} · ${RL.adet} × ${RL.kod} · toplam boy ${M.H} · kafa ${fmt(G)} · mandren boşluğu ${fmt(MANDREN)} mm`);
 
 // ---------------- profiller ----------------
@@ -149,6 +159,27 @@ const tirtilEtiket = `
     <text class="tb" x="${TX0}" y="${TY0 - 4}" text-anchor="middle">TIRTIL</text>
     <text class="tb" x="${TX0}" y="${TY0 + 14}" text-anchor="middle">${KV.tirtil.tip} ${fmt(KV.tirtil.adim)}</text>`;
 
+// Logo, montajın alt yarısında (görünüş) kovan üstünde: çevre yönünde sinüsle daralır, harf üstleri kafaya.
+// Kovan serbest döndüğünden logo görünen yarının ortasına (45°) konur.
+const MARK_FI = Math.PI / 4;
+const logoGorunus = logoYollari(LOGO.svg, (u, v) => [
+  X0 + S * (Y_R + MARK_UST - v * MK),
+  A1 + S * KV_R * Math.sin(MARK_FI + ((u - LOGO.LW / 2) * MK) / KV_R),
+]);
+
+// Açınım: logo düz, okunur; yay boyu ölçülü
+const AC_X = 64;
+const AC_Y = 56;
+const AC_S = 6.5;                          // 1 mm = 6,5 px
+const AC_W = +(AC_S * MARK_YAY).toFixed(1);
+const acinim = `
+    ${logoYollari(LOGO.svg, (u, v) => [AC_X + AC_S * MK * u, AC_Y + AC_S * MK * v])}
+    ${extV(AC_X, AC_Y - 2, 36)}
+    ${extV(AC_X + AC_W, AC_Y - 2, 36)}
+    ${hdim(AC_X, AC_X + AC_W, 42, `yay ${fmt(+MARK_YAY.toFixed(1))}`)}
+    <text class="tb" x="${AC_X}" y="${AC_Y + AC_S * MARK.yukseklik + 20}">LAZER MARKALAMA · AÇINIM</text>
+    <text class="ts" x="${AC_X}" y="${AC_Y + AC_S * MARK.yukseklik + 36}">h ${fmt(MARK.yukseklik)} · kovan arka alnından ${fmt(MARK.alt)} · ${MARK_ACI}° · beyaz</text>`;
+
 const tirtil = `<rect x="${vx(Y_R + KV.tirtil.bas)}" y="${A1}" width="${(S * (TIRTIL_SON - KV.tirtil.bas)).toFixed(1)}" height="${(S * KV_R).toFixed(1)}" fill="url(#kn)"/>`;
 
 const montaj = `
@@ -172,10 +203,12 @@ const montaj = `
     ${cross(A1, FACE_Y, -MOUTH_X, -OUTER_X)}
     <polygon class="vis" points="${yari(A1, kovanGorunus, -1)}"/>
     ${tirtil}
+    ${logoGorunus}
     ${cross(A1, Y_R + RA, 0, -KV_R)}
     ${cross(A1, YF, 0, -SIPER_R)}
     ${cross(A1, Y_C - R1, 0, -SIPER_R)}
     ${segmanDis}
+    ${acinim}
     ${balon(4, 322, 70, [vx(SEG_Y0 + 0.6), vy(A1, KANAL_R + 1)])}
     ${balon(2, 400, 70, [vx(Y_R + 22), vy(A1, KV_R - 2)])}
     ${balon(3, 480, 70, [vx(Y_C - RL.B / 2), vy(A1, (RL.disBilezik + RL.D) / 4)])}
@@ -294,7 +327,7 @@ const ISLEM = [
   `Mil torna: sap, halka, yatak yeri Ø${fmt(YT.cap)} (taşlama payı), kanal, omuz, kafa Ø${fmt(M.D)}, alın ve cep.`,
   `Mil freze: SDS kanalları, altıgen SW ${fmt(spec.kavrama.sw)}, iki tırnak ve dış düz yüzler.`,
   `Isıl işlem ${spec.sertlik}; yatak yeri Ø${fmt(YT.cap)} ${YT.tolerans} taşlanır; kumlama + siyah oksit.`,
-  `Kovan torna: Ø${fmt(M.E)}, siper Ø${fmt(M.F)}, yatak yerleri Ø${fmt(RL.D)} ${KV.yatakTolerans}; tırtıl; ${KV.yuzey}.`,
+  `Kovan torna: Ø${fmt(M.E)}, siper Ø${fmt(M.F)}, yatak yerleri Ø${fmt(RL.D)} ${KV.yatakTolerans}; tırtıl; ${KV.yuzey}; lazer logo.`,
   'Rulmanlar kovana preslenir; kovan saptan mile sürülür, segman takılır.',
   'Deneme: kovan elde serbest döner; matkapta 2 dk boşta, sonra kelepçede tork.',
 ];
@@ -324,6 +357,7 @@ const NOTES = [
   `Kovan alnı kafadan ${fmt(YT.omuzBoy)} mm geride kalır; dönen kafa ile duran kovan birbirine değmez.`,
   'SDS-Plus matkapta darbe kapalı kullanılır. El kovanı siperin arkasından tutar, ucu kelepçeye bastırır.',
   'Üç ayaklı mandrende uç halkaya dayanana kadar sürülür, çeneler altıgene oturur. 1/4″ altıgen mandrene girmez.',
+  `Markalama: Ratel logosu (${MARK.logo}), tek renk, eloksaldan sonra; beyaz çıkar, kabartı bırakmaz.`,
 ];
 
 const desen = `
@@ -334,8 +368,9 @@ const desen = `
 const svg = sayfa(spec, {
   bloklar: [montaj, milYan, agizG, kesitAG, planlar],
   notlar: NOTES,
+  not: { baslik: 822, ilk: 842, adim: 16.5 },
   desen,
-  stil: '\n      .bal{fill:#fff;stroke:#111;stroke-width:1.2}',
+  stil: '\n      .bal{fill:#fff;stroke:#111;stroke-width:1.2}\n      .mark{fill:#111;stroke:none}',
   antet: { ad: 'KELEPÇE SIKMA UCU v2', malzeme: `${spec.malzemeKisa} + Al 6082` },
 });
 
