@@ -153,6 +153,96 @@ const X1 = X0 + S * M.H;
 const vx = (y) => +(X0 + S * y).toFixed(1);
 const vy = (axis, r) => +(axis - S * r).toFixed(1);
 
+// ---------------- markalama ----------------
+// Ratel logosu gövde çevresine sarılır, ortası tırnaklardan birinin altında. Yan görünüş o tırnağa
+// bakar: logo eksen yönünde dik okunur (harf üstleri tırnağa), çevre yönünde sinüsle daralır.
+const MARK = spec.markalama;
+const logoSvg = await readFile(path.join(ROOT, MARK.logo), 'utf8');
+const [, , LW, LH] = logoSvg.match(/viewBox="([^"]+)"/)[1].trim().split(/[\s,]+/).map(Number);
+const MK = MARK.yukseklik / LH;            // logo birimi → mm
+const MARK_Y = BODY_Y + MARK.alt;          // logonun alt kenarı
+const MARK_YAY = LW * MK;                  // çevre yönünde yay boyu
+const MARK_ACI = Math.round((MARK_YAY / BODY_R) * (180 / Math.PI));
+const MARK_UST = MARK_Y + MARK.yukseklik;
+if (MARK.alt < CH_G + 1 || MARK_UST > GROOVE_Y - GROOVE_D - 1) {
+  console.warn(`UYARI: logo (${MARK_Y}–${MARK_UST}) gövdenin düz bandından (${BODY_Y + CH_G}–${GROOVE_Y - GROOVE_D}) taşıyor ya da kenara 1 mm'den yakın`);
+}
+if (MARK_ACI > 120) console.warn(`UYARI: logo gövdede ${MARK_ACI}° sarıyor, uçları okunmaz`);
+console.log(`LOGO  ${MARK.yukseklik} × ${MARK_YAY.toFixed(1)} yay (${MARK_ACI}°) · gövde arka yüzünden ${MARK.alt}`);
+
+// Logo birimi (u sağa, v aşağı) → yan görünüş
+function logoNokta(u, v) {
+  const s = (u - LW / 2) * MK;
+  return [X0 + S * (MARK_UST - v * MK), A2 + S * BODY_R * Math.sin(s / BODY_R)];
+}
+
+// Ramer–Douglas–Peucker: çizimde görünmeyecek kadar küçük kırılmalar atılır
+function sadelestir(pts, tol) {
+  if (pts.length < 3) return pts;
+  const [ax, ay] = pts[0];
+  const [bx, by] = pts.at(-1);
+  const len = Math.hypot(bx - ax, by - ay) || 1e-9;
+  let iMax = 0;
+  let dMax = 0;
+  for (let i = 1; i < pts.length - 1; i++) {
+    const [px, py] = pts[i];
+    const d = Math.abs((bx - ax) * (ay - py) - (ax - px) * (by - ay)) / len;
+    if (d > dMax) [iMax, dMax] = [i, d];
+  }
+  if (dMax <= tol) return [pts[0], pts.at(-1)];
+  return [...sadelestir(pts.slice(0, iMax + 1), tol).slice(0, -1), ...sadelestir(pts.slice(iMax), tol)];
+}
+
+// Logo yolları yalnız M, L, C içerir; eğriler parçalara bölünüp izdüşürülür
+function logoYol(d) {
+  const tok = d.match(/[MLCZz]|-?\d*\.?\d+(?:e-?\d+)?/g);
+  const halkalar = [];
+  let cur = null;
+  let p = [0, 0];
+  let cmd = null;
+  for (let i = 0; i < tok.length;) {
+    if (/[A-Za-z]/.test(tok[i])) cmd = tok[i++];
+    const n = () => +tok[i++];
+    if (cmd === 'M') {
+      p = [n(), n()];
+      cur = [logoNokta(...p)];
+      halkalar.push(cur);
+      cmd = 'L';
+    } else if (cmd === 'L') {
+      p = [n(), n()];
+      cur.push(logoNokta(...p));
+    } else if (cmd === 'C') {
+      const [c1, c2, e] = [[n(), n()], [n(), n()], [n(), n()]];
+      for (const t of [1 / 3, 2 / 3, 1]) {
+        const k = 1 - t;
+        cur.push(logoNokta(
+          k ** 3 * p[0] + 3 * k * k * t * c1[0] + 3 * k * t * t * c2[0] + t ** 3 * e[0],
+          k ** 3 * p[1] + 3 * k * k * t * c1[1] + 3 * k * t * t * c2[1] + t ** 3 * e[1],
+        ));
+      }
+      p = e;
+    } else {
+      i++;
+    }
+  }
+  // Kapalı halkada uçlar çakışır: en uzak noktadan ikiye bölünüp ayrı ayrı sadeleştirilir
+  const halka = (h) => {
+    const [x0, y0] = h[0];
+    let k = 1;
+    h.forEach(([x, y], i) => { if (Math.hypot(x - x0, y - y0) > Math.hypot(h[k][0] - x0, h[k][1] - y0)) k = i; });
+    return [...sadelestir(h.slice(0, k + 1), 0.12).slice(0, -1), ...sadelestir(h.slice(k), 0.12)];
+  };
+  return halkalar
+    .map(halka)
+    .filter((h) => h.length > 2)
+    .map((h) => `M${h.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join(' ')}Z`)
+    .join('');
+}
+
+const logoCizim = [...logoSvg.matchAll(/<path[^>]*\sd="([^"]+)"/g)]
+  .map((m) => `<path class="mark" fill-rule="evenodd" d="${logoYol(m[1])}"/>`)
+  .join('\n    ');
+
 const yari = (axis, pts, side = 1) => pts.map(([r, y]) => `${vx(y).toFixed(1)},${vy(axis, side * r).toFixed(1)}`).join(' ');
 const tumu = (axis, upper) => yari(axis, [...upper, ...upper.map(([r, y]) => [-r, y]).reverse()]);
 
@@ -227,9 +317,20 @@ const ovalY = [KI.bas + KI.en / 2, KI.son - KI.en / 2].map(vx);
 const ovalR = (S * KI.en) / 2;
 const oval = `<path class="thin" d="M${ovalY[0]} ${A2 - ovalR} H${ovalY[1]} A${ovalR} ${ovalR} 0 0 1 ${ovalY[1]} ${A2 + ovalR} H${ovalY[0]} A${ovalR} ${ovalR} 0 0 1 ${ovalY[0]} ${A2 - ovalR} Z"/>`;
 
+// Logo notu: yan görünüşün sağ altında, ØD ölçüsünün altında
+const MN = [548, 690];
+const logoUc = logoNokta(LW * 0.78, LH * 0.62).map((n) => +n.toFixed(1));
+const logoNot = `
+    <polyline class="lead" points="${logoUc.join(',')} ${MN[0] - 4},${MN[1] + 6} ${MN[0] + 206},${MN[1] + 6}"/>
+    <text class="tb" x="${MN[0]}" y="${MN[1]}">LAZER MARKALAMA</text>
+    <text class="ts" x="${MN[0]}" y="${MN[1] + 22}">Ratel logosu · h ${fmt(MARK.yukseklik)} · yay ${fmt(+MARK_YAY.toFixed(1))} (${MARK_ACI}°)</text>
+    <text class="ts" x="${MN[0]}" y="${MN[1] + 38}">arka yüzden ${fmt(MARK.alt)} · tırnak altında ortalı</text>`;
+
 const yanGorunus = `
     <line class="ctr" x1="${X0 - 26}" y1="${A2}" x2="${X1 + 22}" y2="${A2}"/>
     <polygon class="vis" points="${tumu(A2, yanYari)}"/>
+    ${logoCizim}
+    ${logoNot}
     ${oval}
     ${along(A2, AC_TABAN, 0, AC.boy - AC_CIKIS, 'hid')}
     ${along(A2, -AC_TABAN, 0, AC.boy - AC_CIKIS, 'hid')}
@@ -340,6 +441,7 @@ const ISLEM = [
   `Freze (bölücülü): 2 açık ve 2 kilit kanalı, 90° aralıklı; altıgen SW ${fmt(KV_SW)} × ${fmt(KV_SON - KV_BAS)}.`,
   `Freze: iki tırnak ${fmt(M.V)} × ${fmt(M.U)}, dış düz yüzler ${fmt(2 * OUTER_X)}, uç pahları.`,
   `Isıl işlem: su verme + temperleme, ${spec.sertlik}. Yüzey: ${spec.yuzey}.`,
+  `Lazer markalama: Ratel logosu, gövde çevresinde ${MARK_ACI}° yay, döner eksenle.`,
   'Deneme: SDS-Plus ve üç ayaklı mandrende oturma, sonra gerçek kelepçede tork testi.',
 ];
 
@@ -366,8 +468,9 @@ const NOTES = [
   `Sertlik ${spec.sertlik}, yüzey ${spec.yuzey}. Keskin kenarlar 0,3 × 45°.`,
   `SDS-Plus matkapta darbe kapalı kullanılır. Altıgen köşeleri Ø${fmt(M.S)} içinde kalır, sap SDS mandrene girer.`,
   'Üç ayaklı mandrende uç halkaya dayanana kadar sürülür, çeneler altıgene oturur. 1/4″ altıgen mandrene girmez.',
+  `Markalama: Ratel logosu (${MARK.logo}), tek renk, siyah oksitten sonra. Kabartı ve çapak bırakmaz.`,
 ];
-const notes = NOTES.map((t, i) => `<text class="tn" x="40" y="${854 + i * 17}">${i + 1}. ${t}</text>`).join('\n    ');
+const notes = NOTES.map((t, i) => `<text class="tn" x="40" y="${842 + i * 16.5}">${i + 1}. ${t}</text>`).join('\n    ');
 
 const durumKisa = spec.onayli ? 'ONAYLI' : 'TASLAK';
 
@@ -394,6 +497,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 990" widt
       .tl{font-size:10px;fill:#555;letter-spacing:.4px}
       .h{font-size:18px;font-weight:700;fill:#111;letter-spacing:.5px}
       .q{fill:#c2410c}
+      .mark{fill:#111;stroke:none}
     </style>
   </defs>
 
@@ -416,7 +520,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 990" widt
   </g>
 
   <g>
-    <text class="tb" x="40" y="832">NOTLAR</text>
+    <text class="tb" x="40" y="822">NOTLAR</text>
     ${notes}
   </g>
 

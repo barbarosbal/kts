@@ -9,7 +9,7 @@ Pirinç (CW511L) parçaların ve çelik (42CrMo4) sıkma ucunun 360° döndürü
 
 - `olculer.json`: kazan altı parçası. 3D görüntüleyici, STEP, DXF, teknik resim ve üretim planı bu dosyadan üretilir.
 - `rekor-olculer.json`: oynar rekor (ölçüler onaylı). 3D görüntüleyici, STEP, DXF, teknik resim ve üretim planı bu dosyadan üretilir.
-- `kelepce-olculer.json`: kelepçe sıkma ucu (taslak, `varsayim` işaretli ölçüler gerçek kelepçe ölçülünce kesinleşir). 3D görüntüleyici ve teknik çizim bu dosyadan üretilir; üretim paketi henüz yok.
+- `kelepce-olculer.json`: kelepçe sıkma ucu (taslak, `varsayim` işaretli ölçüler gerçek kelepçe ölçülünce kesinleşir). 3D görüntüleyici ve teknik çizim bu dosyadan üretilir; üretim paketi henüz yok. `markalama` alanı gövdeye sarılan Ratel logosunun (`brand/ratel-lockup.svg`, lazer markalama) yüksekliğini ve yerini tutar.
 
 Ölçü değişince:
 

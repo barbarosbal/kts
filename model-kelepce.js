@@ -160,6 +160,52 @@ function buildBit() {
   return toCreasedNormals(body.geometry, THREE.MathUtils.degToRad(30));
 }
 
+// Ratel logosu: lazer markalama, gövde çevresine sarılır. Logo tek renk maskeye çevrilir,
+// gövdenin hemen üstündeki ince bir bantta gösterilir; ortası tırnaklardan birinin (−X) altında.
+const LOGO = await (async () => {
+  try {
+    const img = new Image();
+    img.src = SPEC.markalama.logo;
+    await img.decode();
+    const c = document.createElement('canvas');
+    c.width = 4096;
+    c.height = Math.round((c.width * img.naturalHeight) / img.naturalWidth);
+    const g = c.getContext('2d');
+    g.drawImage(img, 0, 0, c.width, c.height);
+    g.globalCompositeOperation = 'source-in';
+    g.fillStyle = '#fff';
+    g.fillRect(0, 0, c.width, c.height);
+    return c;
+  } catch (err) {
+    console.warn('Logo yüklenemedi', err);
+    return null;
+  }
+})();
+const MARK = SPEC.markalama;
+const MARK_Y = BODY_Y + MARK.alt;          // logonun alt kenarı
+const MARK_YAY = LOGO ? (MARK.yukseklik * LOGO.width) / LOGO.height : 0;
+
+function logoBand() {
+  const aci = MARK_YAY / BODY_R;
+  const r = BODY_R + 0.02;
+  const tex = new THREE.CanvasTexture(LOGO);
+  tex.anisotropy = 8;
+  const geo = new THREE.CylinderGeometry(r, r, MARK.yukseklik, 128, 1, true, 1.5 * Math.PI - aci / 2, aci)
+    .translate(0, MARK_Y + MARK.yukseklik / 2, 0);
+  const mat = new THREE.MeshStandardMaterial({
+    color: 0xd4d8dc,
+    map: tex,
+    metalness: 0.2,
+    roughness: 0.6,
+    transparent: true,
+    depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -4,
+  });
+  return new THREE.Mesh(geo, mat);
+}
+
 function annotate(a) {
   const dim = (x, y0, y1, name) => a.dim(x, y0, y1, `${name} = ${metin(M[name])}`);
   const hdim = (y, r, text) => {
@@ -185,10 +231,22 @@ function annotate(a) {
   hdim(M.H + 7, MOUTH_X, `A ≥ ${metin(M.A)}`);
 
   a.callout([-OUTER_X, M.H - 6, 0], [-40, M.H + 2, 6], `Tırnak ${metin(M.V)} × ${metin(M.U)}`, 'En ve boy varsayım');
-  a.callout([-BODY_R, BODY_Y + 8, 0], [-42, BODY_Y - 2, 6], `Gövde Ø${metin(M.D)}`, `${SPEC.malzemeKisa} · ${SPEC.sertlik}`);
+  a.callout([-BODY_R, BODY_Y + 2, 0], [-42, BODY_Y - 2, 6], `Gövde Ø${metin(M.D)}`, `${SPEC.malzemeKisa} · ${SPEC.sertlik}`);
+  if (LOGO) {
+    const t = THREE.MathUtils.degToRad(-80);
+    a.callout([BODY_R * Math.sin(t), MARK_Y + MARK.yukseklik / 2, BODY_R * Math.cos(t)], [-48, FACE_Y + 5, 6],
+      'Ratel logosu', `lazer markalama · h ${metin(MARK.yukseklik)}`);
+  }
   const { sw, bas, son } = SPEC.kavrama;
   a.callout([-SAP_R, 32, 0], [-34, 28, 6], 'Altıgen kavrama', `SW ${metin(sw)} × ${metin(son - bas)} · mandren çeneleri`);
   a.callout([-SAP_R, 12, 0], [-30, 9, 6], 'SDS-Plus sap', `Ø${metin(M.S)} × ${metin(M.L)} · 2 açık + 2 kilit kanalı`);
+}
+
+function uc(celik) {
+  const g = new THREE.Group();
+  g.add(new THREE.Mesh(buildBit(), celik));
+  if (LOGO) g.add(logoBand());
+  return g;
 }
 
 export function kur({ celik }) {
@@ -199,9 +257,9 @@ export function kur({ celik }) {
     paket: null,
     cizim: {
       src: 'kelepce-ucu-taslak.svg',
-      alt: 'Kelepçe sıkma ucu teknik çizimi: yarım kesit ve yan görünüş, ağız görünüşü, SDS-Plus sap kesiti, işleme sırası',
+      alt: 'Kelepçe sıkma ucu teknik çizimi: yarım kesit ve Ratel logolu yan görünüş, ağız görünüşü, SDS-Plus sap kesiti, işleme sırası',
     },
-    parcalar: [{ obj: new THREE.Mesh(buildBit(), celik) }],
+    parcalar: [{ obj: uc(celik) }],
     occluder: { r: BODY_R, y0: BODY_Y, y1: FACE_Y },
     golge: 90,
     fit: (tech) => ({ y: M.H / 2, h: tech ? 70 : 64, w: tech ? 80 : 40 }),
