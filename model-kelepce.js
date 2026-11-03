@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
 import { Brush, Evaluator, ADDITION, SUBTRACTION, INTERSECTION } from 'three-bvh-csg';
-import { metin } from 'kts/ortak';
+import { metin, markaMaske, silindirMarka } from 'kts/ortak';
 
 // Tüm ölçüler kelepce-olculer.json'dan gelir (mm). Parça ekseni +Y, orijin SDS-Plus sap ucunun merkezi.
 // Tek parça: dönel profil tornadan; sap kanalları, iki tırnak ve dış düz yüzeyler frezeden çıkar.
@@ -160,51 +160,15 @@ function buildBit() {
   return toCreasedNormals(body.geometry, THREE.MathUtils.degToRad(30));
 }
 
-// Ratel logosu: lazer markalama, gövde çevresine sarılır. Logo tek renk maskeye çevrilir,
-// gövdenin hemen üstündeki ince bir bantta gösterilir; ortası tırnaklardan birinin (−X) altında.
-const LOGO = await (async () => {
-  try {
-    const img = new Image();
-    img.src = SPEC.markalama.logo;
-    await img.decode();
-    const c = document.createElement('canvas');
-    c.width = 4096;
-    c.height = Math.round((c.width * img.naturalHeight) / img.naturalWidth);
-    const g = c.getContext('2d');
-    g.drawImage(img, 0, 0, c.width, c.height);
-    g.globalCompositeOperation = 'source-in';
-    g.fillStyle = '#fff';
-    g.fillRect(0, 0, c.width, c.height);
-    return c;
-  } catch (err) {
-    console.warn('Logo yüklenemedi', err);
-    return null;
-  }
-})();
+// Ratel logosu: lazer markalama, gövde çevresine sarılır; ortası tırnaklardan birinin (−X) altında
 const MARK = SPEC.markalama;
+const LOGO = await markaMaske(MARK.logo);
 const MARK_Y = BODY_Y + MARK.alt;          // logonun alt kenarı
-const MARK_YAY = LOGO ? (MARK.yukseklik * LOGO.width) / LOGO.height : 0;
 
-function logoBand() {
-  const aci = MARK_YAY / BODY_R;
-  const r = BODY_R + 0.02;
-  const tex = new THREE.CanvasTexture(LOGO);
-  tex.anisotropy = 8;
-  const geo = new THREE.CylinderGeometry(r, r, MARK.yukseklik, 128, 1, true, 1.5 * Math.PI - aci / 2, aci)
-    .translate(0, MARK_Y + MARK.yukseklik / 2, 0);
-  const mat = new THREE.MeshStandardMaterial({
-    color: 0xd4d8dc,
-    map: tex,
-    metalness: 0.2,
-    roughness: 0.6,
-    transparent: true,
-    depthWrite: false,
-    polygonOffset: true,
-    polygonOffsetFactor: -1,
-    polygonOffsetUnits: -4,
-  });
-  return new THREE.Mesh(geo, mat);
-}
+const logoBand = () => silindirMarka(LOGO, {
+  r: BODY_R, y0: MARK_Y, h: MARK.yukseklik, aci: 1.5 * Math.PI,
+  renk: 0xd4d8dc, metalness: 0.2, roughness: 0.6,
+});
 
 function annotate(a) {
   const dim = (x, y0, y1, name) => a.dim(x, y0, y1, `${name} = ${metin(M[name])}`);

@@ -1,8 +1,8 @@
 {
   "parca": "Kazan Altı Parçası",
-  "rev": "H",
-  "tarih": "01.11.2026",
-  "revNot": "Ölçüler onaylandı: L1/L2 20, A/B 32, H 107; alt uç R 1 1/2 konik.",
+  "rev": "I",
+  "tarih": "03.11.2026",
+  "revNot": "Ölçüler değişmedi. Boş tarafa Bahriye markası, lazer markalama.",
   "onayli": true,
   "durum": "Ölçüler onaylı — teklif aşaması",
   "malzeme": "CW511L (CuZn38As) düşük kurşunlu, çinko kaybına dayanıklı pirinç",
@@ -24,6 +24,14 @@
     "H2": { "deger": 71,  "aciklama": "Üst alın – seviye 2 ekseni" },
     "L1": { "deger": 20,  "aciklama": "Üst diş boyu" },
     "L2": { "deger": 20,  "aciklama": "Alt diş boyu" }
+  },
+
+  "markalama": {
+    "aciklama": "Bahriye markası, tek renk lazer markalama. Gövdenin boş tarafına (P1'in karşısı, 180°) sarılır; alt diş bitimi ile seviye 2 arasında. Yükseklik B'nin tepesinden y'nin kuyruğuna kadardır.",
+    "logo": "brand/bahriye.svg",
+    "yukseklik": 8,
+    "alt": 4,
+    "aci": 180
   },
 
   "uclar": {

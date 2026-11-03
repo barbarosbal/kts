@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
 import { Brush, Evaluator, ADDITION, SUBTRACTION } from 'three-bvh-csg';
-import { BSP, sizeOf, Y, internalThread, threadedEnd, metin } from 'kts/ortak';
+import { BSP, sizeOf, Y, internalThread, threadedEnd, metin, markaMaske, silindirMarka } from 'kts/ortak';
 
 // Tüm ölçüler olculer.json'dan gelir (mm). Parça ekseni +Y, orijin alt ucun merkezi.
 export const SPEC = await fetch(`olculer.json${new URL(import.meta.url).search}`).then((r) => r.json());
@@ -36,6 +36,12 @@ const PORTS = SPEC.portlar.map((p) => {
     dir: new THREE.Vector3(-Math.sin(a), 0, -Math.cos(a)),
   };
 });
+
+// Marka: lazer markalama, gövdeye sarılı. Açı port açısıyla aynı ölçülür (0° = P1, 180° = boş taraf).
+const MARK = SPEC.markalama;
+const MARK_MASKE = MARK ? await markaMaske(MARK.logo) : null;
+const MARK_Y = MARK ? BODY_Y[0] + MARK.alt : 0;   // yazının alt kenarı
+const MARK_ACI = MARK ? THREE.MathUtils.degToRad(MARK.aci + 180) : 0;
 
 // Nesnenin yerel +Y eksenini port yönüne çevirip eksenden `dist` uzağa koyar
 function place(obj, p, dist) {
@@ -129,6 +135,11 @@ function annotate(a) {
   const { ust, alt } = SPEC.uclar;
   a.callout([0, TOP - 6, rT], [10, TOP + 18, 44], `${ust.dis} dış diş`, `Üst uç · ${ust.sizdirmazlik}`);
   a.callout([0, 8, rT], [24, -24, 44], `${alt.dis} dış diş`, `Alt uç · ${alt.sizdirmazlik}`);
+  if (MARK_MASKE) {
+    const t = MARK_ACI + THREE.MathUtils.degToRad(22);
+    a.callout([BODY_R * Math.sin(t), MARK_Y + MARK.yukseklik / 2, BODY_R * Math.cos(t)], [44, 12, 40],
+      'Bahriye', `lazer markalama · h ${metin(MARK.yukseklik)}`);
+  }
 }
 
 export const HEIGHT = TOP;
@@ -138,6 +149,12 @@ export function kur({ brass }) {
   part.add(new THREE.Mesh(buildBody(), brass));
   part.add(threadedEnd(TOP_THREAD, L1, BODY_Y[1], false, brass, { boreR: BORE_R, rMax: BODY_R }));
   part.add(threadedEnd(BOTTOM_THREAD, L2, 0, true, brass, { boreR: BORE_R, rMax: BODY_R, conical: /^R/.test(SPEC.uclar.alt.dis) }));
+  if (MARK_MASKE) {
+    part.add(silindirMarka(MARK_MASKE, {
+      r: BODY_R, y0: MARK_Y, h: MARK.yukseklik, aci: MARK_ACI,
+      renk: 0x2b1f10, metalness: 0.3, roughness: 0.75,
+    }));
+  }
   for (const p of PORTS) {
     const m = new THREE.Mesh(internalThread(BSP[p.size], p.depth - 1.6), brass);
     m.quaternion.setFromUnitVectors(Y, p.dir.clone().negate());

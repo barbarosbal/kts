@@ -7,6 +7,7 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { ROOT, TAR, Dxf, esc, fmt, fileSizes, planCss, printDrawing, printPdf, table } from './paket-ortak.mjs';
+import { markaOku, markaCiz, markaDxf } from './marka.mjs';
 
 const OUT = path.join(ROOT, 'uretim');
 const DRAWING = path.join(ROOT, 'kazan-alti-parcasi-taslak.svg');
@@ -20,6 +21,7 @@ const FILES = {
   drawingPdf: `${BASE}-teknik-resim.pdf`,
   planPdf: `${BASE}-uretim-plani.pdf`,
   zip: `${BASE}-uretim-paketi.zip`,
+  marka: `${BASE}-marka.dxf`,
 };
 
 // ---------------- geometri ----------------
@@ -66,8 +68,25 @@ function profile() {
   return [[rcB, 0], [rcB + zCh, zCh], [R, (R - rEnd) * 32], ...top];
 }
 
+// ---------------- marka ----------------
+// Lazer markalama gövdeye sarılır. Açı port açısıyla aynı ölçülür (0° = P1, 90° = sol, 180° = boş taraf).
+const MARK = spec.markalama;
+const LOGO = await markaOku(MARK.logo);
+const MARK_K = MARK.yukseklik / LOGO.LH;                 // logo birimi → mm
+const MARK_Z = M.L2 + MARK.alt;                          // yazının alt kenarı
+const MARK_UST = MARK_Z + MARK.yukseklik;
+const MARK_EN = LOGO.LW * MARK_K;                        // çevre yönünde yay boyu
+const MARK_ACI = (MARK_EN / R) * (180 / Math.PI);        // sardığı açı
+
 function checks() {
   const w = [];
+  if (MARK.alt < 1 || MARK_UST > Z_TT - 1) w.push(`marka (${MARK_Z}–${MARK_UST}) dişsiz gövde bandından taşıyor ya da dişe 1 mm'den yakın`);
+  if (MARK_ACI > 120) w.push(`marka gövdede ${Math.round(MARK_ACI)}° sarıyor, uçları okunmaz`);
+  for (const p of PORTS) {
+    const yari = (Math.asin(p.r / R) * 180) / Math.PI;   // boss'un gövdede kapladığı yarım açı
+    const fark = Math.abs((((p.aci - MARK.aci) % 360) + 540) % 360 - 180);
+    if (fark < yari + MARK_ACI / 2 + 3 && p.z + p.r > MARK_Z && p.z - p.r < MARK_UST) w.push(`marka ${p.id} boss'una 3 mm'den yakın`);
+  }
   for (const p of PORTS) {
     if (p.z + p.r > Z_TT) w.push(`${p.id} boss'u üst diş bölgesine taşıyor`);
     if (p.z - p.r < M.L2) w.push(`${p.id} boss'u alt diş bölgesine taşıyor`);
@@ -287,6 +306,25 @@ function threadArt(t, yBody, yFree, conical) {
   ].join('\n');
 }
 
+// Yan görünüm boş taraftan (180°) bakar, 1 mm = 4 px: eksen x = 1070, alt uç y = 498.
+// Yazı gövdeye sarılı olduğu için çevre yönünde sinüsle daralır.
+function markaYan() {
+  const delta = ((MARK.aci - 180) * Math.PI) / 180;
+  return markaCiz(LOGO, (u, v) => {
+    const s = (u - LOGO.LW / 2) * MARK_K;
+    return [1070 + 4 * R * Math.sin(delta + s / R), 498 - 4 * (MARK_UST - v * MARK_K)];
+  });
+}
+
+// Marka dosyası: lazer yazılımı için 1:1 kapalı çoklu çizgiler, yazının alt orta noktası orijinde
+function buildMarkaDxf() {
+  const d = new Dxf();
+  markaDxf(d, 'MARKA', LOGO, MARK.yukseklik);
+  d.text('YAZI', [-MARK_EN / 2, -6], 2.5, `Bahriye - lazer markalama - yukseklik ${fmt(MARK.yukseklik)} mm - 1:1 - mm`);
+  d.text('YAZI', [-MARK_EN / 2, -10], 2.5, `Kazan alti parcasi Rev ${spec.rev}: gövdeye sarilir, ${fmt(MARK_EN, 1)} mm yay (${Math.round(MARK_ACI)} derece), doner eksen`);
+  return writeFile(path.join(OUT, FILES.marka), d.toString(), 'latin1');
+}
+
 async function buildDrawing() {
   const template = await readFile(path.join(ROOT, 'tools', 'cizim-sablon.svg'), 'utf8');
   const vals = {
@@ -312,6 +350,8 @@ async function buildDrawing() {
     H2: fmt(M.H2),
     L1: fmt(M.L1),
     L2: fmt(M.L2),
+    MARKA_YAN: markaYan(),
+    markaNot: `Marka: Bahriye, lazer markalama. Boş tarafta (P1'in karşısı) ortalı; yükseklik ${fmt(MARK.yukseklik)} (B'nin tepesinden y'nin kuyruğuna), alt kenarı alt diş bitiminden ${fmt(MARK.alt)}.`,
   };
   for (const p of PORTS) {
     vals[`${p.id}_BOSS`] = `Ø${fmt(p.bossCap)}`;
@@ -393,6 +433,7 @@ ${planCss(spec.onayli)}</style>
     ${dl(FILES.drawingPdf, 'Teknik resim (PDF)', 'A3, ölçü tablolu')}
     ${dl(FILES.dxf, 'DXF', 'Ön + üst görünüş, 1:1, mm')}
     ${dl(FILES.planPdf, 'Üretim planı (PDF)', 'Bu sayfanın baskısı')}
+    ${dl(FILES.marka, 'Marka (DXF)', `Bahriye, lazer için 1:1, yükseklik ${fmt(MARK.yukseklik)} mm`)}
   </div>
   ${spec.onayli ? '' : `<p class="callout"><b>Teklif aşaması.</b> Ölçüler girildi, boy onayı bekleniyor. Fiyat bu paketle istenebilir, sipariş ise onaylı revizyon üzerinden verilmeli. Ölçüler <code>olculer.json</code> dosyasına girilip <code>npm run build</code> çalıştırılınca bütün dosyalar yeniden üretilir.</p>`}
 </section>
@@ -408,6 +449,7 @@ ${planCss(spec.onayli)}</style>
   <div><small>Genel tolerans</small><b>${esc(spec.genelTolerans)}</b></div>
   <div><small>Üst / alt bağlantı</small><b>${spec.uclar.ust.dis} / ${spec.uclar.alt.dis} dış</b></div>
   <div><small>İşletme / test basıncı</small><b>${spec.isletmeBasinci.min}–${spec.isletmeBasinci.max} bar / ${spec.testBasinci} bar</b></div>
+  <div><small>Markalama</small><b>Bahriye · lazer · ${fmt(MARK.yukseklik)} mm</b></div>
 </div>
 
 <h2>2. Açık konular <small>siparişten önce kapatılacak</small></h2>
@@ -416,7 +458,7 @@ ${planCss(spec.onayli)}</style>
   <li><b>Üretim yöntemi (ustaya sorulacak):</b> çubuktan tek parça mı, boru + lehimli manşon mu? Maliyete en çok etki eden karar; seçenekler aşağıda.</li>
   <li><b>Çalışma sıcaklığı:</b> ${esc(spec.calismaKosulu.replace(/^B/, 'b'))} bildirildi; normal ve azami su sıcaklığı teyit edilecek.</li>
   <li><b>Port sızdırmazlığı:</b> ${uniqueTaps.map((p) => p.dis).join(' ve ')} portlarda sızdırmazlık alından conta veya O-ring ile mi, karşı parçada R erkek diş + keten ile mi sağlanacak? İkincisiyse port dişi G değil Rp (ISO 7-1) olmalı.</li>
-  <li><b>Yüzey ve markalama:</b> doğal pirinç mi, nikel kaplama mı? Lazer markalama (logo, rev, parti no) istenecek mi?</li>
+  <li><b>Yüzey:</b> doğal pirinç mi, nikel kaplama mı? Marka kararlaştırıldı (Bahriye, lazer, op 55); rev ve parti no da markalanacak mı?</li>
 </ol>
 
 <h2>3. Üretilebilirlik notları</h2>
@@ -464,6 +506,7 @@ ${table(['Op', 'Tezgah / bağlama', 'İşlem', 'Takım'], [
     ['30', '4 eksen dik işlem / C eksenli torna', `Gövdeyi boss'lar etrafında Ø${fmt(M.D)} çapa indirme (kontur), et ${fmt(WALL)} mm`, 'T07'],
     ['40', 'Aynı bağlama', `Port alınlarını düzleme (A = ${fmt(M.A)}, B = ${fmt(M.B)}) · punta · diş dibi delikleri ØE'ye kadar (${uniqueTaps.map((p) => `Ø${fmt(p.t.tapDrill)}`).join(' / ')}) · 90° havşa · port dişleri ${uniqueTaps.map((p) => p.dis).join(' / ')}`, 'T04, T07, T08, T09, T10, T11'],
     ['50', 'Tezgah dışı', 'Çapak alma: port–ØE kesişimleri, diş girişleri, pahlar · yıkama, kurutma', 'Çapak alma takımı, fırça'],
+    ['55', 'Fiber lazer, döner eksen', `Marka: Bahriye, boş tarafta (P1'in karşısı) ortalı, yükseklik ${fmt(MARK.yukseklik)}, alt kenarı alt diş bitiminden ${fmt(MARK.alt)} · gövdeye ${fmt(MARK_EN, 1)} mm yay (${Math.round(MARK_ACI)}°) sarılır · iz derinliği en çok 0,05, kabartı ve çapak yok · kaplama yapılırsa kaplamadan sonra`, `T12, ${FILES.marka}`],
     ['60', 'Kalite', 'Ölçü ve diş kontrolü, sızdırmazlık testi (bkz. kontrol planı)', 'Mastarlar, test düzeneği'],
     ['70', 'Paketleme', 'Diş koruma tapaları/kapakları, parça başı poşet, etiket (parça, rev, adet)', '—'],
   ])}
@@ -481,6 +524,7 @@ ${table(['T', 'Takım', 'Kullanım', 'Vc (m/dk)', 'İlerleme'], [
     ['T09', `Matkap Ø${fmt(BSP['1/2'].tapDrill)}`, 'G 1/2 diş dibi (alternatif Ø19)', '60–90', '0,08–0,12 mm/dev'],
     ['T10', 'Havşa 90°', 'Port girişleri', '60–100', 'Elle/yavaş'],
     ['T11', 'Kılavuz G 3/4 ve G 1/2 (ISO 228, HSS-E, düz oluklu) <i>veya</i> diş frezesi 14 TPI 55°', 'Port dişleri', '8–15 / 60–100', 'Adım 1,814'],
+    ['T12', 'Fiber lazer markalama makinesi, döner eksenli', 'Bahriye markası', '—', '—'],
   ])}
 <p class="note">Değerler başlangıç içindir; atölye kendi takım ve tezgahına göre ayarlar. Pirinçte matkap ve kılavuzda pozitif talaş açısı yerine 0° (ağzı köreltilmiş) tercih edilir; böylece takım işe çekilmez. ${esc(spec.malzemeKisa)} kurşunlu pirince göre uzun talaş ve fazla çapak verebilir: ilerleme düşük tutulur, takım keskin olmalıdır.</p>
 
@@ -498,8 +542,9 @@ ${table(['No', 'Karakteristik', 'Kabul kriteri', 'Yöntem / ekipman', 'Kayıt'],
     ['10', 'Conta yüzeyi (üst alın)', 'Düz, çapaksız, radyal çizik yok, Ra ≤ 1,6', 'Görsel + pürüzlülük karşılaştırma numunesi', 'Ölçüm raporu'],
     ['11', 'İç kesişim çapakları', 'Çapak ve gevşek talaş yok', 'Görsel (fener / endoskop)', 'Kontrol listesi'],
     ['12', 'Kenar pahları', '0,3–0,5 × 45°, keskin kenar yok', 'Görsel', 'Kontrol listesi'],
-    ['13', 'Sızdırmazlık', `${spec.testBasinci} bar (1,5 × ${spec.isletmeBasinci.max} bar), 60 s, kaçak yok`, 'Hidrostatik test (su ile); basınçlı hava kullanılmaz', 'Test kaydı'],
-    ['14', 'İlk parça muayenesi', 'Tüm karakteristikler', 'Ölçüm tablosu + fotoğraf', 'İlk parça raporu'],
+    ['13', 'Markalama', `Bahriye okunaklı, yeri ve yüksekliği (${fmt(MARK.yukseklik)}) resme uygun, kabartı ve çapak yok`, 'Görsel, kumpas', 'Kontrol listesi'],
+    ['14', 'Sızdırmazlık', `${spec.testBasinci} bar (1,5 × ${spec.isletmeBasinci.max} bar), 60 s, kaçak yok`, 'Hidrostatik test (su ile); basınçlı hava kullanılmaz', 'Test kaydı'],
+    ['15', 'İlk parça muayenesi', 'Tüm karakteristikler', 'Ölçüm tablosu + fotoğraf', 'İlk parça raporu'],
   ])}
 
 <h2>9. Teklif talebi <small>fason atölyeye</small></h2>
@@ -510,8 +555,9 @@ ${table(['Kalem', 'İstek'], [
     ['Üretim', 'Seçenek A (çubuktan tek parça). Uygun görürseniz seçenek B (boru + lehimli manşon) için de fiyat'],
     ['Kalite', `${esc(spec.genelTolerans)} · diş mastar kontrolü (${spec.uclar.ust.dis} ve ${spec.uclar.alt.dis} halka, ${[...new Set(PORTS.map((p) => p.dis))].join(' ve ')} tampon) · ${spec.testBasinci} bar hidrostatik sızdırmazlık testi · ilk parça ölçüm raporu`],
     ['Çalışma koşulu', `${esc(spec.calismaKosulu)}, işletme ${spec.isletmeBasinci.min}–${spec.isletmeBasinci.max} bar; azami sıcaklık teyit edilecek`],
+    ['Markalama', `Bahriye, lazer (op 55, teknik resim not 7); 1:1 marka dosyası pakette (${FILES.marka}). Lazeri dışarıda yaptırıyorsanız ayrı kalem olarak belirtin`],
     ['Teslim', 'Çapaksız ve temiz; diş koruma tapalı, parça başı poşet, etiketli'],
-    ['Teklifte görmek istediklerimiz', 'Birim fiyat, kurulum / programlama bedeli, malzeme, mastar bedeli (mastarlar sizde var mı), test, termin, teklif geçerlilik süresi, ödeme koşulu'],
+    ['Teklifte görmek istediklerimiz', 'Birim fiyat, kurulum / programlama bedeli, malzeme, mastar bedeli (mastarlar sizde var mı), lazer markalama, test, termin, teklif geçerlilik süresi, ödeme koşulu'],
     ['Not', spec.onayli
       ? `Ölçüler onaylıdır (Rev ${spec.rev}). Üretim yöntemi, su sıcaklığı veya yüzey kararı ölçüyü değiştirirse yeni revizyonla bildirilir.`
       : 'Sipariş onaylı revizyon üzerinden verilecektir; ölçülerde küçük değişiklik olabilir.'],
@@ -537,6 +583,8 @@ const info = await buildStep();
 console.log(`STEP  ${FILES.step}  hacim ${fmt(info.volume / 1000, 1)} cm³, sınırlar ${JSON.stringify(info.bounds.map((b) => b.map((v) => Math.round(v * 100) / 100)))}`);
 await buildDxf();
 console.log(`DXF   ${FILES.dxf}`);
+await buildMarkaDxf();
+console.log(`DXF   ${FILES.marka}  Bahriye ${fmt(MARK.yukseklik)} × ${fmt(MARK_EN, 1)} yay (${Math.round(MARK_ACI)}°)`);
 await buildDrawing();
 console.log('SVG   kazan-alti-parcasi-taslak.svg');
 
@@ -545,7 +593,7 @@ await writeFile(planPath, planHtml(info));
 if (await printDrawing(DRAWING, path.join(OUT, FILES.drawingPdf))) console.log(`PDF   ${FILES.drawingPdf}`);
 if (await printPdf(pathToFileURL(planPath).href, path.join(OUT, FILES.planPdf))) console.log(`PDF   ${FILES.planPdf}`);
 
-const packed = [FILES.step, FILES.dxf, FILES.drawingPdf, FILES.planPdf].filter((f) => existsSync(path.join(OUT, f)));
+const packed = [FILES.step, FILES.dxf, FILES.marka, FILES.drawingPdf, FILES.planPdf].filter((f) => existsSync(path.join(OUT, f)));
 execFileSync(TAR, ['-a', '-c', '-f', path.join(OUT, FILES.zip), '-C', OUT, ...packed, '-C', ROOT, 'olculer.json']);
 console.log(`ZIP   ${FILES.zip}`);
 
