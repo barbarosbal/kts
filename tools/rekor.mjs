@@ -6,6 +6,7 @@ import {
   ROOT, spec, M, BSP, ust, alt, CONTA, BORE_R, NECK_R, COLLAR_R, HEX_R, SPIGOT_R, SEAT_Y, SPIGOT_Y, FACE_Y,
   COLLAR_TOP, NECK_TOP, LIP, CH_U, CH_B, CH_A, collarOutline, inCollar, contactArea,
 } from './rekor-olcu.mjs';
+import { markaOku, markaCiz } from './marka.mjs';
 
 const fmt = (n) => String(n).replace('.', ',');
 
@@ -229,6 +230,43 @@ const views = `
     <text class="h" x="${CX}" y="${NY + 176}" text-anchor="middle">YAKA</text>
     <text class="ts" x="${CX}" y="${NY + 196}" text-anchor="middle">alttan · ØD = ${M.D} · kesik F = ${M.F} · köşe R${M.R}</text>`;
 
+// ---------------- markalı yüz ----------------
+// Bilezik bir altıgen yüzüne dik bakılarak: ortadaki yüz gerçek boyunda, yandakiler 60° kısalır.
+// Uçlardaki 30° altıgen pahı her yüzde eğri çizer; logo ortadaki yüzde düz durur.
+const MARK = spec.markalama;
+const LOGO = await markaOku(MARK.logo);
+const MK = MARK.yukseklik / LOGO.LH;
+const E = 2.7;                             // 1 mm = 2,7 px
+const EX = 907;
+const EB = 774;
+const ex = (x) => (EX + E * x).toFixed(1);
+const ey = (y) => (EB - E * y).toFixed(1);
+const R_ALIN = HEX_R - 0.4;                // pah alında bu yarıçapta başlar (3D model ile aynı)
+const pahY = (r) => (r - R_ALIN) / Math.sqrt(3);
+const YARIM = HEX_R * Math.tan(Math.PI / 6);
+const Y_KOSE = pahY(corner);
+const MARK_EN = LOGO.LW * MK;
+if (MARK_EN > 2 * YARIM - 4) console.warn(`UYARI: logo eni ${MARK_EN.toFixed(1)} mm, altıgen yüzüne (${(2 * YARIM).toFixed(1)}) sığmıyor`);
+if (MARK.alt < pahY(Math.hypot(HEX_R, MARK_EN / 2)) + 1 || MARK.alt + MARK.yukseklik > M.B - 1 - pahY(Math.hypot(HEX_R, MARK_EN / 2))) {
+  console.warn('UYARI: logo altıgen pahına 1 mm\'den yakın');
+}
+const pahEgri = (phi, ust) => Array.from({ length: 25 }, (_, i) => {
+  const t = -YARIM + (2 * YARIM * i) / 24;
+  const y = pahY(Math.hypot(HEX_R, t));
+  return `${ex(HEX_R * Math.sin(phi) + t * Math.cos(phi))},${ey(ust ? M.B - y : y)}`;
+}).join(' ');
+const cevre = [[-R_ALIN, 0], [R_ALIN, 0], [corner, Y_KOSE], [corner, M.B - Y_KOSE], [R_ALIN, M.B], [-R_ALIN, M.B], [-corner, M.B - Y_KOSE], [-corner, Y_KOSE]];
+const markaliYuz = `
+    <polygon class="vis" style="fill:#fff" points="${cevre.map(([x, y]) => `${ex(x)},${ey(y)}`).join(' ')}"/>
+    ${[-60, 0, 60].map((d) => (d * Math.PI) / 180).flatMap((phi) => [false, true].map((ust) => `<polyline class="thin" points="${pahEgri(phi, ust)}"/>`)).join('\n    ')}
+    ${[-YARIM, YARIM].map((x) => `<line class="thin" x1="${ex(x)}" y1="${ey(Y_KOSE)}" x2="${ex(x)}" y2="${ey(M.B - Y_KOSE)}"/>`).join('')}
+    ${markaCiz(LOGO, (u, v) => [+ex((u - LOGO.LW / 2) * MK), +ey(MARK.alt + (LOGO.LH - v) * MK)])}
+    <text class="tb" x="1050" y="704">BİLEZİK · MARKALI YÜZ</text>
+    <text class="ts" x="1050" y="724">Bahr logosu · lazer markalama · yükseklik ${fmt(MARK.yukseklik)}</text>
+    <text class="ts" x="1050" y="741">altıgenin herhangi bir yüzünde ortalı</text>
+    <text class="ts" x="1050" y="758">alt kenarı alt alından ${fmt(MARK.alt)} · düz yüz</text>`;
+console.log(`LOGO  ${MARK.yukseklik} × ${MARK_EN.toFixed(1)} · yüz ${(2 * YARIM).toFixed(1)} · alt alından ${MARK.alt}`);
+
 // ---------------- parça listesi ve sökme sırası ----------------
 const ROWS = [
   ['1', 'Gövde', '1', `Pirinç ${spec.malzemeKisa}`, `Boy ${M.H - SPIGOT_Y}`],
@@ -264,14 +302,16 @@ const steps = `
 const t = spec.tolerans;
 const NOTES = [
   `${spec.onayli ? 'Ölçüler onaylıdır.' : 'Taslak: ölçüler öneridir, onaydan sonra kesinleşir.'} Kesit orantılı çizildi; değerler esastır.`,
-  `Genel tolerans ${spec.genelTolerans}. Kritik: ØD ${M.D} ${t.D}, ØW ${M.W} ${t.W}, ØG ${M.G} ${t.G}, F ${M.F} ${t.F}, T ${M.T} ${t.T}, merkezleme ${t.merkezleme}. Bilezik sıkma ${spec.sikma.azami} Nm'yi geçmez.`,
+  `Genel tolerans ${spec.genelTolerans}. Kritik: ØD ${M.D} ${t.D}, ØW ${M.W} ${t.W}, ØG ${M.G} ${t.G}, F ${M.F} ${t.F}, T ${M.T} ${t.T}, merkezleme ${t.merkezleme}.`,
   `Üst uç ${ust.dis} (ISO 7-1, konik 1:16), ${ust.sizdirmazlik}. Bilezik ${alt.dis} (ISO 228-1), Parça 1 üst dişine oturur.`,
   `Sızdırmazlık: conta merkezlemeye oturur, merkezleme Ø${fmt(spec.merkezleme.cap)} Parça 1 deliğine ${spec.merkezleme.giris} mm girer; bilezik her açıda aynı sıkar.`,
   `Yaka alt pahı ${CH_B} × 45° ve ağız üst pahı ${CH_A} × 45° sökme için gereklidir. Yaka üst pahı ${fmt(CH_U)} geçilmez: tırnak buraya basar.`,
   `Gövde, bilezik takılmadan yaka kesiklerinden SW ${M.F} anahtarla sıkılır. Conta alnı düz, Ra 1,6. Keskin kenarlar 0,3–0,5 × 45°.`,
+  `Bilezik ${spec.sikma.onerilen} Nm ile sıkılır, ${spec.sikma.azami} Nm geçilmez.`,
   `Malzeme: ${spec.malzeme}, EN 10204 3.1 sertifikalı.`,
+  `Marka: Bahr logosu, lazer markalama; bileziğin bir altıgen yüzünde ortalı, yükseklik ${fmt(MARK.yukseklik)}. Bkz. markalı yüz.`,
 ];
-const notes = NOTES.map((t, i) => `<text class="tn" x="40" y="${854 + i * 17}">${i + 1}. ${t}</text>`).join('\n    ');
+const notes = NOTES.map((t, i) => `<text class="tn" x="40" y="${822 + i * 17}">${i + 1}. ${t}</text>`).join('\n    ');
 
 const durumKisa = spec.onayli ? 'ONAYLI' : 'TASLAK';
 
@@ -299,6 +339,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 990" widt
       .tl{font-size:10px;fill:#555;letter-spacing:.4px}
       .h{font-size:18px;font-weight:700;fill:#111;letter-spacing:.5px}
       .q{fill:#c2410c}
+      .mark{fill:#111;stroke:none}
     </style>
   </defs>
 
@@ -322,8 +363,11 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 990" widt
   <g>${steps}
   </g>
 
+  <g>${markaliYuz}
+  </g>
+
   <g>
-    <text class="tb" x="40" y="832">NOTLAR</text>
+    <text class="tb" x="40" y="802">NOTLAR</text>
     ${notes}
   </g>
 

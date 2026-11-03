@@ -24,6 +24,7 @@
       .dis{fill:none;stroke:#111;stroke-width:1.5;stroke-linejoin:miter}
       .disi{fill:none;stroke:#111;stroke-width:.7}
       .q{fill:#c2410c}
+      .mark{fill:#111;stroke:none}
     </style>
   </defs>
 
@@ -119,6 +120,8 @@
     <circle class="hid" cx="1070" cy="226" r="68"/>
     <circle class="hid" cx="1070" cy="226" r="48.5"/>
     <text class="ts" x="1070" y="314" text-anchor="middle">P1 (arkada)</text>
+    <!-- marka (build.mjs gövdeye sararak izdüşürür) -->
+    {{MARKA_YAN}}
 
     <!-- ölçüler (H1, H2 üst alından) -->
     <line class="dim" x1="1170" y1="70" x2="1317" y2="70"/>
@@ -189,13 +192,14 @@
 
   <!-- ================= NOTLAR ================= -->
   <g>
-    <text class="tb" x="40" y="832">NOTLAR</text>
-    <text class="tn" x="40" y="854">1. Harfli ölçülerin değerleri ölçü tablosundadır{{onDegerNotu}}. Geometri için STEP modeli esastır; resim ölçeksizdir.</text>
-    <text class="tn" x="40" y="874">2. Genel tolerans {{genelTolerans}}; gövde et kalınlığı {{et}} mm. Üst alın conta yüzeyidir: düz, çapaksız, Ra 1,6.</text>
-    <text class="tn" x="40" y="894">3. Üst uç {{ustDis}} (ISO 228-1). Alt uç {{altDis}} (ISO 7-1, konik 1:16), keten + teflon. Portlar G. Diş çıkışları serbest.</text>
-    <text class="tn" x="40" y="914">4. Port diş dibi delikleri ØE deliğine kadar açılır; kesişim çapakları alınacak. Port girişleri 90° havşa.</text>
-    <text class="tn" x="40" y="934">5. P1 0°'de; P2 ve P3 90°'de üst üste. Eksenler gövde ekseninde kesişir. Keskin kenarlar 0,3–0,5 × 45°.</text>
-    <text class="tn" x="40" y="954">6. Malzeme: {{malzeme}}, EN 10204 3.1 sertifikalı.</text>
+    <text class="tb" x="40" y="822">NOTLAR</text>
+    <text class="tn" x="40" y="842">1. Harfli ölçülerin değerleri ölçü tablosundadır{{onDegerNotu}}. Geometri için STEP modeli esastır; resim ölçeksizdir.</text>
+    <text class="tn" x="40" y="860">2. Genel tolerans {{genelTolerans}}; gövde et kalınlığı {{et}} mm. Üst alın conta yüzeyidir: düz, çapaksız, Ra 1,6.</text>
+    <text class="tn" x="40" y="878">3. Üst uç {{ustDis}} (ISO 228-1). Alt uç {{altDis}} (ISO 7-1, konik 1:16), keten + teflon. Portlar G. Diş çıkışları serbest.</text>
+    <text class="tn" x="40" y="896">4. Port diş dibi delikleri ØE deliğine kadar açılır; kesişim çapakları alınacak. Port girişleri 90° havşa.</text>
+    <text class="tn" x="40" y="914">5. P1 0°'de; P2 ve P3 90°'de üst üste. Eksenler gövde ekseninde kesişir. Keskin kenarlar 0,3–0,5 × 45°.</text>
+    <text class="tn" x="40" y="932">6. Malzeme: {{malzeme}}, EN 10204 3.1 sertifikalı.</text>
+    <text class="tn" x="40" y="950">7. {{markaNot}}</text>
   </g>
 
   <!-- ================= ANTET ================= -->

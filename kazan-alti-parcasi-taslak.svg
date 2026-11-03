@@ -24,6 +24,7 @@
       .dis{fill:none;stroke:#111;stroke-width:1.5;stroke-linejoin:miter}
       .disi{fill:none;stroke:#111;stroke-width:.7}
       .q{fill:#c2410c}
+      .mark{fill:#111;stroke:none}
     </style>
   </defs>
 
@@ -138,6 +139,9 @@
     <circle class="hid" cx="1070" cy="226" r="68"/>
     <circle class="hid" cx="1070" cy="226" r="48.5"/>
     <text class="ts" x="1070" y="314" text-anchor="middle">P1 (arkada)</text>
+    <!-- marka (build.mjs gövdeye sararak izdüşürür) -->
+    <path class="mark" fill-rule="evenodd" d="M1035.1 401.7 1037.8 398.8 1042.6 394.4 1040.8 391.9 1039.4 389.3 1037.7 384.6 1037.3 382.6 1036.9 379.3 1037.0 376.6 1037.6 374.3 1038.7 372.3 1040.4 370.8 1042.5 370.1 1044.8 370.1 1045.9 370.4 1047.9 371.5 1049.3 373.2 1050.2 375.4 1050.5 379.2 1050.0 383.7 1048.3 388.5 1046.7 391.5 1044.7 394.3 1048.8 398.1 1051.7 401.0 1048.2 401.0 1043.6 395.6 1038.5 401.7 1035.1 401.7ZM1043.6 392.6 1044.4 392.4 1045.0 391.8 1046.7 388.9 1048.3 385.0 1049.0 380.8 1049.0 378.8 1048.6 376.8 1047.6 374.8 1046.9 374.0 1045.9 373.3 1044.8 373.0 1043.6 372.9 1042.5 373.0 1041.4 373.3 1040.4 374.0 1039.7 374.9 1038.8 376.9 1038.4 378.9 1038.4 381.0 1039.1 385.1 1040.6 388.9 1042.4 391.9 1042.9 392.4 1043.6 392.6Z"/>
+    <path class="mark" fill-rule="evenodd" d="M1057.6 401.7 1063.7 401.7 1066.7 401.1 1068.5 399.6 1069.1 397.2 1068.5 395.0 1067.3 393.6 1065.7 393.0 1067.1 392.2 1068.0 391.0 1068.4 389.1 1067.8 386.9 1066.2 385.3 1063.4 384.7 1057.6 384.7ZM1059.2 400.3 1059.2 393.8 1063.7 393.8 1065.7 394.2 1067.0 395.5 1067.5 397.2 1067.1 398.8 1065.8 399.9 1063.7 400.3ZM1059.2 392.4 1059.2 386.1 1063.4 386.1 1065.3 386.5 1066.4 387.6 1066.8 389.2 1066.4 390.8 1065.3 392.0 1063.5 392.4ZM1076.1 402.0 1077.9 401.7 1079.2 400.8 1080.0 399.7 1080.1 401.7 1081.6 401.7 1081.6 393.0 1080.9 390.4 1079.2 389.1 1077.1 388.8 1075.1 389.1 1073.4 390.0 1072.2 391.7 1073.7 392.2 1074.4 391.2 1075.5 390.4 1077.1 390.2 1078.7 390.5 1079.8 391.4 1080.1 393.2 1079.7 393.9 1074.2 395.0 1072.5 396.1 1071.9 398.1 1072.5 400.2 1074.0 401.6 1076.1 402.0ZM1076.3 400.6 1074.8 400.3 1073.8 399.5 1073.4 398.2 1073.8 397.0 1075.0 396.2 1079.3 395.4 1080.1 395.0 1080.1 396.8 1079.6 398.7 1078.3 400.1 1076.3 400.6ZM1087.3 393.8 1087.7 391.9 1089.0 390.6 1090.7 390.2 1092.4 390.6 1093.5 391.8 1093.9 393.6 1093.9 401.7 1095.4 401.7 1095.4 393.5 1094.8 390.9 1093.4 389.3 1091.1 388.8 1089.6 389.0 1088.2 389.8 1087.3 391.2 1087.3 384.7 1085.7 384.7 1085.7 401.7 1087.3 401.7ZM1099.3 401.7 1100.8 401.7 1100.8 393.5 1101.2 391.8 1102.4 390.7 1104.0 390.3 1104.9 390.4 1104.9 388.8 1102.7 389.0 1101.6 389.8 1100.9 390.9 1100.8 388.9 1099.3 388.9Z"/>
 
     <!-- ölçüler (H1, H2 üst alından) -->
     <line class="dim" x1="1170" y1="70" x2="1317" y2="70"/>
@@ -208,13 +212,14 @@
 
   <!-- ================= NOTLAR ================= -->
   <g>
-    <text class="tb" x="40" y="832">NOTLAR</text>
-    <text class="tn" x="40" y="854">1. Harfli ölçülerin değerleri ölçü tablosundadır. Geometri için STEP modeli esastır; resim ölçeksizdir.</text>
-    <text class="tn" x="40" y="874">2. Genel tolerans ISO 2768-m; gövde et kalınlığı 4 mm. Üst alın conta yüzeyidir: düz, çapaksız, Ra 1,6.</text>
-    <text class="tn" x="40" y="894">3. Üst uç G 1 1/2 (ISO 228-1). Alt uç R 1 1/2 (ISO 7-1, konik 1:16), keten + teflon. Portlar G. Diş çıkışları serbest.</text>
-    <text class="tn" x="40" y="914">4. Port diş dibi delikleri ØE deliğine kadar açılır; kesişim çapakları alınacak. Port girişleri 90° havşa.</text>
-    <text class="tn" x="40" y="934">5. P1 0°'de; P2 ve P3 90°'de üst üste. Eksenler gövde ekseninde kesişir. Keskin kenarlar 0,3–0,5 × 45°.</text>
-    <text class="tn" x="40" y="954">6. Malzeme: CW511L (CuZn38As) düşük kurşunlu, çinko kaybına dayanıklı pirinç, EN 10204 3.1 sertifikalı.</text>
+    <text class="tb" x="40" y="822">NOTLAR</text>
+    <text class="tn" x="40" y="842">1. Harfli ölçülerin değerleri ölçü tablosundadır. Geometri için STEP modeli esastır; resim ölçeksizdir.</text>
+    <text class="tn" x="40" y="860">2. Genel tolerans ISO 2768-m; gövde et kalınlığı 4 mm. Üst alın conta yüzeyidir: düz, çapaksız, Ra 1,6.</text>
+    <text class="tn" x="40" y="878">3. Üst uç G 1 1/2 (ISO 228-1). Alt uç R 1 1/2 (ISO 7-1, konik 1:16), keten + teflon. Portlar G. Diş çıkışları serbest.</text>
+    <text class="tn" x="40" y="896">4. Port diş dibi delikleri ØE deliğine kadar açılır; kesişim çapakları alınacak. Port girişleri 90° havşa.</text>
+    <text class="tn" x="40" y="914">5. P1 0°'de; P2 ve P3 90°'de üst üste. Eksenler gövde ekseninde kesişir. Keskin kenarlar 0,3–0,5 × 45°.</text>
+    <text class="tn" x="40" y="932">6. Malzeme: CW511L (CuZn38As) düşük kurşunlu, çinko kaybına dayanıklı pirinç, EN 10204 3.1 sertifikalı.</text>
+    <text class="tn" x="40" y="950">7. Marka: Bahr logosu, lazer markalama. Boş tarafta (P1'in karşısı) ortalı; logo yüksekliği 8, alt kenarı alt diş bitiminden 4.</text>
   </g>
 
   <!-- ================= ANTET ================= -->
@@ -229,11 +234,11 @@
     <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
     <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
 
-    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">H — Onaylı</text>
-    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">01.11.2026</text>
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">I — Onaylı</text>
+    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">03.11.2026</text>
     <text class="tl" x="1190" y="887">DURUM</text><text class="tb" x="1190" y="906">Ölçüler onaylı</text>
 
-    <text class="tl" x="790" y="929">REV H</text>
-    <text class="t" x="790" y="947">Ölçüler onaylandı: L1/L2 20, A/B 32, H 107; alt uç R 1 1/2 konik.</text>
+    <text class="tl" x="790" y="929">REV I</text>
+    <text class="t" x="790" y="947">Ölçüler değişmedi. Boş tarafa Bahr logosu, lazer markalama.</text>
   </g>
 </svg>

@@ -7,6 +7,7 @@ import { createRequire } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { TAR, Dxf, esc, fmt, fileSizes, planCss, printDrawing, printPdf, table } from './paket-ortak.mjs';
+import { markaOku, markaDxf } from './marka.mjs';
 import {
   ROOT, spec, M, BSP, ust, alt, CONTA, BORE_R, NECK_R, COLLAR_R, HEX_R, SPIGOT_R, SEAT_Y, SPIGOT_Y, FACE_Y,
   COLLAR_TOP, NECK_TOP, LIP, CH_U, CH_B, CH_A, collarGeometry, contactArea, contactArc,
@@ -23,8 +24,15 @@ const FILES = {
   drawingPdf: `${BASE}-teknik-resim.pdf`,
   planPdf: `${BASE}-uretim-plani.pdf`,
   zip: `${BASE}-uretim-paketi.zip`,
+  marka: `${BASE}-marka.dxf`,
 };
 const T = spec.tolerans;
+
+// Marka: bileziğin bir altıgen yüzünde Bahr logosu (lazer, düz yüz)
+const MARK = spec.markalama;
+const LOGO = await markaOku(MARK.logo);
+const MARK_EN = (LOGO.LW * MARK.yukseklik) / LOGO.LH;
+const markaKisa = `Bahr logosu, bileziğin bir altıgen yüzünde ortalı, yükseklik ${fmt(MARK.yukseklik)} (en ${fmt(MARK_EN, 1)}), alt kenarı bilezik alt alnından ${fmt(MARK.alt)}`;
 const DENSITY = 8.5e-6;                    // kg/mm³
 
 // ---------------- kesit profilleri [r, z] ----------------
@@ -194,6 +202,15 @@ function buildDxf() {
   return writeFile(path.join(OUT, FILES.dxf), d.toString(), 'latin1');
 }
 
+// Marka dosyası: lazer yazılımı için 1:1 kapalı çoklu çizgiler, logonun alt orta noktası orijinde
+function buildMarkaDxf() {
+  const d = new Dxf();
+  markaDxf(d, 'MARKA', LOGO, MARK.yukseklik);
+  d.text('YAZI', [-MARK_EN / 2, -6], 2.5, `Bahr logosu - lazer markalama - yukseklik ${fmt(MARK.yukseklik)} mm - 1:1 - mm`);
+  d.text('YAZI', [-MARK_EN / 2, -10], 2.5, `Oynar rekor Rev ${spec.rev}: bilezigin bir altigen yuzunde ortali, alt kenari alt alindan ${fmt(MARK.alt)} mm`);
+  return writeFile(path.join(OUT, FILES.marka), d.toString(), 'latin1');
+}
+
 // ---------------- üretim planı ----------------
 const BAR_SIZES = [50, 55, 60, 63, 65, 70, 75, 80, 85, 90, 100];
 
@@ -282,6 +299,7 @@ ${planCss(spec.onayli)}</style>
     ${dl(FILES.drawingPdf, 'Teknik resim (PDF)', 'A3, ölçülü')}
     ${dl(FILES.dxf, 'DXF', 'Kesitler ve görünüşler, 1:1, mm')}
     ${dl(FILES.planPdf, 'Üretim planı (PDF)', 'Bu sayfanın baskısı')}
+    ${dl(FILES.marka, 'Marka (DXF)', `Bahr logosu, lazer için 1:1, yükseklik ${fmt(MARK.yukseklik)} mm`)}
   </div>
 </section>
 
@@ -296,6 +314,7 @@ ${planCss(spec.onayli)}</style>
   <div><small>Genel tolerans</small><b>${esc(spec.genelTolerans)}</b></div>
   <div><small>Bağlantı</small><b>${ust.dis} dış / ${alt.dis} iç</b></div>
   <div><small>İşletme / test basıncı</small><b>${spec.isletmeBasinci.min}–${spec.isletmeBasinci.max} bar / ${spec.testBasinci} bar</b></div>
+  <div><small>Markalama</small><b>Bahr logosu · bilezik · lazer · ${fmt(MARK.yukseklik)} mm</b></div>
 </div>
 
 <h2>2. Açık konular <small>siparişten önce kapatılacak</small></h2>
@@ -303,7 +322,7 @@ ${planCss(spec.onayli)}</style>
   <li><b>Prototip testi:</b> sızdırmazlık ve sökme hareketi hesap ve simülasyonla doğrulandı. Sipariş öncesi ilk parçada Parça 1 ile ${spec.testBasinci} bar test ve elle sökme denemesi yapılacak.</li>
   <li><b>Çözülme payı:</b> sökerken Parça 1 ya da gövde en az ${spec.merkezleme.giris} mm eksen boyunca çekilebilmeli. Tesisatta bu pay olduğu teyit edilecek.</li>
   <li><b>Çalışma sıcaklığı:</b> ${esc(spec.calismaKosulu.replace(/^B/, 'b'))} bildirildi; normal ve azami sıcaklık ile conta sınıfı teyit edilecek.</li>
-  <li><b>Yüzey ve markalama:</b> doğal pirinç mi, nikel kaplama mı? Lazer markalama (logo, rev, parti no) istenecek mi?</li>
+  <li><b>Yüzey:</b> doğal pirinç mi, nikel kaplama mı? Marka kararlaştırıldı (Bahr logosu, bilezikte, lazer, op 40); rev ve parti no da markalanacak mı?</li>
 </ol>
 
 <h2>3. Çalışma prensibi ve üretilebilirlik</h2>
@@ -353,6 +372,7 @@ ${table(['Op', 'Tezgah / bağlama', 'İşlem', 'Takım'], [
     ['10', 'CNC torna — 1. bağlama, üst alın dışarıda', `Alın · 30° altıgen pahı · punta + Ø30 ön delik (boydan) · ağız ØW ${fmt(M.W)} ${T.W} · üst pah ${fmt(CH_A)} × 45° · iç çeltik ØG ${fmt(M.G)} ${T.G}, yükseklik ${fmt(COLLAR_TOP - M.C)} ${T.celtikYuksekligi} · kesme`, 'T01, T02, T03, T04, T05, T08'],
     ['20', 'CNC torna — 2. bağlama, ters, altıgen yumuşak çene', `Boy alma B = ${fmt(M.B)} · 30° altıgen pahı · diş dibi deliği Ø${fmt(BSP.tapDrill)} · ${alt.dis} iç diş C = ${fmt(M.C)} (${BSP.tpi} TPI, çeltiğe serbest çıkar) · giriş pahı`, 'T01, T03, T09'],
     ['30', 'Tezgah dışı', 'Çapak alma, yıkama, kurutma', 'Çapak alma takımı'],
+    ['40', 'Fiber lazer (düz yüz, döner eksen gerekmez)', `Marka: ${markaKisa} · iz derinliği en çok 0,05, kabartı ve çapak yok · kaplama yapılırsa kaplamadan sonra`, `T10, ${FILES.marka}`],
   ])}
 <h3>Takım montajı ve test</h3>
 ${table(['Op', 'İşlem', 'Not'], [
@@ -372,6 +392,7 @@ ${table(['T', 'Takım', 'Kullanım', 'Vc (m/dk)', 'İlerleme'], [
     ['T07', 'Parmak freze Ø16, 3 ağız (pirinç/alüminyum)', `Yaka kesikleri, köşe R${fmt(M.R)}`, '100–180', '0,03–0,06 mm/diş'],
     ['T08', `İç kanal kateri, en az ${fmt((M.G - M.W) / 2 + 1, 1)} mm radyal, erişim ${fmt(M.B - M.C + 2)} mm`, `İç çeltik ØG ${fmt(M.G)}`, '100–160', '0,03–0,06 mm/dev'],
     ['T09', 'İç diş kateri 55° (Whitworth)', `${alt.dis} (${BSP.tpi} TPI)`, '80–140', 'Adım'],
+    ['T10', 'Fiber lazer markalama makinesi', 'Bahr logosu (bilezik)', '—', '—'],
   ])}
 <p class="note">Değerler başlangıç içindir; atölye kendi takım ve tezgahına göre ayarlar. ${esc(spec.malzemeKisa)} kurşunlu pirince göre uzun talaş ve fazla çapak verebilir: ilerleme düşük tutulur, takım keskin olmalıdır.</p>
 
@@ -389,9 +410,10 @@ ${table(['No', 'Karakteristik', 'Kabul kriteri', 'Yöntem / ekipman', 'Kayıt'],
     ['10', 'İç çeltik', `ØG ${fmt(M.G)} ${T.G}, yükseklik ${fmt(COLLAR_TOP - M.C)} ${T.celtikYuksekligi}`, 'İç kanal mastarı / kumpas', 'Ölçüm raporu'],
     ['11', `İç diş ${alt.dis}`, `ISO 228-1, sınıf A (öneri), boy ${fmt(M.C)}`, 'Tampon mastar, geçer/geçmez', 'Ölçüm raporu'],
     ['12', 'Conta alnı', 'Düz, çapaksız, radyal çizik yok, Ra ≤ 1,6', 'Görsel + pürüzlülük numunesi', 'Ölçüm raporu'],
-    ['13', 'Sökme denemesi', `Bilezik ${fmt(shift)} mm + ${fmt(tilt)}° ile elle takılıp çıkar`, 'Her takım', 'Kontrol listesi'],
-    ['14', 'Sızdırmazlık', `Parça 1 ile ${spec.sikma.onerilen} Nm, ${spec.testBasinci} bar (1,5 × ${spec.isletmeBasinci.max} bar), 60 s, kaçak yok`, 'Hidrostatik test (su ile); basınçlı hava kullanılmaz', 'Test kaydı'],
-    ['15', 'İlk parça muayenesi', 'Tüm karakteristikler', 'Ölçüm tablosu + fotoğraf', 'İlk parça raporu'],
+    ['13', 'Markalama', `Bahr logosu okunaklı, bilezik yüzünde ortalı, yükseklik ${fmt(MARK.yukseklik)}; kabartı ve çapak yok`, 'Görsel, kumpas', 'Kontrol listesi'],
+    ['14', 'Sökme denemesi', `Bilezik ${fmt(shift)} mm + ${fmt(tilt)}° ile elle takılıp çıkar`, 'Her takım', 'Kontrol listesi'],
+    ['15', 'Sızdırmazlık', `Parça 1 ile ${spec.sikma.onerilen} Nm, ${spec.testBasinci} bar (1,5 × ${spec.isletmeBasinci.max} bar), 60 s, kaçak yok`, 'Hidrostatik test (su ile); basınçlı hava kullanılmaz', 'Test kaydı'],
+    ['16', 'İlk parça muayenesi', 'Tüm karakteristikler', 'Ölçüm tablosu + fotoğraf', 'İlk parça raporu'],
   ])}
 
 <h2>9. Teklif talebi <small>fason atölyeye</small></h2>
@@ -401,8 +423,9 @@ ${table(['Kalem', 'İstek'], [
     ['Malzeme', `${esc(spec.malzeme)}, EN 10204 3.1 sertifikalı · Ø${d.bodyBar} yuvarlak ve SW ${fmt(M.S)} altıgen temin edilebiliyor mu belirtin`],
     ['Çalışma koşulu', `${esc(spec.calismaKosulu)}, işletme ${spec.isletmeBasinci.min}–${spec.isletmeBasinci.max} bar; azami sıcaklık teyit edilecek`],
     ['Kalite', `${esc(spec.genelTolerans)} · 4. bölümdeki kritik toleranslar · diş mastar kontrolü (${ust.dis} halka, ${alt.dis} tampon) · ilk parça ölçüm raporu`],
+    ['Markalama', `Bahr logosu, bilezikte lazer (op 40, teknik resim not 9); 1:1 marka dosyası pakette (${FILES.marka}). Lazeri dışarıda yaptırıyorsanız ayrı kalem olarak belirtin`],
     ['Teslim', 'Çapaksız ve temiz; diş koruma kapaklı, parça başı poşet, etiketli'],
-    ['Teklifte görmek istediklerimiz', 'Birim fiyat, kurulum / programlama bedeli, malzeme, mastar bedeli, termin, teklif geçerlilik süresi, ödeme koşulu'],
+    ['Teklifte görmek istediklerimiz', 'Birim fiyat, kurulum / programlama bedeli, malzeme, mastar bedeli, lazer markalama, termin, teklif geçerlilik süresi, ödeme koşulu'],
     ['Not', `Ölçüler onaylıdır (Rev ${spec.rev}). Yaka ve ağız pahları sökme için kritiktir, değiştirilmeden uygulanmalıdır; işlenemeyen bir nokta varsa teklif öncesi bildirin.`],
   ])}
 
@@ -426,6 +449,8 @@ for (const k of ['govde', 'bilezik']) {
 }
 await buildDxf();
 console.log(`DXF   ${FILES.dxf}`);
+await buildMarkaDxf();
+console.log(`DXF   ${FILES.marka}  Bahr logosu ${fmt(MARK.yukseklik)} × ${fmt(MARK_EN, 1)}`);
 
 const planPath = path.join(OUT, 'index.html');
 await writeFile(planPath, planHtml(info));

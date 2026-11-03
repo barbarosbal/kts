@@ -163,3 +163,64 @@ export function makeAnnot() {
 
   return { group, labels, dashMat, line, arrow, label, dim, ext, ring, callout };
 }
+
+// ---------------- marka / logo ----------------
+// SVG logo tek renk maskeye çevrilir: logo beyaz, zemin saydam. Yüklenemezse null döner, model logosuz açılır.
+export async function markaMaske(src) {
+  try {
+    const img = new Image();
+    img.src = src;
+    await img.decode();
+    const c = document.createElement('canvas');
+    c.width = 4096;
+    c.height = Math.round((c.width * img.naturalHeight) / img.naturalWidth);
+    const g = c.getContext('2d');
+    g.drawImage(img, 0, 0, c.width, c.height);
+    g.globalCompositeOperation = 'source-in';
+    g.fillStyle = '#fff';
+    g.fillRect(0, 0, c.width, c.height);
+    return c;
+  } catch (err) {
+    console.warn('Logo yüklenemedi', src, err);
+    return null;
+  }
+}
+
+// Pirinçte lazer izi: koyu bronz, hafif metalik; yüzeyden kopmadan okunur
+export const PIRINC_IZI = { renk: 0x6e5222, metalness: 0.65, roughness: 0.5 };
+
+// Maskenin en / boy oranı: yükseklik h olan logonun eni
+export const markaEni = (mask, h) => (h * mask.width) / mask.height;
+
+// Lazer izi: yüzeyin hemen üstünde ince, saydam zeminli katman
+function markaMat(mask, { renk, metalness, roughness }) {
+  const tex = new THREE.CanvasTexture(mask);
+  tex.anisotropy = 8;
+  return new THREE.MeshStandardMaterial({
+    color: renk,
+    map: tex,
+    metalness,
+    roughness,
+    transparent: true,
+    depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -4,
+  });
+}
+
+// Silindire sarılı logo. aci: logo ortasının yönü (rad; 0 = +Z, π/2 = +X), y0: alt kenar
+export function silindirMarka(mask, { r, y0, h, aci = 0, ...mat }) {
+  const yay = markaEni(mask, h) / r;
+  const geo = new THREE.CylinderGeometry(r + 0.02, r + 0.02, h, 128, 1, true, aci - yay / 2, yay)
+    .translate(0, y0 + h / 2, 0);
+  return new THREE.Mesh(geo, markaMat(mask, mat));
+}
+
+// Düz yüzdeki logo. Yüzün normali aci yönünde (0 = +Z, π/2 = +X), eksenden uzaklığı d
+export function duzMarka(mask, { d, y0, h, aci = 0, ...mat }) {
+  const geo = new THREE.PlaneGeometry(markaEni(mask, h), h)
+    .translate(0, y0 + h / 2, d + 0.02)
+    .rotateY(aci);
+  return new THREE.Mesh(geo, markaMat(mask, mat));
+}

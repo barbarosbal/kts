@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
 import { Brush, Evaluator, INTERSECTION } from 'three-bvh-csg';
-import { BSP, sizeOf, internalThread, threadedEnd, metin } from 'kts/ortak';
+import { BSP, sizeOf, internalThread, threadedEnd, metin, markaMaske, duzMarka, PIRINC_IZI } from 'kts/ortak';
 
 // Tüm ölçüler rekor-olculer.json'dan gelir (mm). Parça ekseni +Y, orijin bilezik alt alnının merkezi.
 // Bilezik ağzı düz yuvarlaktır, yakanın iki yanı kesiktir. Parça 1 sökülünce bilezik yana kayar,
@@ -25,6 +25,10 @@ const NECK_TOP = M.H - M.L;                // diş başlangıcı
 
 export const HEIGHT = M.H;
 export const SEAT_Y = SEAT_Y_;
+
+// Marka: bileziğin bir altıgen yüzünde lazer markalama. Yüz seçimi serbest; modelde izo görünüşe bakan yüz (−30°).
+const MARK = SPEC.markalama;
+const MARK_MASKE = MARK ? await markaMaske(MARK.logo) : null;
 
 const lathe = (pts) => new THREE.LatheGeometry(pts.map(([r, y]) => new THREE.Vector2(r, y)), 192);
 const creased = (geo) => toCreasedNormals(geo, THREE.MathUtils.degToRad(30));
@@ -183,6 +187,11 @@ function annotate(a) {
   a.callout([-rT * 0.7, M.H - 8, rT * 0.7], [-46, M.H + 10, 12], `${ust.dis} dış diş`, `Üst uç · ${ust.sizdirmazlik}`);
   a.callout([-HEX_R, M.B / 2, 0], [-70, M.B / 2 + 6, 8], `Bilezik SW ${M.S}`, `Ağız düz yuvarlak Ø${M.W}`);
   a.callout([0, 1, ALT.major / 2 + 3], [-10, -16, 54], `${alt.dis} iç diş`, `Alt uç · ${alt.sizdirmazlik}`);
+  if (MARK_MASKE) {
+    const [s, c] = [Math.sin(-Math.PI / 6), Math.cos(-Math.PI / 6)];
+    a.callout([HEX_R * s + 12 * c, MARK.alt + MARK.yukseklik / 2, HEX_R * c - 12 * s], [44, 6, 50],
+      'Bahr logosu', `lazer markalama · h ${metin(MARK.yukseklik)}`);
+  }
 }
 
 // Ayrık görünüm: conta aşağı iner, gövde yükselirken bilezik sökme yolunu izler
@@ -198,6 +207,12 @@ export function kur({ brass, conta }) {
   const dis = new THREE.Mesh(internalThread(ALT, M.C - 0.8), brass);
   dis.position.y = 0.8;
   bilezik.add(dis);
+  if (MARK_MASKE) {
+    bilezik.add(duzMarka(MARK_MASKE, {
+      d: HEX_R, y0: MARK.alt, h: MARK.yukseklik, aci: -Math.PI / 6,
+      ...PIRINC_IZI,
+    }));
+  }
 
   const contaMesh = new THREE.Mesh(creased(lathe([
     [CONTA.ic / 2, SEAT_Y_],

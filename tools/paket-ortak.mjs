@@ -28,10 +28,16 @@ export class Dxf {
   circle(layer, [x, y], r) { this.#add('CIRCLE', layer, [10, x, 20, y, 30, 0, 40, r]); }
   arc(layer, [x, y], r, a0, a1) { this.#add('ARC', layer, [10, x, 20, y, 30, 0, 40, r, 50, a0, 51, a1]); }
   text(layer, [x, y], h, s) { this.#add('TEXT', layer, [10, x, 20, y, 30, 0, 40, h, 1, Dxf.ascii(s)]); }
+  // R12 çoklu çizgi: lazer yazılımları kapalı halkayı dolgu alanı olarak tanır
+  polyline(layer, pts, closed = false) {
+    this.#add('POLYLINE', layer, [66, 1, 70, closed ? 1 : 0, 10, 0, 20, 0, 30, 0]);
+    for (const [x, y] of pts) this.#add('VERTEX', layer, [10, x, 20, y, 30, 0]);
+    this.#add('SEQEND', layer, []);
+  }
 
   toString() {
     const ltypes = [['CONTINUOUS', 'Solid line', []], ['DASHED', '__ __ __', [6, -3]], ['CENTER', '____ _ ____', [20, -4, 2, -4]]];
-    const layers = [['KONTUR', 7, 'CONTINUOUS'], ['DIS', 7, 'CONTINUOUS'], ['GIZLI', 8, 'DASHED'], ['EKSEN', 1, 'CENTER'], ['YAZI', 3, 'CONTINUOUS']];
+    const layers = [['KONTUR', 7, 'CONTINUOUS'], ['DIS', 7, 'CONTINUOUS'], ['GIZLI', 8, 'DASHED'], ['EKSEN', 1, 'CENTER'], ['YAZI', 3, 'CONTINUOUS'], ['MARKA', 5, 'CONTINUOUS']];
     const out = [
       0, 'SECTION', 2, 'HEADER', 9, '$ACADVER', 1, 'AC1009', 9, '$LTSCALE', 40, 1, 0, 'ENDSEC',
       0, 'SECTION', 2, 'TABLES', 0, 'TABLE', 2, 'LTYPE', 70, ltypes.length,
