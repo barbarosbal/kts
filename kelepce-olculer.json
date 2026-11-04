@@ -1,8 +1,8 @@
 {
   "parca": "Kelepçe Sıkma Ucu",
-  "rev": "C",
-  "tarih": "02.11.2026",
-  "revNot": "Gövdeye Ratel logosu, lazer markalama. Turuncu: varsayım.",
+  "rev": "D",
+  "tarih": "04.11.2026",
+  "revNot": "Logo Bahr oldu: gövdeye lazer markalama. Turuncu: varsayım.",
   "onayli": false,
   "durum": "Kelepçe ölçüsü bekliyor",
   "malzeme": "42CrMo4 (1.7225) ıslah çeliği",
@@ -43,10 +43,10 @@
   },
 
   "markalama": {
-    "aciklama": "Ratel logosu, tek renk lazer markalama. Gövde çevresine sarılır, tırnaklardan birinin altında ortalanır; siyah oksitten sonra döner eksenli lazerle işlenir.",
-    "logo": "brand/ratel-lockup.svg",
-    "yukseklik": 5,
-    "alt": 4
+    "aciklama": "Bahr logosu (işaret + yazı), tek renk lazer markalama. Gövde çevresine sarılır, tırnaklardan birinin altında ortalanır; siyah oksitten sonra döner eksenli lazerle işlenir.",
+    "logo": "brand/bahr-logo.svg",
+    "yukseklik": 6,
+    "alt": 3.7
   },
 
   "halka": { "konum": 2, "kalinlik": 2 },

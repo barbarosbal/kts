@@ -39,7 +39,7 @@ const X1 = X0 + S * M.H;
 const { vx, vy, yari, tumu, cross, along } = gorunus(S, X0);
 
 // ---------------- markalama ----------------
-// Ratel logosu gövde çevresine sarılır, ortası tırnaklardan birinin altında. Yan görünüş o tırnağa
+// Bahr logosu gövde çevresine sarılır, ortası tırnaklardan birinin altında. Yan görünüş o tırnağa
 // bakar: logo eksen yönünde dik okunur (harf üstleri tırnağa), çevre yönünde sinüsle daralır.
 const MARK = spec.markalama;
 const LOGO = await logoOku(MARK.logo);
@@ -110,7 +110,7 @@ const logoUc = logoNokta(LW * 0.78, LH * 0.62).map((n) => +n.toFixed(1));
 const logoNot = `
     <polyline class="lead" points="${logoUc.join(',')} ${MN[0] - 4},${MN[1] + 6} ${MN[0] + 206},${MN[1] + 6}"/>
     <text class="tb" x="${MN[0]}" y="${MN[1]}">LAZER MARKALAMA</text>
-    <text class="ts" x="${MN[0]}" y="${MN[1] + 22}">Ratel logosu · h ${fmt(MARK.yukseklik)} · yay ${fmt(+MARK_YAY.toFixed(1))} (${MARK_ACI}°)</text>
+    <text class="ts" x="${MN[0]}" y="${MN[1] + 22}">Bahr logosu · h ${fmt(MARK.yukseklik)} · yay ${fmt(+MARK_YAY.toFixed(1))} (${MARK_ACI}°)</text>
     <text class="ts" x="${MN[0]}" y="${MN[1] + 38}">arka yüzden ${fmt(MARK.alt)} · tırnak altında ortalı</text>`;
 
 const yanGorunus = `
@@ -172,7 +172,7 @@ const ISLEM = [
   `Freze (bölücülü): 2 açık ve 2 kilit kanalı, 90° aralıklı; altıgen SW ${fmt(KV_SW)} × ${fmt(KV_SON - KV_BAS)}.`,
   `Freze: iki tırnak ${fmt(M.V)} × ${fmt(M.U)}, dış düz yüzler ${fmt(2 * OUTER_X)}, uç pahları.`,
   `Isıl işlem: su verme + temperleme, ${spec.sertlik}. Yüzey: ${spec.yuzey}.`,
-  `Lazer markalama: Ratel logosu, gövde çevresinde ${MARK_ACI}° yay, döner eksenle.`,
+  `Lazer markalama: Bahr logosu, gövde çevresinde ${MARK_ACI}° yay, döner eksenle.`,
   'Deneme: SDS-Plus ve üç ayaklı mandrende oturma, sonra gerçek kelepçede tork testi.',
 ];
 
@@ -199,7 +199,7 @@ const NOTES = [
   `Sertlik ${spec.sertlik}, yüzey ${spec.yuzey}. Keskin kenarlar 0,3 × 45°.`,
   `SDS-Plus matkapta darbe kapalı kullanılır. Altıgen köşeleri Ø${fmt(M.S)} içinde kalır, sap SDS mandrene girer.`,
   'Üç ayaklı mandrende uç halkaya dayanana kadar sürülür, çeneler altıgene oturur. 1/4″ altıgen mandrene girmez.',
-  `Markalama: Ratel logosu (${MARK.logo}), tek renk, siyah oksitten sonra. Kabartı ve çapak bırakmaz.`,
+  `Markalama: Bahr logosu (${MARK.logo}), tek renk, siyah oksitten sonra. Kabartı ve çapak bırakmaz.`,
 ];
 const svg = sayfa(spec, {
   bloklar: [yarimKesit, yanGorunus, agizG, kesitAG, planlar],
