@@ -29,8 +29,8 @@
   "markalama": {
     "aciklama": "Bahr logosu (işaret + yazı), tek renk lazer markalama. Gövdenin boş tarafına (P1'in karşısı, 180°) sarılır; alt diş bitimi ile seviye 2 arasında. Yükseklik logonun tüm kutusudur.",
     "logo": "brand/bahr-logo.svg",
-    "yukseklik": 6,
-    "alt": 5,
+    "yukseklik": 8,
+    "alt": 4,
     "aci": 180
   },
 
