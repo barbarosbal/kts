@@ -148,7 +148,7 @@ export function kur({ celik }) {
     ad: SPEC.parca,
     alt: `Çelik ${SPEC.malzemeKisa} · CNC · Rev ${SPEC.rev}${SPEC.onayli ? '' : ' taslak'}`,
     rev: SPEC.rev,
-    paket: null,
+    paket: 'uretim/kelepce/',
     cizim: {
       src: 'kelepce-ucu-taslak.svg',
       alt: 'Kelepçe sıkma ucu teknik çizimi: yarım kesit ve Ratel logolu yan görünüş, ağız görünüşü, SDS-Plus sap kesiti, işleme sırası',

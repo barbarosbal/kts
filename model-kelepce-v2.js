@@ -385,7 +385,7 @@ export function kur({ celik }) {
     ad: SPEC.parca,
     alt: `Çelik ${SPEC.malzemeKisa} + ${KV.malzemeKisa} kovan · ${RL.adet} rulman · Rev ${SPEC.rev}${SPEC.onayli ? '' : ' taslak'}`,
     rev: SPEC.rev,
-    paket: null,
+    paket: 'uretim/kelepce/',
     cizim: {
       src: 'kelepce-ucu-v2-taslak.svg',
       alt: 'Kelepçe sıkma ucu v2 teknik çizimi: montaj yarım kesiti, mil yan görünüşü, ağız, SDS-Plus sap kesiti, parça listesi, montaj sırası',
