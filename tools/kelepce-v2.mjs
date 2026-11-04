@@ -334,7 +334,7 @@ const ISLEM = [
 
 const ACIK = [
   'SDS kanal ölçüleri gerçek bir SDS-Plus uçtan; altıgenli sap SDS mandrende denenecek.',
-  `Tırnakların kelepçede oturduğu yer, C × V (${fmt(M.C)} × ${fmt(M.V)}) ve orta cep Ø${fmt(M.P)} × ${fmt(M.Q)}.`,
+  `Tırnakların kelepçede oturduğu yer: eni V (şimdilik ${fmt(M.V)}; boy C ${fmt(M.C)} onaylı) ve orta cep Ø${fmt(M.P)} × ${fmt(M.Q)}.`,
   `Kelepçe çevresinde siper Ø${fmt(M.F)} için yer: siper tırnak ucundan ${fmt(M.H - Y_C)} mm geride.`,
   `Mandren burnu ile kovan arası ${fmt(MANDREN)} mm: matkabın mandren burnu ölçülecek.`,
   'Gereken sıkma torku (N·m).',

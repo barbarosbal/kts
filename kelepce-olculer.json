@@ -1,8 +1,8 @@
 {
   "parca": "Kelepçe Sıkma Ucu",
-  "rev": "C",
-  "tarih": "02.11.2026",
-  "revNot": "Gövdeye Ratel logosu, lazer markalama. Turuncu: varsayım.",
+  "rev": "D",
+  "tarih": "04.11.2026",
+  "revNot": "A 23, C 20, L 40 onaylandı (v2 ile aynı); tırnak 4 mm uzadı, H 81. Turuncu: varsayım.",
   "onayli": false,
   "durum": "Kelepçe ölçüsü bekliyor",
   "malzeme": "42CrMo4 (1.7225) ıslah çeliği",
@@ -13,10 +13,10 @@
   "genelTolerans": "ISO 2768-m",
 
   "olculer": {
-    "H": { "deger": 77,   "aciklama": "Toplam boy" },
+    "H": { "deger": 81,   "aciklama": "Toplam boy" },
     "D": { "deger": 32,   "aciklama": "Gövde çapı" },
     "A": { "deger": 23,   "aciklama": "Ağız açıklığı, en az" },
-    "C": { "deger": 16,   "aciklama": "Tırnak boyu", "varsayim": true },
+    "C": { "deger": 20,   "aciklama": "Tırnak boyu" },
     "U": { "deger": 3.5,  "aciklama": "Tırnak kalınlığı" },
     "V": { "deger": 10,   "aciklama": "Tırnak eni", "varsayim": true },
     "W": { "deger": 21,   "aciklama": "Alın yuvası çapı" },

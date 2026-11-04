@@ -31,7 +31,7 @@ const disYari = [[0, 0], ...sapDisYol, ...boyunGovde, ...tirnakKalinlik, [0, FAC
 const yanYari = [[0, 0], ...sapYanYol, ...boyunGovde.slice(2), ...tirnakEn];
 
 // ---------------- yarım kesit ve yan görünüş ----------------
-const S = 6.6;                             // 1 mm = 6,6 px
+const S = 6.3;                             // 1 mm = 6,3 px (H 81 sağ sütuna taşmasın)
 const X0 = 120;
 const A1 = 190;                            // yarım kesit ekseni
 const A2 = 544;                            // yan görünüş ekseni
@@ -179,7 +179,7 @@ const ISLEM = [
 const ACIK = [
   'SDS kanal ölçüleri gerçek bir SDS-Plus uçtan ölçülecek; altıgenli sap SDS mandrende denenecek.',
   'Tırnaklar kelepçede nereye oturuyor: karşılıklı iki nokta mı, kaç mm genişlik?',
-  `Tırnak boyu C ve eni V (şimdilik ${fmt(M.C)} × ${fmt(M.V)}).`,
+  `Tırnak eni V (şimdilik ${fmt(M.V)}); boy C ${fmt(M.C)} onaylı.`,
   `Orta cep Ø${fmt(M.P)} × ${fmt(M.Q)} kelepçenin ortasındaki parçayı alıyor mu?`,
   'Gereken sıkma torku (N·m).',
 ];
