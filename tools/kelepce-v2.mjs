@@ -357,7 +357,7 @@ const NOTES = [
   `Kovan alnı kafadan ${fmt(YT.omuzBoy)} mm geride kalır; dönen kafa ile duran kovan birbirine değmez.`,
   'SDS-Plus matkapta darbe kapalı kullanılır. El kovanı siperin arkasından tutar, ucu kelepçeye bastırır.',
   'Üç ayaklı mandrende uç halkaya dayanana kadar sürülür, çeneler altıgene oturur. 1/4″ altıgen mandrene girmez.',
-  `Markalama: Bahr logosu (${MARK.logo}), tek renk, eloksaldan sonra; beyaz çıkar, kabartı bırakmaz.`,
+  `Markalama: Ratel logosu (${MARK.logo}), tek renk, eloksaldan sonra; beyaz çıkar, kabartı bırakmaz.`,
 ];
 
 const desen = `

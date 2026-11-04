@@ -280,14 +280,8 @@ function logoYol(d, logoNokta) {
   let p = [0, 0];
   let cmd = null;
   for (let i = 0; i < tok.length;) {
-    const harf = /[A-Za-z]/.test(tok[i]);
-    if (harf) cmd = tok[i++];
+    if (/[A-Za-z]/.test(tok[i])) cmd = tok[i++];
     const n = () => +tok[i++];
-    if (cmd === 'Z' || cmd === 'z') {
-      // Z kendi başına bir komuttur: ardından gelen M'yi tüketmez
-      if (!harf) i++;
-      continue;
-    }
     if (cmd === 'M') {
       p = [n(), n()];
       cur = [logoNokta(...p)];

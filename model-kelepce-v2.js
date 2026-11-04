@@ -239,7 +239,7 @@ function segmanGeometrisi() {
 }
 
 // ---------------- markalama ----------------
-// Bahr logosu: lazer markalama, kovanın arka düz bandına sarılır; siyah eloksal üstünde beyaz.
+// Ratel logosu: lazer markalama, kovanın arka düz bandına sarılır; siyah eloksal üstünde beyaz.
 // Logo tek renk maskeye çevrilir, kovan yüzeyinin hemen üstündeki ince bir bantta gösterilir.
 const MARK = SPEC.markalama;
 const LOGO = await (async () => {
@@ -315,7 +315,7 @@ function annotate(a) {
   if (LOGO) {
     const y = Y_R + MARK.alt + MARK.yukseklik / 2;
     a.callout([KV_R * Math.sin(MARK_MERKEZ - 0.35), y, KV_R * Math.cos(MARK_MERKEZ - 0.35)], [-58, Y_R + 12, 6],
-      'Bahr logosu', `lazer markalama · h ${metin(MARK.yukseklik)} · beyaz`);
+      'Ratel logosu', `lazer markalama · h ${metin(MARK.yukseklik)} · beyaz`);
   }
   a.callout([-KV_R, Y_R + RL.B / 2, 0], [-54, Y_R - 4, 6], `${RL.adet} × ${RL.kod}`, `Rulman ${RL.d} × ${RL.D} × ${RL.B} · ${SG.standart} segman`);
   const { sw, bas, son } = SPEC.kavrama;

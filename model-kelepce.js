@@ -54,7 +54,7 @@ function profile() {
   ];
 }
 
-// Bahr logosu: lazer markalama, gövde çevresine sarılır. Logo tek renk maskeye çevrilir,
+// Ratel logosu: lazer markalama, gövde çevresine sarılır. Logo tek renk maskeye çevrilir,
 // gövdenin hemen üstündeki ince bir bantta gösterilir; ortası tırnaklardan birinin (−X) altında.
 const LOGO = await (async () => {
   try {
@@ -129,7 +129,7 @@ function annotate(a) {
   if (LOGO) {
     const t = THREE.MathUtils.degToRad(-80);
     a.callout([BODY_R * Math.sin(t), MARK_Y + MARK.yukseklik / 2, BODY_R * Math.cos(t)], [-48, FACE_Y + 5, 6],
-      'Bahr logosu', `lazer markalama · h ${metin(MARK.yukseklik)}`);
+      'Ratel logosu', `lazer markalama · h ${metin(MARK.yukseklik)}`);
   }
   const { sw, bas, son } = SPEC.kavrama;
   a.callout([-SAP_R, 32, 0], [-34, 28, 6], 'Altıgen kavrama', `SW ${metin(sw)} × ${metin(son - bas)} · mandren çeneleri`);
@@ -151,7 +151,7 @@ export function kur({ celik }) {
     paket: null,
     cizim: {
       src: 'kelepce-ucu-taslak.svg',
-      alt: 'Kelepçe sıkma ucu teknik çizimi: yarım kesit ve Bahr logolu yan görünüş, ağız görünüşü, SDS-Plus sap kesiti, işleme sırası',
+      alt: 'Kelepçe sıkma ucu teknik çizimi: yarım kesit ve Ratel logolu yan görünüş, ağız görünüşü, SDS-Plus sap kesiti, işleme sırası',
     },
     parcalar: [{ obj: uc(celik) }],
     occluder: { r: BODY_R, y0: BODY_Y, y1: FACE_Y },

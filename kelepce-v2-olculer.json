@@ -1,8 +1,8 @@
 {
   "parca": "Kelepçe Sıkma Ucu v2",
-  "rev": "D",
-  "tarih": "04.11.2026",
-  "revNot": "Kovan logosu Bahr oldu, lazer markalama. Turuncu: varsayım.",
+  "rev": "C",
+  "tarih": "02.11.2026",
+  "revNot": "Kovanın arka düz bandına Ratel logosu, lazer markalama. Turuncu: varsayım.",
   "onayli": false,
   "durum": "Kelepçe ölçüsü bekliyor",
   "malzeme": "42CrMo4 (1.7225) ıslah çeliği",
@@ -79,9 +79,9 @@
   },
 
   "markalama": {
-    "aciklama": "Bahr logosu (işaret + yazı), tek renk lazer markalama. Kovanın arka düz bandına sarılır (tırtıl bu bandın önünden başlar); siyah eloksal üstünde beyaz çıkar. alt: kovan arka alnından logonun alt kenarına. Kovan serbest döndüğü için çevredeki yeri önemsizdir; görüntüleyicide açılışta kameraya bakar.",
-    "logo": "brand/bahr-logo.svg",
-    "yukseklik": 6,
+    "aciklama": "Ratel logosu, tek renk lazer markalama. Kovanın arka düz bandına sarılır (tırtıl bu bandın önünden başlar); siyah eloksal üstünde beyaz çıkar. alt: kovan arka alnından logonun alt kenarına. Kovan serbest döndüğü için çevredeki yeri önemsizdir; görüntüleyicide açılışta kameraya bakar.",
+    "logo": "brand/ratel-lockup.svg",
+    "yukseklik": 5,
     "alt": 3
   },
 
