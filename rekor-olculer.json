@@ -1,7 +1,7 @@
 {
   "parca": "Oynar Rekor",
   "rev": "D",
-  "tarih": "03.11.2026",
+  "tarih": "04.11.2026",
   "revNot": "Ölçüler değişmedi. Bilezik yüzüne Bahr logosu, lazer markalama.",
   "onayli": true,
   "durum": "Ölçüler onaylı",
@@ -40,8 +40,8 @@
   "markalama": {
     "aciklama": "Bahr logosu (işaret + yazı), tek renk lazer markalama. Bileziğin bir altıgen yüzünde ortalı (yüz seçimi serbest); alt kenarı bilezik alt alnından ölçülür. Yükseklik logonun tüm kutusudur.",
     "logo": "brand/bahr-logo.svg",
-    "yukseklik": 8,
-    "alt": 11.5
+    "yukseklik": 6,
+    "alt": 12.5
   },
 
   "conta": { "dis": 45, "ic": 40, "kalinlik": 2 },

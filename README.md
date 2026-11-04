@@ -37,4 +37,4 @@ Pirinç (CW511L) parçaların ve çelik (42CrMo4) sıkma uçlarının 360° dön
 
 ## Bahr logosu
 
-`brand/bahr-logo.svg` (işaret + "Bahr", Inter Light) ve `brand/bahr-isaret.svg` (yalnız işaret, başörtüsü bağı) Figma'daki "Bahr — Logo" dosyasından gelir; yazı yola çevrilmiştir. Pirinç parçalarda lazer markalama olarak kullanılır; 3D görüntüleyicide iz rengi `ortak.js` içindeki `PIRINC_IZI`'dir.
+`brand/bahr-logo.svg` (işaret + "Bahr", Inter Regular; işaret B harfi boyunda) ve `brand/bahr-isaret.svg` (yalnız işaret, başörtüsü bağı) Figma'daki "Bahr — Logo" dosyasından gelir; yazı yola çevrilmiştir. Pirinç parçalarda lazer markalama olarak kullanılır; 3D görüntüleyicide iz rengi `ortak.js` içindeki `PIRINC_IZI`'dir.

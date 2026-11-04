@@ -1,7 +1,7 @@
 {
   "parca": "Kazan Altı Parçası",
   "rev": "I",
-  "tarih": "03.11.2026",
+  "tarih": "04.11.2026",
   "revNot": "Ölçüler değişmedi. Boş tarafa Bahr logosu, lazer markalama.",
   "onayli": true,
   "durum": "Ölçüler onaylı — teklif aşaması",
@@ -29,8 +29,8 @@
   "markalama": {
     "aciklama": "Bahr logosu (işaret + yazı), tek renk lazer markalama. Gövdenin boş tarafına (P1'in karşısı, 180°) sarılır; alt diş bitimi ile seviye 2 arasında. Yükseklik logonun tüm kutusudur.",
     "logo": "brand/bahr-logo.svg",
-    "yukseklik": 8,
-    "alt": 4,
+    "yukseklik": 6,
+    "alt": 5,
     "aci": 180
   },
 
