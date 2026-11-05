@@ -324,9 +324,9 @@ const tablo = `
     ${PARCALAR.map((row, j) => row.map((t, i) => `<text class="${i === 1 ? 'tb' : 'tn'}" x="${TX[i]}" y="${TY + RH * (j + 1) + 15}">${t}</text>`).join('')).join('\n    ')}`;
 
 const ISLEM = [
-  `Mil torna: sap, halka, yatak yeri Ø${fmt(YT.cap)} (taşlama payı), kanal, omuz, kafa Ø${fmt(M.D)}, alın ve cep.`,
+  `Mil torna: sap, halka, yatak yeri Ø${fmt(YT.cap)} ${YT.tolerans} ince torna, kanal, omuz, kafa Ø${fmt(M.D)}, alın ve cep.`,
   `Mil freze: SDS kanalları, altıgen SW ${fmt(spec.kavrama.sw)}, iki tırnak ve dış düz yüzler.`,
-  `Isıl işlem ${spec.sertlik}; yatak yeri Ø${fmt(YT.cap)} ${YT.tolerans} taşlanır; kumlama + siyah oksit.`,
+  `Isıl işlem yok: çubuk ıslahlı (+QT) gelir, ${spec.sertlik}. Kumlama + siyah oksit.`,
   `Kovan torna: Ø${fmt(M.E)}, siper Ø${fmt(M.F)}, yatak yerleri Ø${fmt(RL.D)} ${KV.yatakTolerans}; tırtıl; ${KV.yuzey}; lazer logo.`,
   'Rulmanlar kovana preslenir; kovan saptan mile sürülür, segman takılır.',
   'Deneme: kovan elde serbest döner; matkapta 2 dk boşta, sonra kelepçede tork.',
@@ -352,7 +352,7 @@ const planlar = `${tablo}
 const NOTES = [
   `${spec.onayli ? 'Ölçüler onaylıdır.' : 'Taslak: turuncu ölçüler varsayımdır, gerçek kelepçe ölçülmeden üretime verilmez.'} Çizim orantılıdır, değerler esastır.`,
   `Genel tolerans ${spec.genelTolerans}. Ağız A en az ${fmt(M.A)}: +0,50 / 0. Kovanın mil üzerindeki eksenel boşluğu 0,1–0,3.`,
-  `Mil: ${spec.malzemeKisa}, ${spec.sertlik}. Yatak yeri Ø${fmt(YT.cap)} ${YT.tolerans}, Ra 0,4, kumlamada maskelenir. Kafada salgı en çok 0,05.`,
+  `Mil: ${spec.malzemeKisa}, ${spec.sertlik}. Yatak yeri Ø${fmt(YT.cap)} ${YT.tolerans}, Ra 0,8, kumlamada maskelenir. Kafada salgı en çok 0,05.`,
   `Kovan: ${KV.malzemeKisa}, ${KV.yuzey}. Yatak yerleri Ø${fmt(RL.D)} ${KV.yatakTolerans} × ${fmt(RL.B)}, eş eksenlik 0,02, maskeli; iç omuz Ø${fmt(KV.icCap)}.`,
   `Kovan alnı kafadan ${fmt(YT.omuzBoy)} mm geride kalır; dönen kafa ile duran kovan birbirine değmez.`,
   'SDS-Plus matkapta darbe kapalı kullanılır. El kovanı siperin arkasından tutar, ucu kelepçeye bastırır.',

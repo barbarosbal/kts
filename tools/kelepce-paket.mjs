@@ -265,12 +265,13 @@ ${planCss(false)}</style>
 <h2>Anında teklif platformuna (Xometry vb.) yükleme</h2>
 <p>Her parça ayrı yüklenir; teknik resim PDF'i ilgili parçaya eklenir (diş, tolerans, ısıl işlem ve yüzey resimde).</p>
 <table><thead><tr><th>Parça</th><th>Dosya</th><th>Süreç</th><th>Malzeme</th><th>Isıl işlem / yüzey</th><th>Not</th></tr></thead><tbody>
-<tr><td><b>v1 mil</b></td><td>${FILES.v1}</td><td>CNC torna + freze (C eksen)</td><td>42CrMo4 (1.7225, AISI 4140)</td><td>Su verme + temperleme ${esc(S1.sertlik)} · kumlama + siyah oksit</td><td>SDS-Plus kanalları, SW ${fmt(S1.kavrama.sw)} altıgen · lazer logo (Ratel)</td></tr>
-<tr><td><b>v2 mil</b></td><td>${FILES.v2Mil}</td><td>CNC torna + freze (C eksen) + taşlama</td><td>42CrMo4 (1.7225, AISI 4140)</td><td>Su verme + temperleme ${esc(S2.sertlik)} · kumlama + siyah oksit</td><td>Yatak yeri Ø${fmt(S2.yatak.cap)} ${esc(S2.yatak.tolerans)} taşlanır · segman kanalı DIN 471</td></tr>
+<tr><td><b>v1 mil</b></td><td>${FILES.v1}</td><td>CNC torna + freze (C eksen)</td><td>42CrMo4+QT (1.7225, AISI 4140), ıslahlı çubuk</td><td>Ek ısıl işlem yok (${esc(S1.sertlik)}) · kumlama + siyah oksit</td><td>SDS-Plus kanalları, SW ${fmt(S1.kavrama.sw)} altıgen · lazer logo (Ratel)</td></tr>
+<tr><td><b>v2 mil</b></td><td>${FILES.v2Mil}</td><td>CNC torna + freze (C eksen)</td><td>42CrMo4+QT (1.7225, AISI 4140), ıslahlı çubuk</td><td>Ek ısıl işlem yok (${esc(S2.sertlik)}) · kumlama + siyah oksit</td><td>Yatak yeri Ø${fmt(S2.yatak.cap)} ${esc(S2.yatak.tolerans)} ince tornalanır · segman kanalı DIN 471</td></tr>
 <tr><td><b>v2 kovan</b></td><td>${FILES.v2Kovan}</td><td>CNC torna + tırtıl</td><td>${esc(S2.kovan.malzeme)}</td><td>${esc(S2.kovan.yuzey)}</td><td>Rulman yuvaları Ø${fmt(S2.rulman.D)} ${esc(S2.kovan.yatakTolerans)} · tırtıl ${esc(S2.kovan.tirtil.tip)} ${fmt(S2.kovan.tirtil.adim)} (STEP'te düz) · lazer logo (Ratel)</td></tr>
 </tbody></table>
 <table><thead><tr><th>Kalem</th><th>Değer</th></tr></thead><tbody>
 ${satir('Adet', '1, 3 ve 10 adet için ayrı fiyat')}
+${satir('Prototip', 'Siyah oksit ve lazer logo istenmezse platformda yüzey işlemi seçilmez, sipariş notuna yazılır')}
 ${satir('Hazır alınan (v2)', `${S2.rulman.adet} × ${esc(S2.rulman.kod)} rulman, 1 × ${esc(S2.segman.standart)} ${esc(S2.segman.olcu)} segman; montaj resimdeki sırayla`)}
 ${satir('Genel tolerans', esc(S1.genelTolerans))}
 ${satir('Tahmini ağırlık', `v1 ${kg(OZ.v1.hacim, 7.85)} kg · v2 mil ${kg(OZ.v2Mil.hacim, 7.85)} kg · v2 kovan ${kg(OZ.v2Kovan.hacim, 2.70)} kg`)}

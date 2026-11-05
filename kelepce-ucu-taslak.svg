@@ -209,7 +209,7 @@
     <text class="tn" x="780" y="456">2. Torna: alın yuvası Ø21, orta cep Ø15 × 7, delik Ø4.</text>
     <text class="tn" x="780" y="476">3. Freze (bölücülü): 2 açık ve 2 kilit kanalı, 90° aralıklı; altıgen SW 8,7 × 20.</text>
     <text class="tn" x="780" y="496">4. Freze: iki tırnak 10 × 3,5, dış düz yüzler 30, uç pahları.</text>
-    <text class="tn" x="780" y="516">5. Isıl işlem: su verme + temperleme, 44–48 HRC. Yüzey: kumlama + siyah oksit.</text>
+    <text class="tn" x="780" y="516">5. Isıl işlem yok: çubuk ıslahlı (+QT) gelir, ≈ 28–32 HRC. Yüzey: kumlama + siyah oksit.</text>
     <text class="tn" x="780" y="536">6. Lazer markalama: Ratel logosu, gövde çevresinde 103° yay, döner eksenle.</text>
     <text class="tn" x="780" y="556">7. Deneme: SDS-Plus ve üç ayaklı mandrende oturma, sonra gerçek kelepçede tork testi.</text>
     <text class="tb q" x="780" y="584">ÜRETİMDEN ÖNCE DOĞRULANACAK</text>
@@ -225,8 +225,8 @@
     <text class="tn" x="40" y="842">1. Taslak: turuncu ölçüler varsayımdır, gerçek kelepçe ölçülmeden üretime verilmez. Çizim orantılıdır, değerler esastır.</text>
     <text class="tn" x="40" y="858.5">2. Genel tolerans ISO 2768-m. Ağız açıklığı A en az 23: +0,50 / 0.</text>
     <text class="tn" x="40" y="875">3. Sap SDS-Plus: Ø10 × 40, 2 açık + 2 kilit kanalı. Kanal ölçüleri gerçek bir SDS-Plus uçtan alınır, mandrende denenir.</text>
-    <text class="tn" x="40" y="891.5">4. Gövde ile sap ekseni arasında salgı en çok 0,10. Malzeme: 42CrMo4 (1.7225) ıslah çeliği.</text>
-    <text class="tn" x="40" y="908">5. Sertlik 44–48 HRC, yüzey kumlama + siyah oksit. Keskin kenarlar 0,3 × 45°.</text>
+    <text class="tn" x="40" y="891.5">4. Gövde ile sap ekseni arasında salgı en çok 0,10. Malzeme: 42CrMo4+QT (1.7225), ıslahlı çubuk.</text>
+    <text class="tn" x="40" y="908">5. Sertlik ≈ 28–32 HRC (ıslahlı çubuk, ek ısıl işlem yok), yüzey kumlama + siyah oksit. Keskin kenarlar 0,3 × 45°.</text>
     <text class="tn" x="40" y="924.5">6. SDS-Plus matkapta darbe kapalı kullanılır. Altıgen köşeleri Ø10 içinde kalır, sap SDS mandrene girer.</text>
     <text class="tn" x="40" y="941">7. Üç ayaklı mandrende uç halkaya dayanana kadar sürülür, çeneler altıgene oturur. 1/4″ altıgen mandrene girmez.</text>
     <text class="tn" x="40" y="957.5">8. Markalama: Ratel logosu (brand/ratel-lockup.svg), tek renk, siyah oksitten sonra. Kabartı ve çapak bırakmaz.</text>
@@ -239,15 +239,15 @@
     <text x="795" y="814" font-size="22" font-weight="700" fill="#111" letter-spacing=".5">KELEPÇE SIKMA UCU</text>
     <text class="ts" x="1345" y="814" text-anchor="end">Teknik resim</text>
 
-    <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">Çelik 42CrMo4</text>
+    <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">Çelik 42CrMo4+QT</text>
     <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
     <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
 
-    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">D — taslak</text>
-    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">04.11.2026</text>
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">E — taslak</text>
+    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">05.11.2026</text>
     <text class="tl" x="1190" y="887">DURUM</text><text class="tb q" x="1190" y="906">TASLAK</text>
 
-    <text class="tl" x="790" y="929">REV D</text>
-    <text class="t" x="790" y="947">A 23, C 20, L 40 onaylandı (v2 ile aynı); tırnak 4 mm uzadı, H 81. Turuncu: varsayım.</text>
+    <text class="tl" x="790" y="929">REV E</text>
+    <text class="t" x="790" y="947">Ek ısıl işlem kaldırıldı: uç beton delmez, ıslahlı çubuk yeter. Turuncu: varsayım.</text>
   </g>
 </svg>

@@ -295,15 +295,15 @@
     <rect class="grid" x="784" y="382" width="572" height="120"/>
     <path class="grid" d="M784 402 H1356 M784 422 H1356 M784 442 H1356 M784 462 H1356 M784 482 H1356 M820 382 V502 M1018 382 V502 M1064 382 V502"/>
     <text class="tl" x="790" y="396">NO</text><text class="tl" x="826" y="396">PARÇA</text><text class="tl" x="1024" y="396">ADET</text><text class="tl" x="1070" y="396">MALZEME · STANDART</text>
-    <text class="tn" x="790" y="417">1</text><text class="tb" x="826" y="417">Mil</text><text class="tn" x="1024" y="417">1</text><text class="tn" x="1070" y="417">42CrMo4 · 44–48 HRC · siyah oksit</text>
+    <text class="tn" x="790" y="417">1</text><text class="tb" x="826" y="417">Mil</text><text class="tn" x="1024" y="417">1</text><text class="tn" x="1070" y="417">42CrMo4+QT · ≈ 28–32 HRC · siyah oksit</text>
     <text class="tn" x="790" y="437">2</text><text class="tb" x="826" y="437">Döner kovan</text><text class="tn" x="1024" y="437">1</text><text class="tn" x="1070" y="437">EN AW-6082 T6 · siyah eloksal</text>
     <text class="tn" x="790" y="457">3</text><text class="tb" x="826" y="457">Rulman 6804-2RS</text><text class="tn" x="1024" y="457">2</text><text class="tn" x="1070" y="457">20 × 32 × 7 · sabit bilyalı, iki yanı keçeli</text>
     <text class="tn" x="790" y="477">4</text><text class="tb" x="826" y="477">Segman DIN 471 – 20 × 1,2</text><text class="tn" x="1024" y="477">1</text><text class="tn" x="1070" y="477">yay çeliği, fosfatlı</text>
     <text class="tn" x="790" y="497">–</text><text class="tb" x="826" y="497">Yatak sabitleyici</text><text class="tn" x="1024" y="497">–</text><text class="tn" x="1070" y="497">anaerobik, orta mukavemet (ör. Loctite 641)</text>
     <text class="tb" x="790" y="524">İŞLEME VE MONTAJ SIRASI</text>
-    <text class="tn" x="790" y="544">1. Mil torna: sap, halka, yatak yeri Ø20 (taşlama payı), kanal, omuz, kafa Ø32, alın ve cep.</text>
+    <text class="tn" x="790" y="544">1. Mil torna: sap, halka, yatak yeri Ø20 h6 ince torna, kanal, omuz, kafa Ø32, alın ve cep.</text>
     <text class="tn" x="790" y="562">2. Mil freze: SDS kanalları, altıgen SW 8,7, iki tırnak ve dış düz yüzler.</text>
-    <text class="tn" x="790" y="580">3. Isıl işlem 44–48 HRC; yatak yeri Ø20 h6 taşlanır; kumlama + siyah oksit.</text>
+    <text class="tn" x="790" y="580">3. Isıl işlem yok: çubuk ıslahlı (+QT) gelir, ≈ 28–32 HRC. Kumlama + siyah oksit.</text>
     <text class="tn" x="790" y="598">4. Kovan torna: Ø37, siper Ø40, yatak yerleri Ø32 K7; tırtıl; siyah eloksal; lazer logo.</text>
     <text class="tn" x="790" y="616">5. Rulmanlar kovana preslenir; kovan saptan mile sürülür, segman takılır.</text>
     <text class="tn" x="790" y="634">6. Deneme: kovan elde serbest döner; matkapta 2 dk boşta, sonra kelepçede tork.</text>
@@ -319,7 +319,7 @@
     <text class="tb" x="40" y="822">NOTLAR</text>
     <text class="tn" x="40" y="842">1. Taslak: turuncu ölçüler varsayımdır, gerçek kelepçe ölçülmeden üretime verilmez. Çizim orantılıdır, değerler esastır.</text>
     <text class="tn" x="40" y="858.5">2. Genel tolerans ISO 2768-m. Ağız A en az 23: +0,50 / 0. Kovanın mil üzerindeki eksenel boşluğu 0,1–0,3.</text>
-    <text class="tn" x="40" y="875">3. Mil: 42CrMo4, 44–48 HRC. Yatak yeri Ø20 h6, Ra 0,4, kumlamada maskelenir. Kafada salgı en çok 0,05.</text>
+    <text class="tn" x="40" y="875">3. Mil: 42CrMo4+QT, ≈ 28–32 HRC. Yatak yeri Ø20 h6, Ra 0,8, kumlamada maskelenir. Kafada salgı en çok 0,05.</text>
     <text class="tn" x="40" y="891.5">4. Kovan: Al 6082-T6, siyah eloksal. Yatak yerleri Ø32 K7 × 7, eş eksenlik 0,02, maskeli; iç omuz Ø27.</text>
     <text class="tn" x="40" y="908">5. Kovan alnı kafadan 1 mm geride kalır; dönen kafa ile duran kovan birbirine değmez.</text>
     <text class="tn" x="40" y="924.5">6. SDS-Plus matkapta darbe kapalı kullanılır. El kovanı siperin arkasından tutar, ucu kelepçeye bastırır.</text>
@@ -334,15 +334,15 @@
     <text x="795" y="814" font-size="22" font-weight="700" fill="#111" letter-spacing=".5">KELEPÇE SIKMA UCU v2</text>
     <text class="ts" x="1345" y="814" text-anchor="end">Teknik resim</text>
 
-    <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">42CrMo4 + Al 6082</text>
+    <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">42CrMo4+QT + Al 6082</text>
     <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
     <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
 
-    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">D — taslak</text>
-    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">04.11.2026</text>
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">E — taslak</text>
+    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">05.11.2026</text>
     <text class="tl" x="1190" y="887">DURUM</text><text class="tb q" x="1190" y="906">TASLAK</text>
 
-    <text class="tl" x="790" y="929">REV D</text>
-    <text class="t" x="790" y="947">A 23, C 20, L 40 onaylandı; tırnak 4 mm uzadı, H 124. Turuncu: varsayım.</text>
+    <text class="tl" x="790" y="929">REV E</text>
+    <text class="t" x="790" y="947">Ek ısıl işlem ve taşlama kaldırıldı: ıslahlı çubuk yeter. Turuncu: varsayım.</text>
   </g>
 </svg>

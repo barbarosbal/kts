@@ -171,7 +171,7 @@ const ISLEM = [
   `Torna: alın yuvası Ø${fmt(M.W)}, orta cep Ø${fmt(M.P)} × ${fmt(M.Q)}, delik Ø${fmt(M.J)}.`,
   `Freze (bölücülü): 2 açık ve 2 kilit kanalı, 90° aralıklı; altıgen SW ${fmt(KV_SW)} × ${fmt(KV_SON - KV_BAS)}.`,
   `Freze: iki tırnak ${fmt(M.V)} × ${fmt(M.U)}, dış düz yüzler ${fmt(2 * OUTER_X)}, uç pahları.`,
-  `Isıl işlem: su verme + temperleme, ${spec.sertlik}. Yüzey: ${spec.yuzey}.`,
+  `Isıl işlem yok: çubuk ıslahlı (+QT) gelir, ${spec.sertlik}. Yüzey: ${spec.yuzey}.`,
   `Lazer markalama: Ratel logosu, gövde çevresinde ${MARK_ACI}° yay, döner eksenle.`,
   'Deneme: SDS-Plus ve üç ayaklı mandrende oturma, sonra gerçek kelepçede tork testi.',
 ];
@@ -196,7 +196,7 @@ const NOTES = [
   `Genel tolerans ${spec.genelTolerans}. Ağız açıklığı A en az ${fmt(M.A)}: +0,50 / 0.`,
   `Sap SDS-Plus: Ø${fmt(M.S)} × ${fmt(M.L)}, 2 açık + 2 kilit kanalı. Kanal ölçüleri gerçek bir SDS-Plus uçtan alınır, mandrende denenir.`,
   `Gövde ile sap ekseni arasında salgı en çok 0,10. Malzeme: ${spec.malzeme}.`,
-  `Sertlik ${spec.sertlik}, yüzey ${spec.yuzey}. Keskin kenarlar 0,3 × 45°.`,
+  `Sertlik ${spec.sertlik} (ıslahlı çubuk, ek ısıl işlem yok), yüzey ${spec.yuzey}. Keskin kenarlar 0,3 × 45°.`,
   `SDS-Plus matkapta darbe kapalı kullanılır. Altıgen köşeleri Ø${fmt(M.S)} içinde kalır, sap SDS mandrene girer.`,
   'Üç ayaklı mandrende uç halkaya dayanana kadar sürülür, çeneler altıgene oturur. 1/4″ altıgen mandrene girmez.',
   `Markalama: Ratel logosu (${MARK.logo}), tek renk, siyah oksitten sonra. Kabartı ve çapak bırakmaz.`,
