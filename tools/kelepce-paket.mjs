@@ -233,7 +233,7 @@ function sayfa(sizes) {
 <title>Teklif Paketi · Kelepçe Sıkma Uçları</title>
 <link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">
 <style>
-${planCss(false)}</style>
+${planCss(S1.onayli && S2.onayli)}</style>
 </head>
 <body>
 <main>
@@ -259,7 +259,9 @@ ${planCss(false)}</style>
     ${dl(FILES.v2Kovan, 'STEP · v2 kovan', 'Alüminyum kovan, tırtıl resimde')}
     ${dl(FILES.v2Pdf, 'Teknik resim · v2 (PDF)', 'A3, montaj ve parça listesi')}
   </div>
-  <p class="callout"><b>Taslak.</b> A 23, C 20 ve L 40 onaylı; tırnak eni V ${fmt(M1.V)} ve orta cep Ø${fmt(M1.P)} × ${fmt(M1.Q)} varsayım, gerçek kelepçe ölçülünce kesinleşir. Fiyat bu paketle istenebilir, sipariş kesin ölçüyle verilir.</p>
+  ${S1.onayli && S2.onayli
+    ? `<p class="callout"><b>Kelepçe ölçüleri onaylı.</b> Ağız A ${fmt(M1.A)}, tırnak ${fmt(M1.V)} × ${fmt(M1.U)} × ${fmt(M1.C)}, orta cep Ø${fmt(M1.P)} × ${fmt(M1.Q)}, sap boyu L ${fmt(M1.L)}. SDS-Plus kanal ölçüleri orantıyla çizildi; atölye gerçek bir SDS-Plus uçla karşılaştırır.</p>`
+    : `<p class="callout"><b>Taslak.</b> Turuncu ölçüler varsayım, gerçek kelepçe ölçülünce kesinleşir. Fiyat bu paketle istenebilir, sipariş kesin ölçüyle verilir.</p>`}
 </section>
 
 <h2>Anında teklif platformuna (Xometry vb.) yükleme</h2>

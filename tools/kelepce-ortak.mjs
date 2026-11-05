@@ -13,7 +13,7 @@ export const fmt = (n) => String(n).replace('.', ',');
 export function uc(spec) {
   const M = Object.fromEntries(Object.entries(spec.olculer).map(([k, v]) => [k, v.deger]));
   const onDeger = (k) => (spec.olculer[k].varsayim && !spec.onayli ? ' q' : '');
-  const SDS_Q = spec.onayli ? '' : ' q';
+  const SDS_Q = spec.onayli && spec.sds.onayli ? '' : ' q';
 
   const BODY_R = M.D / 2;
   const SAP_R = M.S / 2;

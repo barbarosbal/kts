@@ -178,9 +178,11 @@ const ISLEM = [
 
 const ACIK = [
   'SDS kanal ölçüleri gerçek bir SDS-Plus uçtan ölçülecek; altıgenli sap SDS mandrende denenecek.',
-  'Tırnaklar kelepçede nereye oturuyor: karşılıklı iki nokta mı, kaç mm genişlik?',
-  `Tırnak eni V (şimdilik ${fmt(M.V)}); boy C ${fmt(M.C)} onaylı.`,
-  `Orta cep Ø${fmt(M.P)} × ${fmt(M.Q)} kelepçenin ortasındaki parçayı alıyor mu?`,
+  ...(spec.onayli ? [] : [
+    'Tırnaklar kelepçede nereye oturuyor: karşılıklı iki nokta mı, kaç mm genişlik?',
+    `Tırnak eni V (şimdilik ${fmt(M.V)}); boy C ${fmt(M.C)} onaylı.`,
+    `Orta cep Ø${fmt(M.P)} × ${fmt(M.Q)} kelepçenin ortasındaki parçayı alıyor mu?`,
+  ]),
   'Gereken sıkma torku (N·m).',
 ];
 
@@ -192,7 +194,7 @@ const planlar = `
 
 // ---------------- notlar ----------------
 const NOTES = [
-  `${spec.onayli ? 'Ölçüler onaylıdır.' : 'Taslak: turuncu ölçüler varsayımdır, gerçek kelepçe ölçülmeden üretime verilmez.'} Çizim orantılıdır, değerler esastır.`,
+  `${!spec.onayli ? 'Taslak: turuncu ölçüler varsayımdır, gerçek kelepçe ölçülmeden üretime verilmez.' : spec.sds.onayli ? 'Ölçüler onaylıdır.' : 'Ölçüler onaylıdır; yalnız turuncu SDS kanalları bir SDS-Plus uçtan doğrulanır.'} Çizim orantılıdır, değerler esastır.`,
   `Genel tolerans ${spec.genelTolerans}. Ağız açıklığı A en az ${fmt(M.A)}: +0,50 / 0.`,
   `Sap SDS-Plus: Ø${fmt(M.S)} × ${fmt(M.L)}, 2 açık + 2 kilit kanalı. Kanal ölçüleri gerçek bir SDS-Plus uçtan alınır, mandrende denenir.`,
   `Gövde ile sap ekseni arasında salgı en çok 0,10. Malzeme: ${spec.malzeme}.`,

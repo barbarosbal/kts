@@ -242,7 +242,7 @@
     
     <line class="dima" x1="677.6" y1="544" x2="677.6" y2="588"/>
     <rect x="643.6" y="556" width="68" height="20" fill="#fff"/>
-    <text class="tb q" x="677.6" y="571" text-anchor="middle">V = 10</text>
+    <text class="tb" x="677.6" y="571" text-anchor="middle">V = 10</text>
     
     <line class="dima" x1="745.6" y1="495.6" x2="745.6" y2="636.4"/>
     <rect x="711.6" y="556" width="68" height="20" fill="#fff"/>
@@ -309,15 +309,13 @@
     <text class="tn" x="790" y="634">6. Deneme: kovan elde serbest döner; matkapta 2 dk boşta, sonra kelepçede tork.</text>
     <text class="tb q" x="790" y="660">ÜRETİMDEN ÖNCE DOĞRULANACAK</text>
     <text class="tn" x="790" y="680">1. SDS kanal ölçüleri gerçek bir SDS-Plus uçtan; altıgenli sap SDS mandrende denenecek.</text>
-    <text class="tn" x="790" y="698">2. Tırnakların kelepçede oturduğu yer: eni V (şimdilik 10; boy C 20 onaylı) ve orta cep Ø15 × 7.</text>
-    <text class="tn" x="790" y="716">3. Kelepçe çevresinde siper Ø40 için yer: siper tırnak ucundan 31 mm geride.</text>
-    <text class="tn" x="790" y="734">4. Mandren burnu ile kovan arası 9 mm: matkabın mandren burnu ölçülecek.</text>
-    <text class="tn" x="790" y="752">5. Gereken sıkma torku (N·m).</text>
+    <text class="tn" x="790" y="698">2. Mandren burnu ile kovan arası 9 mm: matkabın mandren burnu ölçülecek.</text>
+    <text class="tn" x="790" y="716">3. Gereken sıkma torku (N·m).</text>
   </g>
 
   <g>
     <text class="tb" x="40" y="822">NOTLAR</text>
-    <text class="tn" x="40" y="842">1. Taslak: turuncu ölçüler varsayımdır, gerçek kelepçe ölçülmeden üretime verilmez. Çizim orantılıdır, değerler esastır.</text>
+    <text class="tn" x="40" y="842">1. Ölçüler onaylıdır; yalnız turuncu SDS kanalları bir SDS-Plus uçtan doğrulanır. Çizim orantılıdır, değerler esastır.</text>
     <text class="tn" x="40" y="858.5">2. Genel tolerans ISO 2768-m. Ağız A en az 23: +0,50 / 0. Kovanın mil üzerindeki eksenel boşluğu 0,1–0,3.</text>
     <text class="tn" x="40" y="875">3. Mil: 42CrMo4+QT, ≈ 28–32 HRC. Yatak yeri Ø20 h6, Ra 0,8, kumlamada maskelenir. Kafada salgı en çok 0,05.</text>
     <text class="tn" x="40" y="891.5">4. Kovan: Al 6082-T6, siyah eloksal. Yatak yerleri Ø32 K7 × 7, eş eksenlik 0,02, maskeli; iç omuz Ø27.</text>
@@ -338,11 +336,11 @@
     <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
     <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
 
-    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">E — taslak</text>
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">F — onaylı</text>
     <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">05.11.2026</text>
-    <text class="tl" x="1190" y="887">DURUM</text><text class="tb q" x="1190" y="906">TASLAK</text>
+    <text class="tl" x="1190" y="887">DURUM</text><text class="tb" x="1190" y="906">ONAYLI</text>
 
-    <text class="tl" x="790" y="929">REV E</text>
-    <text class="t" x="790" y="947">Ek ısıl işlem ve taşlama kaldırıldı: ıslahlı çubuk yeter. Turuncu: varsayım.</text>
+    <text class="tl" x="790" y="929">REV F</text>
+    <text class="t" x="790" y="947">Kelepçe ölçüleri onaylandı. Turuncu: SDS kanalları, bir SDS-Plus uçtan doğrulanır.</text>
   </g>
 </svg>

@@ -309,7 +309,7 @@ function annotate(a) {
   a.line([[MOUTH_X, M.H, 0], [MOUTH_X, M.H + 9, 0]]);
   hdim(M.H + 7, MOUTH_X, `A ≥ ${metin(M.A)}`);
 
-  a.callout([-OUTER_X, M.H - 6, 0], [-44, M.H + 2, 6], `Tırnak ${metin(M.V)} × ${metin(M.U)}`, 'En ve boy varsayım');
+  a.callout([-OUTER_X, M.H - 6, 0], [-44, M.H + 2, 6], `Tırnak ${metin(M.V)} × ${metin(M.U)}`, SPEC.onayli ? `boy ${metin(M.C)}` : 'En ve boy varsayım');
   a.callout([-SIPER_R, Y_C - 2, 0], [-50, Y_C + 6, 6], `Siper Ø${metin(M.F)}`, 'Eli dönen kafadan uzak tutar');
   a.callout([-KV_R, (Y_R + Y_C) / 2 + 6, 0], [-56, (Y_R + Y_C) / 2 + 8, 6], `Döner kovan Ø${metin(M.E)} × ${metin(M.K)}`, `${KV.malzemeKisa} · ${KV.yuzey} · tırtıl`);
   if (LOGO) {

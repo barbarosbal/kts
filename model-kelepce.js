@@ -124,7 +124,7 @@ function annotate(a) {
   a.line([[MOUTH_X, M.H, 0], [MOUTH_X, M.H + 9, 0]]);
   hdim(M.H + 7, MOUTH_X, `A ≥ ${metin(M.A)}`);
 
-  a.callout([-OUTER_X, M.H - 6, 0], [-40, M.H + 2, 6], `Tırnak ${metin(M.V)} × ${metin(M.U)}`, 'En ve boy varsayım');
+  a.callout([-OUTER_X, M.H - 6, 0], [-40, M.H + 2, 6], `Tırnak ${metin(M.V)} × ${metin(M.U)}`, SPEC.onayli ? `boy ${metin(M.C)}` : 'En ve boy varsayım');
   a.callout([-BODY_R, BODY_Y + 2, 0], [-42, BODY_Y - 2, 6], `Gövde Ø${metin(M.D)}`, `${SPEC.malzemeKisa} · ${SPEC.sertlik}`);
   if (LOGO) {
     const t = THREE.MathUtils.degToRad(-80);

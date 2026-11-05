@@ -1,10 +1,10 @@
 {
   "parca": "Kelepçe Sıkma Ucu v2",
-  "rev": "E",
+  "rev": "F",
   "tarih": "05.11.2026",
-  "revNot": "Ek ısıl işlem ve taşlama kaldırıldı: ıslahlı çubuk yeter. Turuncu: varsayım.",
-  "onayli": false,
-  "durum": "Kelepçe ölçüsü bekliyor",
+  "revNot": "Kelepçe ölçüleri onaylandı. Turuncu: SDS kanalları, bir SDS-Plus uçtan doğrulanır.",
+  "onayli": true,
+  "durum": "Kelepçe ölçüleri onaylı",
   "malzeme": "42CrMo4+QT (1.7225), ıslahlı çubuk",
   "malzemeKisa": "42CrMo4+QT",
   "sertlik": "≈ 28–32 HRC",
@@ -18,11 +18,11 @@
     "A": { "deger": 23,   "aciklama": "Ağız açıklığı, en az" },
     "C": { "deger": 20,   "aciklama": "Tırnak boyu" },
     "U": { "deger": 3.5,  "aciklama": "Tırnak kalınlığı" },
-    "V": { "deger": 10,   "aciklama": "Tırnak eni", "varsayim": true },
+    "V": { "deger": 10,   "aciklama": "Tırnak eni" },
     "W": { "deger": 21,   "aciklama": "Alın yuvası çapı" },
     "Y": { "deger": 2,    "aciklama": "Alın yuvası derinliği" },
-    "P": { "deger": 15,   "aciklama": "Orta cep çapı", "varsayim": true },
-    "Q": { "deger": 7,    "aciklama": "Orta cep derinliği, alından", "varsayim": true },
+    "P": { "deger": 15,   "aciklama": "Orta cep çapı" },
+    "Q": { "deger": 7,    "aciklama": "Orta cep derinliği, alından" },
     "J": { "deger": 4,    "aciklama": "Orta delik çapı" },
     "S": { "deger": 10,   "aciklama": "SDS-Plus sap çapı" },
     "L": { "deger": 40,   "aciklama": "SDS-Plus sap boyu (takma boyu)" },
@@ -35,6 +35,7 @@
   },
 
   "sds": {
+    "onayli": false,
     "aciklama": "Kanal ölçüleri görselden oranlandı: gerçek bir SDS-Plus uçtan alınıp burada güncellenecek.",
     "acik": { "en": 3.5, "derinlik": 2.5, "boy": 33, "cikisR": 8 },
     "kilit": { "en": 5, "derinlik": 2, "bas": 6, "son": 30 }

@@ -334,8 +334,10 @@ const ISLEM = [
 
 const ACIK = [
   'SDS kanal ölçüleri gerçek bir SDS-Plus uçtan; altıgenli sap SDS mandrende denenecek.',
-  `Tırnakların kelepçede oturduğu yer: eni V (şimdilik ${fmt(M.V)}; boy C ${fmt(M.C)} onaylı) ve orta cep Ø${fmt(M.P)} × ${fmt(M.Q)}.`,
-  `Kelepçe çevresinde siper Ø${fmt(M.F)} için yer: siper tırnak ucundan ${fmt(M.H - Y_C)} mm geride.`,
+  ...(spec.onayli ? [] : [
+    `Tırnakların kelepçede oturduğu yer: eni V (şimdilik ${fmt(M.V)}; boy C ${fmt(M.C)} onaylı) ve orta cep Ø${fmt(M.P)} × ${fmt(M.Q)}.`,
+    `Kelepçe çevresinde siper Ø${fmt(M.F)} için yer: siper tırnak ucundan ${fmt(M.H - Y_C)} mm geride.`,
+  ]),
   `Mandren burnu ile kovan arası ${fmt(MANDREN)} mm: matkabın mandren burnu ölçülecek.`,
   'Gereken sıkma torku (N·m).',
 ];
@@ -350,7 +352,7 @@ const planlar = `${tablo}
 
 // ---------------- notlar ----------------
 const NOTES = [
-  `${spec.onayli ? 'Ölçüler onaylıdır.' : 'Taslak: turuncu ölçüler varsayımdır, gerçek kelepçe ölçülmeden üretime verilmez.'} Çizim orantılıdır, değerler esastır.`,
+  `${!spec.onayli ? 'Taslak: turuncu ölçüler varsayımdır, gerçek kelepçe ölçülmeden üretime verilmez.' : spec.sds.onayli ? 'Ölçüler onaylıdır.' : 'Ölçüler onaylıdır; yalnız turuncu SDS kanalları bir SDS-Plus uçtan doğrulanır.'} Çizim orantılıdır, değerler esastır.`,
   `Genel tolerans ${spec.genelTolerans}. Ağız A en az ${fmt(M.A)}: +0,50 / 0. Kovanın mil üzerindeki eksenel boşluğu 0,1–0,3.`,
   `Mil: ${spec.malzemeKisa}, ${spec.sertlik}. Yatak yeri Ø${fmt(YT.cap)} ${YT.tolerans}, Ra 0,8, kumlamada maskelenir. Kafada salgı en çok 0,05.`,
   `Kovan: ${KV.malzemeKisa}, ${KV.yuzey}. Yatak yerleri Ø${fmt(RL.D)} ${KV.yatakTolerans} × ${fmt(RL.B)}, eş eksenlik 0,02, maskeli; iç omuz Ø${fmt(KV.icCap)}.`,
