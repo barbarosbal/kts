@@ -2,8 +2,8 @@ import * as THREE from 'three';
 import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
 import { Brush, Evaluator, ADDITION, SUBTRACTION, INTERSECTION } from 'three-bvh-csg';
 
-// Kelepçe sıkma uçlarının (v1, v2) ortak mili: SDS-Plus sap kanalları, altıgen kavrama, iki tırnak.
-// Parça ekseni +Y, orijin SDS-Plus sap ucunun merkezi. Dönel profil her modelin kendisinden gelir.
+// Kelepçe sıkma uçlarının (v1, v2) ortak mili: 8 mm altıgen sap (akülü vidalama mandreni), iki tırnak.
+// Parça ekseni +Y, orijin sap ucunun merkezi. Dönel profil her modelin kendisinden gelir.
 export const olculer = (SPEC) => Object.fromEntries(Object.entries(SPEC.olculer).map(([k, v]) => [k, v.deger]));
 
 const shape = (pts) => new THREE.Shape(pts.map(([x, y]) => new THREE.Vector2(x, y)));
@@ -18,38 +18,10 @@ export function milGeometrisi(SPEC, profil) {
   const OUTER_X = MOUTH_X + M.U;           // tırnak dış yüzü
   const GROOVE_Y = FACE_Y - SPEC.onKanal.konum;
 
-  // Açık kanal (±Z): sap ucundan başlar, diskli freze çıkışı ile biter
-  function openSlot(angle) {
-    const { en, derinlik, boy, cikisR } = SPEC.sds.acik;
-    const floor = SAP_R - derinlik;
-    const run = Math.sqrt(cikisR ** 2 - (cikisR - derinlik) ** 2);
-    const [cx, cy] = [floor + cikisR, boy - run];
-    const arc = [];
-    for (let i = 0; i <= 12; i++) {
-      const t = (i / 12) * Math.acos((cx - SAP_R - 1) / cikisR);
-      arc.push([cx - cikisR * Math.cos(t), cy + cikisR * Math.sin(t)]);
-    }
-    return prism([[floor, -2], [SAP_R + 3, -2], [SAP_R + 3, arc.at(-1)[1]], ...arc.reverse()], en)
-      .rotateY(-Math.PI / 2)
-      .translate(en / 2, 0, 0)
-      .rotateY(angle);
-  }
-
-  // Kilit kanalı (±X): kapalı, bilye yatağı; yüzeyde en × (son − bas) boyunda oval bırakır
-  function lockSlot(side) {
-    const { en, derinlik, bas, son } = SPEC.sds.kilit;
-    const floor = SAP_R - derinlik;
-    const x = Math.sqrt(SAP_R ** 2 - (en / 2) ** 2) - floor;
-    const rho = (x ** 2 + (en / 2) ** 2) / (2 * x);
-    const cx = floor + rho;
-    const lift = Math.sqrt(rho ** 2 - (cx - SAP_R) ** 2);
-    return new THREE.CapsuleGeometry(rho, son - bas - 2 * lift, 12, 40)
-      .translate(side * cx, (bas + son) / 2, 0);
-  }
-
-  // Kavrama altıgeni: üç ayaklı mandrenin çeneleri bu yüzlere oturur; köşeler ±X üzerinde, sap çapında kalır
+  // Altıgen sap: sap ucundan boyun pahının sonuna; mandren çeneleri bu yüzlere oturur, köşeler ±X üzerinde, sap çapında
   function gripCutter() {
-    const { sw, bas, son } = SPEC.kavrama;
+    const { sw } = SPEC.kavrama;
+    const [bas, son] = [-1, M.L + (M.S - M.N) / 2];
     const r = sw / Math.sqrt(3);
     const outer = new THREE.Shape();
     outer.absarc(0, 0, M.D, 0, 2 * Math.PI);
@@ -108,9 +80,7 @@ export function milGeometrisi(SPEC, profil) {
   };
   const lathe = new THREE.LatheGeometry(profil.map(([r, y]) => new THREE.Vector2(r, y)), 192);
   let body = brush(lathe);
-  for (const cutter of [openSlot(0), openSlot(Math.PI), lockSlot(1), lockSlot(-1), gripCutter()]) {
-    body = ev.evaluate(body, brush(cutter), SUBTRACTION);
-  }
+  body = ev.evaluate(body, brush(gripCutter()), SUBTRACTION);
   for (const angle of [0, Math.PI]) {
     const [thick, wide] = toothProfiles(angle);
     body = ev.evaluate(body, ev.evaluate(brush(thick), brush(wide), INTERSECTION), ADDITION);

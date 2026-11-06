@@ -1,8 +1,8 @@
 {
   "parca": "Kelepçe Sıkma Ucu",
-  "rev": "F",
-  "tarih": "05.11.2026",
-  "revNot": "Kelepçe ölçüleri onaylandı. Turuncu: SDS kanalları, bir SDS-Plus uçtan doğrulanır.",
+  "rev": "G",
+  "tarih": "06.11.2026",
+  "revNot": "Sap 8 mm altıgen: yalnız akülü vidalama. SDS kanalları kalktı; L 40 → 30, H 81 → 71.",
   "onayli": true,
   "durum": "Kelepçe ölçüleri onaylı",
   "malzeme": "42CrMo4+QT (1.7225), ıslahlı çubuk",
@@ -13,7 +13,7 @@
   "genelTolerans": "ISO 2768-m",
 
   "olculer": {
-    "H": { "deger": 81,   "aciklama": "Toplam boy" },
+    "H": { "deger": 71,   "aciklama": "Toplam boy" },
     "D": { "deger": 32,   "aciklama": "Gövde çapı" },
     "A": { "deger": 23,   "aciklama": "Ağız açıklığı, en az" },
     "C": { "deger": 20,   "aciklama": "Tırnak boyu" },
@@ -24,23 +24,16 @@
     "P": { "deger": 15,   "aciklama": "Orta cep çapı" },
     "Q": { "deger": 7,    "aciklama": "Orta cep derinliği, alından" },
     "J": { "deger": 4,    "aciklama": "Orta delik çapı" },
-    "S": { "deger": 10,   "aciklama": "SDS-Plus sap çapı" },
-    "L": { "deger": 40,   "aciklama": "SDS-Plus sap boyu (takma boyu)" },
+    "S": { "deger": 9,    "aciklama": "Sap çapı: altıgen köşeleri bu çapa tornalanır" },
+    "L": { "deger": 30,   "aciklama": "Altıgen sap boyu (mandrende tutulan boy)" },
     "T": { "deger": 5,    "aciklama": "Sap bitiminden gövdeye geçiş boyu" },
-    "N": { "deger": 9.5,  "aciklama": "Boyun çapı" },
+    "N": { "deger": 8,    "aciklama": "Boyun çapı (altıgen yüzleri hizasında)" },
     "Z": { "deger": 13,   "aciklama": "Halka çapı" }
   },
 
-  "sds": {
-    "onayli": false,
-    "aciklama": "Kanal ölçüleri görselden oranlandı: gerçek bir SDS-Plus uçtan alınıp burada güncellenecek.",
-    "acik": { "en": 3.5, "derinlik": 2.5, "boy": 33, "cikisR": 8 },
-    "kilit": { "en": 5, "derinlik": 2, "bas": 6, "son": 30 }
-  },
-
   "kavrama": {
-    "aciklama": "Üç ayaklı mandren çeneleri bu altıgene oturur. Köşeler sap çapında kalır, sap SDS mandrene girer.",
-    "sw": 8.7, "bas": 20.5, "son": 40.5
+    "aciklama": "8 mm altıgen sap, sap ucundan L boyunca: akülü vidalamanın üç ayaklı mandren çeneleri altı yüze oturur. Köşeler S çapına tornalanır; 10 ve 13 mm mandrene girer.",
+    "sw": 8
   },
 
   "markalama": {

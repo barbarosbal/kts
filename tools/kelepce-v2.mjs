@@ -7,9 +7,9 @@ import { ROOT, oku, fmt, uc, gorunus, hdim, vdim, extV, extH, note, agiz, kesitA
 const spec = await oku('kelepce-v2-olculer.json');
 const U = uc(spec);
 const {
-  M, onDeger, SDS_Q, BODY_R, SAP_R, NECK_R, RING_R, FACE_Y, MOUTH_X, OUTER_X, RING_0, RING_1, GROOVE_Y, GROOVE_D,
-  CH_G, UC_I, UC_D, UC_Y, AC, KI, KV_BAS, KV_SON, KV_KENAR, AC_TABAN, AC_CIKIS, AC_KENAR, KI_TABAN, KIRIS,
-  acikYol, sapKesitYol, sapDisYol, sapYanYol, boyunHalka, tirnakKalinlik, tirnakEn, icCep,
+  M, onDeger, BODY_R, SAP_R, NECK_R, RING_R, FACE_Y, MOUTH_X, OUTER_X, RING_0, RING_1, GROOVE_Y, GROOVE_D,
+  CH_G, UC_I, UC_D, UC_Y, KV_SW, KV_KENAR, KIRIS,
+  sapKesitYol, sapDisYol, sapYanYol, boyunHalka, tirnakKalinlik, tirnakEn, icCep,
 } = U;
 const { yatak: YT, rulman: RL, segman: SG, kovan: KV } = spec;
 
@@ -25,7 +25,7 @@ const Y_R = Y_K1 + SG.bosluk;
 const Y_C = Y_R + M.K;
 const Y_KAFA = Y_C + YT.omuzBoy;
 const G = FACE_Y - Y_KAFA;
-const MANDREN = Y_R - M.L;                 // sap bitiminden (mandren burnu) kovan arka alnına
+const MANDREN = Y_R - RING_0;              // halkaya dayanan mandren çenelerinden kovan arka alnına
 const ZINCIR = Y_C - Y_K1;                 // segman kanalı ön duvarından dayama omzuna
 
 const KV_R = M.E / 2;
@@ -41,7 +41,7 @@ uyar(KV.icCap <= RL.icBilezik, `kovan iç omzu Ø${KV.icCap}, dönen iç bilezi�
 uyar(KV.icCap >= RL.disBilezik, `kovan iç omzu Ø${KV.icCap}, dış bileziğe basmıyor (Ø${RL.disBilezik})`);
 uyar(YT.omuzCap >= RL.icBilezik || YT.omuzCap <= YT.cap, `dayama omzu Ø${YT.omuzCap}, iç bilezik alnında değil`);
 uyar(M.K < 2 * RL.B + 10, `kovan ${M.K} mm, iki rulman ve iç omuz için kısa`);
-uyar(MANDREN < 8, `kovan mandren burnuna ${fmt(MANDREN)} mm, parmak sıkışır`);
+uyar(MANDREN < 5, `kovan mandren çenelerine ${fmt(MANDREN)} mm, dönen mandrene sürtünür`);
 uyar(SIPER_R <= KV_R, `siper Ø${M.F}, kovandan (Ø${M.E}) büyük değil`);
 uyar(KV_R - YUVA_R - KV.tirtil.derinlik < 2, `kovan et kalınlığı rulman yuvasında ${fmt(+(KV_R - YUVA_R - KV.tirtil.derinlik).toFixed(2))} mm, 2 mm altında`);
 uyar(KV.siper < KV.kavis + KV.siperR, 'siper bölgesi, genişleme ve ön yuvarlatmadan kısa');
@@ -190,11 +190,8 @@ const montaj = `
     ${rulmanKesit(Y_C - RL.B)}
     ${segmanKesit}
     <polygon class="vis" points="${yari(A1, disYari, -1)}"/>
-    ${along(A1, -AC.en / 2, 0, AC.boy - AC_CIKIS)}
-    ${cross(A1, AC.boy - AC_CIKIS, 0, -AC.en / 2)}
-    ${along(A1, -KV_KENAR, KV_BAS, KV_SON)}
-    ${cross(A1, KV_BAS, 0, -SAP_R)}
-    ${cross(A1, KV_SON, 0, -NECK_R)}
+    ${along(A1, -KV_KENAR, 0, M.L)}
+    ${cross(A1, M.L, 0, -SAP_R)}
     ${cross(A1, RING_0, 0, -RING_R)}
     ${cross(A1, RING_1, 0, -RING_R)}
     ${cross(A1, Y_J + YT.pah, 0, -JR)}
@@ -227,7 +224,7 @@ const montaj = `
     ${extH(vx(Y_R + RA) - 4, vx(0) - 40, vy(A1, KV_R))}
     ${extH(vx(Y_R + RA) - 4, vx(0) - 40, vy(A1, -KV_R))}
     ${hdim(vx(0), vx(M.L), A1 + 128, `L = ${fmt(M.L)}`)}
-    ${hdim(vx(M.L), vx(Y_R), A1 + 128, fmt(MANDREN))}
+    ${hdim(vx(M.L), vx(Y_R), A1 + 128, fmt(Y_R - M.L))}
     ${hdim(vx(Y_R), vx(Y_C), A1 + 128, `K = ${fmt(M.K)}`)}
     ${hdim(vx(Y_C), vx(FACE_Y), A1 + 128, `(${fmt(FACE_Y - Y_C)})`)}
     ${hdim(vx(FACE_Y), X1, A1 + 128, `C = ${fmt(M.C)}`, onDeger('C'))}
@@ -239,19 +236,10 @@ const montaj = `
     <text class="ts" x="${X0 + (S * M.H) / 2}" y="${A1 + 204}" text-anchor="middle">üst yarı kesit, alt yarı görünüş · kovan elde durur, mil içinde döner</text>`;
 
 // ---------------- mil: yan görünüş ----------------
-const ovalY = [KI.bas + KI.en / 2, KI.son - KI.en / 2].map(vx);
-const ovalR = (S * KI.en) / 2;
-const oval = `<path class="thin" d="M${ovalY[0]} ${A2 - ovalR} H${ovalY[1]} A${ovalR} ${ovalR} 0 0 1 ${ovalY[1]} ${A2 + ovalR} H${ovalY[0]} A${ovalR} ${ovalR} 0 0 1 ${ovalY[0]} ${A2 - ovalR} Z"/>`;
-const acikGorunen = acikYol().filter(([r]) => r <= U.KV_R);
 
 const milYan = `
     <line class="ctr" x1="${X0 - 26}" y1="${A2}" x2="${X1 + 22}" y2="${A2}"/>
     <polygon class="vis" points="${tumu(A2, yanYari)}"/>
-    ${oval}
-    ${along(A2, AC_TABAN, 0, AC.boy - AC_CIKIS, 'hid')}
-    ${along(A2, -AC_TABAN, 0, AC.boy - AC_CIKIS, 'hid')}
-    <polyline class="hid" points="${yari(A2, acikGorunen)}"/>
-    <polyline class="hid" points="${yari(A2, acikGorunen, -1)}"/>
     ${cross(A2, RING_0, -RING_R, RING_R)}
     ${cross(A2, RING_1, -RING_R, RING_R)}
     ${cross(A2, Y_J + YT.pah, -JR, JR)}
@@ -261,14 +249,14 @@ const milYan = `
     ${along(A2, KIRIS, GROOVE_Y, FACE_Y)}
     ${along(A2, -KIRIS, GROOVE_Y, FACE_Y)}
     ${cross(A2, M.H - UC_D, UC_Y - M.V / 2, M.V / 2 - UC_Y)}
-    <path class="dim" d="M${vx(25)} ${vy(A2, SAP_R) - 30} V${vy(A2, SAP_R) - 10} M${vx(25)} ${vy(A2, -SAP_R) + 10} V${vy(A2, -SAP_R) + 30}"/>
-    <text class="tb" x="${vx(25)}" y="${vy(A2, SAP_R) - 36}" text-anchor="middle">A</text>
-    <text class="tb" x="${vx(25)}" y="${vy(A2, -SAP_R) + 46}" text-anchor="middle">A</text>
-    ${note([vx(18), vy(A2, KI.en / 2 - 0.6)], vx(18) + 4, 440, `SDS-PLUS SAP Ø${fmt(M.S)} × ${fmt(M.L)}`, `kilit ${fmt(KI.en)} × ${fmt(KI.derinlik)} · açık ${fmt(AC.en)} × ${fmt(AC.derinlik)}`, SDS_Q, 180)}
+    <path class="dim" d="M${vx(M.L / 2)} ${vy(A2, SAP_R) - 30} V${vy(A2, SAP_R) - 10} M${vx(M.L / 2)} ${vy(A2, -SAP_R) + 10} V${vy(A2, -SAP_R) + 30}"/>
+    <text class="tb" x="${vx(M.L / 2)}" y="${vy(A2, SAP_R) - 36}" text-anchor="middle">A</text>
+    <text class="tb" x="${vx(M.L / 2)}" y="${vy(A2, -SAP_R) + 46}" text-anchor="middle">A</text>
+    ${note([vx(M.L * 0.8), vy(A2, U.KV_R)], vx(M.L / 2) + 4, 440, `ALTIGEN SAP SW ${fmt(KV_SW)} × ${fmt(M.L)}`, `köşeler Ø${fmt(M.S)} · vidalama mandreni`, '', 180)}
     ${note([vx(Y_K0 + SG.kanalEn / 2), vy(A2, KANAL_R)], 400, 440, `SEGMAN KANALI Ø${fmt(SG.kanalCap)} × ${fmt(SG.kanalEn)}`, `${SG.standart} · yatak yeri başından ${fmt(SG.kenar)}`, '', 180)}
     ${note([vx(Y_C + YT.omuzBoy / 2), vy(A2, OMUZ_R)], 600, 466, `DAYAMA OMZU Ø${fmt(YT.omuzCap)} × ${fmt(YT.omuzBoy)}`, 'yalnız iç bileziğe basar', '', 160)}
     ${vdim(vx(Y_R + 22), vy(A2, JR), vy(A2, -JR), `Ø${fmt(YT.cap)} ${YT.tolerans}`)}
-    ${extV(vx(0), vy(A2, -AC_KENAR) + 4, A2 + 152)}
+    ${extV(vx(0), vy(A2, -U.KV_R) + 4, A2 + 152)}
     ${extV(vx(M.L), vy(A2, -NECK_R) + 4, A2 + 100)}
     ${extV(vx(Y_J), vy(A2, -NECK_R) + 4, A2 + 100)}
     ${extV(vx(Y_K1), vy(A2, -KANAL_R) + 4, A2 + 126)}
@@ -279,8 +267,8 @@ const milYan = `
     ${extH(vx(M.H - UC_Y), X1 + 40, vy(A2, -M.V / 2))}
     ${extH(vx(FACE_Y), X1 + 108, vy(A2, BODY_R))}
     ${extH(vx(FACE_Y), X1 + 108, vy(A2, -BODY_R))}
-    ${extH(vx(0) - 44, vx(0) + 8, vy(A2, SAP_R))}
-    ${extH(vx(0) - 44, vx(0) + 8, vy(A2, -SAP_R))}
+    ${extH(vx(0) - 44, vx(0) + 8, vy(A2, U.KV_R))}
+    ${extH(vx(0) - 44, vx(0) + 8, vy(A2, -U.KV_R))}
     ${hdim(vx(0), vx(M.L), A2 + 96, `L = ${fmt(M.L)}`)}
     <line class="dima" x1="${vx(M.L)}" y1="${A2 + 96}" x2="${vx(Y_J)}" y2="${A2 + 96}"/>
     <text class="tb" x="${(vx(M.L) + vx(Y_J)) / 2}" y="${A2 + 114}" text-anchor="middle">T = ${fmt(M.T)}</text>
@@ -289,7 +277,7 @@ const milYan = `
     ${hdim(vx(FACE_Y), X1, A2 + 96, `C = ${fmt(M.C)}`, onDeger('C'))}
     ${hdim(vx(Y_K1), vx(Y_C), A2 + 122, `${fmt(+ZINCIR.toFixed(2))} +0,1/0`)}
     ${hdim(vx(0), X1, A2 + 148, `H = ${fmt(M.H)}`)}
-    ${vdim(vx(0) - 40, vy(A2, SAP_R), vy(A2, -SAP_R), `ØS = ${fmt(M.S)}`)}
+    ${vdim(vx(0) - 40, vy(A2, U.KV_R), vy(A2, -U.KV_R), `SW ${fmt(KV_SW)}`)}
     ${vdim(X1 + 36, vy(A2, M.V / 2), vy(A2, -M.V / 2), `V = ${fmt(M.V)}`, onDeger('V'))}
     ${vdim(X1 + 104, vy(A2, BODY_R), vy(A2, -BODY_R), `ØD = ${fmt(M.D)}`)}
     <text class="h" x="${X0 + (S * M.H) / 2}" y="${A2 + 178}" text-anchor="middle">MİL · YAN GÖRÜNÜŞ</text>
@@ -325,21 +313,20 @@ const tablo = `
 
 const ISLEM = [
   `Mil torna: sap, halka, yatak yeri Ø${fmt(YT.cap)} ${YT.tolerans} ince torna, kanal, omuz, kafa Ø${fmt(M.D)}, alın ve cep.`,
-  `Mil freze: SDS kanalları, altıgen SW ${fmt(spec.kavrama.sw)}, iki tırnak ve dış düz yüzler.`,
+  `Mil freze: altıgen sap SW ${fmt(KV_SW)} × ${fmt(M.L)}, iki tırnak ve dış düz yüzler.`,
   `Isıl işlem yok: çubuk ıslahlı (+QT) gelir, ${spec.sertlik}. Kumlama + siyah oksit.`,
   `Kovan torna: Ø${fmt(M.E)}, siper Ø${fmt(M.F)}, yatak yerleri Ø${fmt(RL.D)} ${KV.yatakTolerans}; tırtıl; ${KV.yuzey}; lazer logo.`,
   'Rulmanlar kovana preslenir; kovan saptan mile sürülür, segman takılır.',
-  'Deneme: kovan elde serbest döner; matkapta 2 dk boşta, sonra kelepçede tork.',
+  'Deneme: kovan elde serbest döner; vidalamada 2 dk boşta, sonra kelepçede tork.',
 ];
 
 const ACIK = [
-  'SDS kanal ölçüleri gerçek bir SDS-Plus uçtan; altıgenli sap SDS mandrende denenecek.',
   ...(spec.onayli ? [] : [
     `Tırnakların kelepçede oturduğu yer: eni V (şimdilik ${fmt(M.V)}; boy C ${fmt(M.C)} onaylı) ve orta cep Ø${fmt(M.P)} × ${fmt(M.Q)}.`,
     `Kelepçe çevresinde siper Ø${fmt(M.F)} için yer: siper tırnak ucundan ${fmt(M.H - Y_C)} mm geride.`,
   ]),
-  `Mandren burnu ile kovan arası ${fmt(MANDREN)} mm: matkabın mandren burnu ölçülecek.`,
-  'Gereken sıkma torku (N·m).',
+  `Halkaya dayanan mandren çeneleri ile kovan arası ${fmt(MANDREN)} mm: vidalamanın mandreni ölçülecek.`,
+  `Gereken sıkma torku (N·m): sap ≈ 40 N·m'ye dayanır, tork ayarı bunun altında tutulur.`,
 ];
 
 if (ISLEM.length > 6 || ACIK.length > 5) console.warn('UYARI: işleme / doğrulama listesi antede taşar');
@@ -352,13 +339,13 @@ const planlar = `${tablo}
 
 // ---------------- notlar ----------------
 const NOTES = [
-  `${!spec.onayli ? 'Taslak: turuncu ölçüler varsayımdır, gerçek kelepçe ölçülmeden üretime verilmez.' : spec.sds.onayli ? 'Ölçüler onaylıdır.' : 'Ölçüler onaylıdır; yalnız turuncu SDS kanalları bir SDS-Plus uçtan doğrulanır.'} Çizim orantılıdır, değerler esastır.`,
+  `${spec.onayli ? 'Ölçüler onaylıdır.' : 'Taslak: turuncu ölçüler varsayımdır, gerçek kelepçe ölçülmeden üretime verilmez.'} Çizim orantılıdır, değerler esastır.`,
   `Genel tolerans ${spec.genelTolerans}. Ağız A en az ${fmt(M.A)}: +0,50 / 0. Kovanın mil üzerindeki eksenel boşluğu 0,1–0,3.`,
   `Mil: ${spec.malzemeKisa}, ${spec.sertlik}. Yatak yeri Ø${fmt(YT.cap)} ${YT.tolerans}, Ra 0,8, kumlamada maskelenir. Kafada salgı en çok 0,05.`,
   `Kovan: ${KV.malzemeKisa}, ${KV.yuzey}. Yatak yerleri Ø${fmt(RL.D)} ${KV.yatakTolerans} × ${fmt(RL.B)}, eş eksenlik 0,02, maskeli; iç omuz Ø${fmt(KV.icCap)}.`,
   `Kovan alnı kafadan ${fmt(YT.omuzBoy)} mm geride kalır; dönen kafa ile duran kovan birbirine değmez.`,
-  'SDS-Plus matkapta darbe kapalı kullanılır. El kovanı siperin arkasından tutar, ucu kelepçeye bastırır.',
-  'Üç ayaklı mandrende uç halkaya dayanana kadar sürülür, çeneler altıgene oturur. 1/4″ altıgen mandrene girmez.',
+  'Akülü vidalamaya takılır. El kovanı siperin arkasından tutar, ucu kelepçeye bastırır.',
+  'Mandrende uç halkaya dayanana kadar sürülür, çeneler altıgenin yüzlerine oturur. 1/4″ hızlı bağlantıya girmez.',
   `Markalama: Ratel logosu (${MARK.logo}), tek renk, eloksaldan sonra; beyaz çıkar, kabartı bırakmaz.`,
 ];
 

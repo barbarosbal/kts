@@ -4,8 +4,8 @@
 // Kullanım: cd tools && npm run kelepce   (teknik resim SVG'leri önce npm run site ile üretilir)
 //
 // Mil geometrisi kelepce-ortak.js ile aynı kurallarla kurulur (görüntüleyici three.js, burada OpenCascade):
-// dönel profil, iki açık + iki kilit SDS kanalı, altıgen kavrama, iki tırnak ve dış düz yüzler.
-// Eksen: parça +Z (görüntüleyicide +Y). Tırnaklar ve kilit kanalları ±X, açık kanallar ±Y.
+// dönel profil, 8 mm altıgen sap (akülü vidalama mandreni), iki tırnak ve dış düz yüzler.
+// Eksen: parça +Z (görüntüleyicide +Y). Tırnaklar ve altıgen köşeleri ±X.
 // Rulman (6804-2RS) ve segman (DIN 471) hazır alınır, modellenmez. Kovan tırtılı STEP'te düz silindirdir; resimde tanımlı.
 import { readFile, writeFile, readdir, rm, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -110,37 +110,9 @@ function mil(spec, M, profil) {
   const GROOVE_Y = FACE_Y - spec.onKanal.konum;
   let govde = revolve(profil);
 
-  // Açık kanallar (±Y): sap ucundan başlar, diskli freze çıkışı (yarıçap cikisR) ile biter
-  const { en: aEn, derinlik: aDer, boy: aBoy, cikisR } = spec.sds.acik;
-  const taban = SAP_R - aDer;
-  const run = Math.sqrt(cikisR ** 2 - (cikisR - aDer) ** 2);
-  const [cr, cz] = [taban + cikisR, aBoy - run];
-  const tSon = Math.acos((cr - SAP_R - 1) / cikisR);
-  const yayN = (t) => [cr - cikisR * Math.cos(t), cz + cikisR * Math.sin(t)];
-  for (const s of [1, -1]) {
-    const p = (r, z) => [s * r, z];
-    const kesit = draw(p(taban, -2)).lineTo(p(SAP_R + 3, -2)).lineTo(p(SAP_R + 3, yayN(tSon)[1])).lineTo(p(...yayN(tSon)))
-      .threePointsArcTo(p(...yayN(0)), p(...yayN(tSon / 2))).close();
-    govde = govde.cut(ortala(kesit.sketchOnPlane('YZ').extrude(aEn), 0));
-  }
-
-  // Kilit kanalları (±X): kapalı bilye yatağı = kapsül (silindir + iki küre)
-  const { en: kEn, derinlik: kDer, bas, son } = spec.sds.kilit;
-  const kTaban = SAP_R - kDer;
-  const x = Math.sqrt(SAP_R ** 2 - (kEn / 2) ** 2) - kTaban;
-  const rho = (x ** 2 + (kEn / 2) ** 2) / (2 * x);
-  const kcx = kTaban + rho;
-  const lift = Math.sqrt(rho ** 2 - (kcx - SAP_R) ** 2);
-  const [z0, z1] = [bas + lift, son - lift];
-  for (const s of [1, -1]) {
-    const kapsul = makeCylinder(rho, z1 - z0, [s * kcx, 0, z0], [0, 0, 1])
-      .fuse(makeSphere(rho).translate([s * kcx, 0, z0]))
-      .fuse(makeSphere(rho).translate([s * kcx, 0, z1]));
-    govde = govde.cut(kapsul);
-  }
-
-  // Altıgen kavrama: köşeler ±X, sap çapında; SW iki karşılıklı yüz arası
-  const { sw, bas: hb, son: hs } = spec.kavrama;
+  // Altıgen sap: sap ucundan boyun pahının sonuna; köşeler ±X, sap çapında; SW iki karşılıklı yüz arası
+  const { sw } = spec.kavrama;
+  const [hb, hs] = [-1, M.L + (M.S - M.N) / 2];
   const rk = sw / Math.sqrt(3);
   const altigen = polyline(Array.from({ length: 6 }, (_, i) => [rk * Math.cos((i * Math.PI) / 3), rk * Math.sin((i * Math.PI) / 3)]))
     .sketchOnPlane('XY', hb).extrude(hs - hb);
@@ -260,15 +232,15 @@ ${planCss(S1.onayli && S2.onayli)}</style>
     ${dl(FILES.v2Pdf, 'Teknik resim · v2 (PDF)', 'A3, montaj ve parça listesi')}
   </div>
   ${S1.onayli && S2.onayli
-    ? `<p class="callout"><b>Kelepçe ölçüleri onaylı.</b> Ağız A ${fmt(M1.A)}, tırnak ${fmt(M1.V)} × ${fmt(M1.U)} × ${fmt(M1.C)}, orta cep Ø${fmt(M1.P)} × ${fmt(M1.Q)}, sap boyu L ${fmt(M1.L)}. SDS-Plus kanal ölçüleri orantıyla çizildi; atölye gerçek bir SDS-Plus uçla karşılaştırır.</p>`
+    ? `<p class="callout"><b>Kelepçe ölçüleri onaylı.</b> Ağız A ${fmt(M1.A)}, tırnak ${fmt(M1.V)} × ${fmt(M1.U)} × ${fmt(M1.C)}, orta cep Ø${fmt(M1.P)} × ${fmt(M1.Q)}, altıgen sap SW ${fmt(S1.kavrama.sw)} × ${fmt(M1.L)}. Uç akülü vidalamanın üç ayaklı mandrenine takılır.</p>`
     : `<p class="callout"><b>Taslak.</b> Turuncu ölçüler varsayım, gerçek kelepçe ölçülünce kesinleşir. Fiyat bu paketle istenebilir, sipariş kesin ölçüyle verilir.</p>`}
 </section>
 
 <h2>Anında teklif platformuna (Xometry vb.) yükleme</h2>
 <p>Her parça ayrı yüklenir; teknik resim PDF'i ilgili parçaya eklenir (diş, tolerans, ısıl işlem ve yüzey resimde).</p>
 <table><thead><tr><th>Parça</th><th>Dosya</th><th>Süreç</th><th>Malzeme</th><th>Isıl işlem / yüzey</th><th>Not</th></tr></thead><tbody>
-<tr><td><b>v1 mil</b></td><td>${FILES.v1}</td><td>CNC torna + freze (C eksen)</td><td>42CrMo4+QT (1.7225, AISI 4140), ıslahlı çubuk</td><td>Ek ısıl işlem yok (${esc(S1.sertlik)}) · kumlama + siyah oksit</td><td>SDS-Plus kanalları, SW ${fmt(S1.kavrama.sw)} altıgen · lazer logo (Ratel)</td></tr>
-<tr><td><b>v2 mil</b></td><td>${FILES.v2Mil}</td><td>CNC torna + freze (C eksen)</td><td>42CrMo4+QT (1.7225, AISI 4140), ıslahlı çubuk</td><td>Ek ısıl işlem yok (${esc(S2.sertlik)}) · kumlama + siyah oksit</td><td>Yatak yeri Ø${fmt(S2.yatak.cap)} ${esc(S2.yatak.tolerans)} ince tornalanır · segman kanalı DIN 471</td></tr>
+<tr><td><b>v1 mil</b></td><td>${FILES.v1}</td><td>CNC torna + freze (C eksen)</td><td>42CrMo4+QT (1.7225, AISI 4140), ıslahlı çubuk</td><td>Ek ısıl işlem yok (${esc(S1.sertlik)}) · kumlama + siyah oksit</td><td>8 mm altıgen sap (SW ${fmt(S1.kavrama.sw)} × ${fmt(M1.L)}) · lazer logo (Ratel)</td></tr>
+<tr><td><b>v2 mil</b></td><td>${FILES.v2Mil}</td><td>CNC torna + freze (C eksen)</td><td>42CrMo4+QT (1.7225, AISI 4140), ıslahlı çubuk</td><td>Ek ısıl işlem yok (${esc(S2.sertlik)}) · kumlama + siyah oksit</td><td>8 mm altıgen sap · yatak yeri Ø${fmt(S2.yatak.cap)} ${esc(S2.yatak.tolerans)} ince tornalanır · segman kanalı DIN 471</td></tr>
 <tr><td><b>v2 kovan</b></td><td>${FILES.v2Kovan}</td><td>CNC torna + tırtıl</td><td>${esc(S2.kovan.malzeme)}</td><td>${esc(S2.kovan.yuzey)}</td><td>Rulman yuvaları Ø${fmt(S2.rulman.D)} ${esc(S2.kovan.yatakTolerans)} · tırtıl ${esc(S2.kovan.tirtil.tip)} ${fmt(S2.kovan.tirtil.adim)} (STEP'te düz) · lazer logo (Ratel)</td></tr>
 </tbody></table>
 <table><thead><tr><th>Kalem</th><th>Değer</th></tr></thead><tbody>
@@ -277,7 +249,7 @@ ${satir('Prototip', 'Siyah oksit ve lazer logo istenmezse platformda yüzey işl
 ${satir('Hazır alınan (v2)', `${S2.rulman.adet} × ${esc(S2.rulman.kod)} rulman, 1 × ${esc(S2.segman.standart)} ${esc(S2.segman.olcu)} segman; montaj resimdeki sırayla`)}
 ${satir('Genel tolerans', esc(S1.genelTolerans))}
 ${satir('Tahmini ağırlık', `v1 ${kg(OZ.v1.hacim, 7.85)} kg · v2 mil ${kg(OZ.v2Mil.hacim, 7.85)} kg · v2 kovan ${kg(OZ.v2Kovan.hacim, 2.70)} kg`)}
-${satir('Deneme', 'SDS-Plus mandrende ve üç ayaklı mandrende oturma; v2 kovan elde serbest dönmeli')}
+${satir('Deneme', 'Akülü vidalamanın mandreninde oturma ve salgı; v2 kovan elde serbest dönmeli')}
 </tbody></table>
 
 <footer>Kelepçe sıkma uçları · v1 Rev ${S1.rev}, v2 Rev ${S2.rev} · ${S2.tarih} · Bu sayfa ve ekleri <code>kelepce-olculer.json</code> ve <code>kelepce-v2-olculer.json</code> dosyalarından üretildi.</footer>

@@ -2,8 +2,8 @@ import * as THREE from 'three';
 import { metin } from 'kts/ortak';
 import { olculer, milGeometrisi } from 'kts/kelepce-ortak';
 
-// Tüm ölçüler kelepce-olculer.json'dan gelir (mm). Parça ekseni +Y, orijin SDS-Plus sap ucunun merkezi.
-// Tek parça: dönel profil tornadan; sap kanalları, iki tırnak ve dış düz yüzeyler frezeden çıkar (kelepce-ortak.js).
+// Tüm ölçüler kelepce-olculer.json'dan gelir (mm). Parça ekseni +Y, orijin sap ucunun merkezi.
+// Tek parça: dönel profil tornadan; altıgen sap, iki tırnak ve dış düz yüzeyler frezeden çıkar (kelepce-ortak.js).
 export const SPEC = await fetch(`kelepce-olculer.json${new URL(import.meta.url).search}`).then((r) => r.json());
 const M = olculer(SPEC);
 
@@ -131,9 +131,7 @@ function annotate(a) {
     a.callout([BODY_R * Math.sin(t), MARK_Y + MARK.yukseklik / 2, BODY_R * Math.cos(t)], [-48, FACE_Y + 5, 6],
       'Ratel logosu', `lazer markalama · h ${metin(MARK.yukseklik)}`);
   }
-  const { sw, bas, son } = SPEC.kavrama;
-  a.callout([-SAP_R, 32, 0], [-34, 28, 6], 'Altıgen kavrama', `SW ${metin(sw)} × ${metin(son - bas)} · mandren çeneleri`);
-  a.callout([-SAP_R, 12, 0], [-30, 9, 6], 'SDS-Plus sap', `Ø${metin(M.S)} × ${metin(M.L)} · 2 açık + 2 kilit kanalı`);
+  a.callout([-SAP_R, M.L / 2, 0], [-32, 12, 6], 'Altıgen sap', `SW ${metin(SPEC.kavrama.sw)} × ${metin(M.L)} · akülü vidalama mandreni`);
 }
 
 function uc(celik) {
@@ -151,7 +149,7 @@ export function kur({ celik }) {
     paket: 'uretim/kelepce/',
     cizim: {
       src: 'kelepce-ucu-taslak.svg',
-      alt: 'Kelepçe sıkma ucu teknik çizimi: yarım kesit ve Ratel logolu yan görünüş, ağız görünüşü, SDS-Plus sap kesiti, işleme sırası',
+      alt: 'Kelepçe sıkma ucu teknik çizimi: yarım kesit ve Ratel logolu yan görünüş, ağız görünüşü, altıgen sap kesiti, işleme sırası',
     },
     parcalar: [{ obj: uc(celik) }],
     occluder: { r: BODY_R, y0: BODY_Y, y1: FACE_Y },

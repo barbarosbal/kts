@@ -1,5 +1,5 @@
 // Kelepçe sıkma uçlarının (v1, v2) ortak teknik çizim parçaları:
-// SDS-Plus sap, altıgen kavrama, tırnaklar, ağız görünüşü, A–A kesiti, sayfa ve antet.
+// 8 mm altıgen sap, tırnaklar, ağız görünüşü, A–A kesiti, sayfa ve antet.
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,7 +13,6 @@ export const fmt = (n) => String(n).replace('.', ',');
 export function uc(spec) {
   const M = Object.fromEntries(Object.entries(spec.olculer).map(([k, v]) => [k, v.deger]));
   const onDeger = (k) => (spec.olculer[k].varsayim && !spec.onayli ? ' q' : '');
-  const SDS_Q = spec.onayli && spec.sds.onayli ? '' : ' q';
 
   const BODY_R = M.D / 2;
   const SAP_R = M.S / 2;
@@ -29,67 +28,30 @@ export function uc(spec) {
   const CEP_Y = FACE_Y - M.Q;
   const { sap: CH_S, govde: CH_G, alin: CH_F, halka: CH_R } = spec.pah;
   const { ic: UC_I, dis: UC_D, yan: UC_Y } = spec.pah.uc;
-  const { acik: AC, kilit: KI } = spec.sds;
-  const { sw: KV_SW, bas: KV_BAS, son: KV_SON } = spec.kavrama;
+  const KV_SW = spec.kavrama.sw;             // altıgen sap: sap ucundan L boyunca
+  const KV_BAS = 0;
+  const KV_SON = M.L;
   const KV_R = KV_SW / 2;
   const KV_KENAR = KV_SW / Math.sqrt(3) / 2; // yarım kesit dış görünüşünde altıgen kenarı
-
-  // Açık kanal tabanı, freze çıkışı ve kenarı (dış görünüşte sapın görünen genişliği)
-  const AC_TABAN = SAP_R - AC.derinlik;
-  const AC_CIKIS = Math.sqrt(AC.cikisR ** 2 - (AC.cikisR - AC.derinlik) ** 2);
-  const AC_KENAR = Math.sqrt(SAP_R ** 2 - (AC.en / 2) ** 2);
-
-  // Kilit kanalı: yüzeyde en kadar açılan daire yayı
-  const KI_TABAN = SAP_R - KI.derinlik;
-  const KI_X = Math.sqrt(SAP_R ** 2 - (KI.en / 2) ** 2);
-  const KI_RHO = ((KI_X - KI_TABAN) ** 2 + (KI.en / 2) ** 2) / (2 * (KI_X - KI_TABAN));
-  const KI_CX = KI_TABAN + KI_RHO;
-  const KI_LIFT = Math.sqrt(KI_RHO ** 2 - (KI_CX - SAP_R) ** 2);
+  const KV_D = Math.acos(KV_R / SAP_R);       // köşe tornalaması: yüz normalinden sap çemberine açı
 
   // Türetilen ölçüler: ölçü değişince çizimle birlikte denetlenir
   const KIRIS = Math.sqrt(BODY_R ** 2 - OUTER_X ** 2);
   if (M.V / 2 > KIRIS) console.warn(`UYARI: tırnak eni ${M.V} mm, dış düz yüzden (${(2 * KIRIS).toFixed(1)} mm) geniş`);
   if (M.W / 2 >= MOUTH_X) console.warn(`UYARI: alın yuvası Ø${M.W}, ağız ${M.A} ile aynı hizada ya da geniş`);
-  if (AC.boy > M.L || KI.son > M.L) console.warn(`UYARI: SDS kanalı ${M.L} mm sap boyunu aşıyor`);
-  if (KV_SON - KV_BAS < 15) console.warn(`UYARI: altıgen ${KV_SON - KV_BAS} mm, mandren çeneleri için kısa`);
-
-  // Kilit kanalı kesiti: sap yüzeyinden tabana iner, taban boyunca gider, yüzeye çıkar
-  function kilitYol() {
-    const yay = (y0, s) => Array.from({ length: 9 }, (_, i) => {
-      const t = (i / 8) * KI_LIFT;
-      return [KI_CX - Math.sqrt(KI_RHO ** 2 - t ** 2), y0 + s * t];
-    });
-    return [...yay(KI.bas + KI_LIFT, -1).reverse(), ...yay(KI.son - KI_LIFT, 1)];
-  }
-
-  // Açık kanal kesiti: taban, freze çıkışı
-  function acikYol() {
-    const [cx, cy] = [AC_TABAN + AC.cikisR, AC.boy - AC_CIKIS];
-    const son = Math.acos((cx - SAP_R) / AC.cikisR);
-    return Array.from({ length: 11 }, (_, i) => {
-      const t = (i / 10) * son;
-      return [cx - AC.cikisR * Math.cos(t), cy + AC.cikisR * Math.sin(t)];
-    });
-  }
-
-  // Kilit kanalının dış görünüş çizgisi: oval yüzeyde kanal kenarını izler
-  function kilitDis() {
-    const r = KI.en / 2;
-    const w = (y0, s) => Array.from({ length: 7 }, (_, i) => {
-      const t = (i / 6) * r;
-      return [Math.sqrt(SAP_R ** 2 - (r ** 2 - t ** 2)), y0 + s * t];
-    });
-    return [...w(KI.bas + r, -1).reverse(), ...w(KI.son - r, 1)];
-  }
+  if (M.L < 20) console.warn(`UYARI: altıgen sap ${M.L} mm, mandren çeneleri için kısa`);
+  if (SAP_R <= KV_R || SAP_R > KV_SW / Math.sqrt(3)) console.warn(`UYARI: sap Ø${M.S}, SW ${KV_SW} altıgenin yüzleri ile köşeleri arasında değil`);
+  if (M.S > 10) console.warn(`UYARI: sap köşeleri Ø${M.S}, 10 mm mandrene girmez`);
+  if (M.N > KV_SW) console.warn(`UYARI: boyun Ø${M.N}, altıgen yüzlerinden (SW ${KV_SW}) kalın; freze çıkışı kalmaz`);
 
   // Sap uç pahı: rSinir yarıçapına kadar
   const sapUc = (rSinir) => [[SAP_R - CH_S, 0], [rSinir, (rSinir - SAP_R + CH_S) * 0.8]];
 
-  // Yarım kesit düzlemi kilit kanalının tabanından geçer; dış yarıda kanal kenarı görünür.
-  // Yan görünüşte açık kanal önde kalır: dış çizgi kanal kenarı, altıgende düz yüz.
-  const sapKesitYol = [...sapUc(SAP_R), ...kilitYol()];
-  const sapDisYol = [...sapUc(SAP_R), ...kilitDis()];
-  const sapYanYol = [...sapUc(AC_KENAR), [AC_KENAR, KV_BAS], [KV_R, KV_BAS], [KV_R, KV_SON], [NECK_R, KV_SON]];
+  // Yarım kesit düzlemi altıgen köşelerinden (±X) geçer: sap çapı görünür.
+  // Yan görünüş 90° döner: iki yüz kenardan görünür, dış çizgi SW / 2.
+  const sapKesitYol = sapUc(SAP_R);
+  const sapDisYol = sapUc(SAP_R);
+  const sapYanYol = [...sapUc(KV_R), [KV_R, KV_SON], [NECK_R, KV_SON]];
 
   // Sap sonundan boyun ve halkaya: [r, y]
   const boyunHalka = [
@@ -135,33 +97,23 @@ export function uc(spec) {
     [0, CEP_Y - 3 - (M.J / 2) * 0.6],
   ];
 
-  // A–A altıgen bölgeden geçer: ±X kilit kanalı, ±Z açık kanal, köşeler sap çapında. Çeyrek çizilir, aynalanır.
+  // A–A altıgen saptan geçer: SW yüzleri, köşeler sap çapına tornalanmış (kısa yaylar); köşeler ±X'te
   function sapKesit(CX, NY, HS) {
-    const P30 = Math.PI / 6;
-    const kilitT = Math.acos((KI_CX * Math.cos(P30) - KV_R) / KI_RHO) - P30;
-    const d = Math.acos(KV_R / SAP_R);
-    const q = [];
-    for (let i = 0; i <= 8; i++) {
-      const t = (i / 8) * kilitT;
-      q.push([KI_CX - KI_RHO * Math.cos(t), KI_RHO * Math.sin(t)]);
+    const pts = [];
+    for (let k = 0; k < 6; k++) {
+      const n = Math.PI / 6 + (k * Math.PI) / 3;   // yüz normali
+      for (let i = 0; i <= 3; i++) {
+        const a = n + KV_D + ((Math.PI / 3 - 2 * KV_D) * i) / 3;
+        pts.push([SAP_R * Math.cos(a), SAP_R * Math.sin(a)]);
+      }
     }
-    q.push(
-      [SAP_R * Math.cos(P30 + d), SAP_R * Math.sin(P30 + d)],
-      [SAP_R * Math.cos(Math.PI / 2 - d), SAP_R * Math.sin(Math.PI / 2 - d)],
-      [AC.en / 2, KV_R],
-      [AC.en / 2, AC_TABAN],
-      [0, AC_TABAN],
-    );
-    const m = (sx, sz, list) => list.map(([x, z]) => [sx * x, sz * z]);
-    return [...q, ...m(-1, 1, q).reverse(), ...m(-1, -1, q), ...m(1, -1, q).reverse()]
-      .map(([x, z]) => `${(CX + HS * x).toFixed(1)},${(NY + HS * z).toFixed(1)}`).join(' ');
+    return pts.map(([x, z]) => `${(CX + HS * x).toFixed(1)},${(NY + HS * z).toFixed(1)}`).join(' ');
   }
 
   return {
-    M, onDeger, SDS_Q, BODY_R, SAP_R, NECK_R, RING_R, FACE_Y, MOUTH_X, OUTER_X, RING_0, RING_1, GROOVE_Y, GROOVE_D,
-    CEP_Y, CH_S, CH_G, CH_F, CH_R, UC_I, UC_D, UC_Y, AC, KI, KV_SW, KV_BAS, KV_SON, KV_R, KV_KENAR,
-    AC_TABAN, AC_CIKIS, AC_KENAR, KI_TABAN, KIRIS,
-    kilitYol, acikYol, kilitDis, sapKesitYol, sapDisYol, sapYanYol, boyunHalka, tirnakKalinlik, tirnakEn, icCep, sapKesit,
+    M, onDeger, BODY_R, SAP_R, NECK_R, RING_R, FACE_Y, MOUTH_X, OUTER_X, RING_0, RING_1, GROOVE_Y, GROOVE_D,
+    CEP_Y, CH_S, CH_G, CH_F, CH_R, UC_I, UC_D, UC_Y, KV_SW, KV_BAS, KV_SON, KV_R, KV_KENAR, KIRIS,
+    sapKesitYol, sapDisYol, sapYanYol, boyunHalka, tirnakKalinlik, tirnakEn, icCep, sapKesit,
   };
 }
 
@@ -244,7 +196,7 @@ export function kesitA(u, CX, NY, HS) {
     ${extH(CX, CX + 140, NY + HS * KV_R)}
     ${vdim(CX + 136, NY - HS * KV_R, NY + HS * KV_R, `SW ${fmt(KV_SW)}`)}
     <text class="h" x="${CX}" y="${NY + 146}" text-anchor="middle">KESİT A–A</text>
-    <text class="ts" x="${CX}" y="${NY + 166}" text-anchor="middle">altıgen · kesikli daire sap Ø${fmt(M.S)} · köşeler bu çapta</text>`;
+    <text class="ts" x="${CX}" y="${NY + 166}" text-anchor="middle">altıgen sap · kesikli daire Ø${fmt(M.S)}: köşeler bu çapta</text>`;
 }
 
 // ---------------- logo ----------------

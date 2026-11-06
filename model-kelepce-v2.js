@@ -3,9 +3,9 @@ import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
 import { metin, smooth } from 'kts/ortak';
 import { olculer, milGeometrisi } from 'kts/kelepce-ortak';
 
-// Tüm ölçüler kelepce-v2-olculer.json'dan gelir (mm). Parça ekseni +Y, orijin SDS-Plus sap ucunun merkezi.
+// Tüm ölçüler kelepce-v2-olculer.json'dan gelir (mm). Parça ekseni +Y, orijin sap ucunun merkezi.
 // Mil v1 ile aynı kafa ve sapı taşır (kelepce-ortak.js); arada Ø20 yatak yeri vardır. Kovan iki rulmanla
-// bu yerde serbest döner: matkap mili çevirirken el kovanı tutar, ucu kelepçenin dibinden destekler.
+// bu yerde serbest döner: vidalama mili çevirirken el kovanı tutar, ucu kelepçenin dibinden destekler.
 export const SPEC = await fetch(`kelepce-v2-olculer.json${new URL(import.meta.url).search}`).then((r) => r.json());
 const M = olculer(SPEC);
 const { yatak: YT, rulman: RL, segman: SG, kovan: KV } = SPEC;
@@ -318,9 +318,7 @@ function annotate(a) {
       'Ratel logosu', `lazer markalama · h ${metin(MARK.yukseklik)} · beyaz`);
   }
   a.callout([-KV_R, Y_R + RL.B / 2, 0], [-54, Y_R - 4, 6], `${RL.adet} × ${RL.kod}`, `Rulman ${RL.d} × ${RL.D} × ${RL.B} · ${SG.standart} segman`);
-  const { sw, bas, son } = SPEC.kavrama;
-  a.callout([-SAP_R, 32, 0], [-40, 26, 6], 'Altıgen kavrama', `SW ${metin(sw)} × ${metin(son - bas)} · mandren çeneleri`);
-  a.callout([-SAP_R, 12, 0], [-34, 7, 6], 'SDS-Plus sap', `Ø${metin(M.S)} × ${metin(M.L)} · 2 açık + 2 kilit kanalı`);
+  a.callout([-SAP_R, M.L / 2, 0], [-38, 10, 6], 'Altıgen sap', `SW ${metin(SPEC.kavrama.sw)} × ${metin(M.L)} · akülü vidalama mandreni`);
 }
 
 // Ayrık: önce segman çıkar, sonra mil yukarı kalkar; kovan yerinde kalır, rulmanlar iki yandan ayrılır
@@ -388,7 +386,7 @@ export function kur({ celik }) {
     paket: 'uretim/kelepce/',
     cizim: {
       src: 'kelepce-ucu-v2-taslak.svg',
-      alt: 'Kelepçe sıkma ucu v2 teknik çizimi: montaj yarım kesiti, mil yan görünüşü, ağız, SDS-Plus sap kesiti, parça listesi, montaj sırası',
+      alt: 'Kelepçe sıkma ucu v2 teknik çizimi: montaj yarım kesiti, mil yan görünüşü, ağız, altıgen sap kesiti, parça listesi, montaj sırası',
     },
     parts,
     parcalar: Object.values(parts).map((obj) => ({ obj })),
