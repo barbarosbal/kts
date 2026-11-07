@@ -421,7 +421,7 @@ ${planCss(spec.onayli)}</style>
   </div>
   <div style="text-align:right">
     <span class="badge">${spec.onayli ? 'Ölçüler onaylı' : esc(spec.durum)}</span><br>
-    <a class="back noprint" href="../">← 3D model</a>
+    <a class="back noprint" href="../?model=kazan">← 3D model</a>
   </div>
 </header>
 
