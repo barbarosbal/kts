@@ -222,8 +222,11 @@ function setSplit(on) {
 
 splitBtn.addEventListener('click', () => setSplit(!split));
 
+const EMBED = document.documentElement.classList.contains('embed');
+
 window.addEventListener('keydown', (e) => {
   if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (EMBED) return; // gömülü görünümde A / T kısayolları kapalı
   if (e.key === 't' || e.key === 'T') techBtn.click();
   if ((e.key === 'a' || e.key === 'A') && !splitBtn.disabled) splitBtn.click();
   if (e.key === 'Escape') modelsMenu.open = false;
@@ -272,7 +275,7 @@ try {
   model.annotate(annotJoined);
   model.annotateAyrik?.(annotSplit);
   scene.add(annotJoined.group, annotSplit.group);
-  const techAtStart = location.hash === '#teknik';
+  const techAtStart = location.hash === '#teknik' && !EMBED;
   setTech(techAtStart, { refit: techAtStart });
 
   TARGET.y = model.fit(tech, split).y;
