@@ -97,8 +97,11 @@ html, body {
 .pkg:hover { border-color: var(--brass); }
 .pkg[hidden] { display: none; }
 
-/* Gömülü görünüm (?embed=1): müşteriye dönük sayfalarda model menüsü ve üretim paketi görünmez */
-.embed .actions { display: none; }
+/* Gömülü görünüm (?embed=1): müşteriye dönük sayfalarda yalnız model ve İzo/Ön/Üst/Alt kalır.
+   Başlık bloğu (logo, ad, Modeller, Üretim paketi), Ayrık ve Teknik çizim görünmez. */
+.embed .title,
+.embed #split,
+.embed #tech { display: none; }
 
 .models {
   position: relative;

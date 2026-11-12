@@ -3,7 +3,7 @@
 Pirinç (CW511L) parçaların ve çelik (42CrMo4) sıkma uçlarının 360° döndürülebilir 3D modelleri, teknik çizimleri ve fason üretim paketi.
 
 - Canlı model: https://eng.ratel.systems (`?model=kelepce-v2`, `?model=kelepce`, `?model=kazan`, `?model=rekor`; adres boşsa menüdeki ilk model, v2 açılır)
-- Gömülü görünüm: adrese `&embed=1` eklenince **Modeller** menüsü ve **Üretim paketi** bağlantısı gizlenir (ör. ratel.systems/shop: `?model=kelepce&embed=1`). Görünüm araçları ve teknik çizim açık kalır.
+- Gömülü görünüm: adrese `&embed=1` eklenince yalnız model ve İzo/Ön/Üst/Alt görünür; başlık bloğu (logo, ad, **Modeller**, **Üretim paketi**), **Ayrık** ve **Teknik çizim** gizlenir, A / T kısayolları ve `#teknik` kapanır (ör. ratel.systems/shop: `?model=kelepce&embed=1`).
 - Üretim paketleri: https://eng.ratel.systems/uretim/ (kazan altı parçası), https://eng.ratel.systems/uretim/rekor/ (oynar rekor), https://eng.ratel.systems/uretim/kelepce/ (kelepçe uçları, teklif paketi)
 
 ## Ölçüler tek yerde
