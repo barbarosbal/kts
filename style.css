@@ -102,6 +102,8 @@ html, body {
 .embed .title,
 .embed #split,
 .embed #tech { display: none; }
+/* Gömülü görünümde İzo/Ön/Üst/Alt her genişlikte sağ üstte durur (mobilde alta inmez) */
+.embed .toolbar { top: 12px; right: 12px; bottom: auto; left: auto; justify-content: flex-end; }
 
 .models {
   position: relative;
