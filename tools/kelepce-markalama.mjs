@@ -1,5 +1,5 @@
-// kelepce-olculer.json → kelepce-ucu-markalama.svg (lazer markalama resmi)
-// Atölyenin lazer kazıma/markalama için istediği tek sayfa: markalamanın yeri (yan görünüş, uçtan açısal konum),
+// kelepce-olculer.json → kelepce-ucu-markalama.svg (lazer kazıma resmi)
+// Atölyenin lazer kazıma için istediği tek sayfa: markalamanın yeri (yan görünüş, uçtan açısal konum),
 // logonun kendisi (açınım 5:1), yöntem ve kabul şartları. 1:1 vektör dosyaları (DXF, SVG) kelepce-paket.mjs'te yazılır.
 // Kullanım: cd tools && npm run site
 import { writeFile } from 'node:fs/promises';
@@ -77,9 +77,9 @@ const yan = `
     <text class="tb" x="${vx(BODY_Y)}" y="${A + 211}" text-anchor="middle">A</text>
     <polyline class="lead" points="${vx(MARK_Y + 2)},${A - S * LOGO_Z * 0.7} ${vx(BODY_Y) - 40},${A - 150} ${vx(BODY_Y) - 210},${A - 150}"/>
     ${bayrak(vx(BODY_Y) - 196, A - 162)}
-    <text class="tb" x="${vx(BODY_Y) - 176}" y="${A - 157}">LAZER MARKALAMA · LASER MARKING</text>
-    <text class="ts" x="${vx(BODY_Y) - 176}" y="${A - 139}">Ratel logosu, Ø${fmt(M.D)} gövdeye sarılır</text>
-    <text class="h" x="${X0 + (S * M.H) / 2}" y="${A + 252}" text-anchor="middle">YAN GÖRÜNÜŞ · MARKALAMA YERİ</text>
+    <text class="tb" x="${vx(BODY_Y) - 176}" y="${A - 157}">LAZER KAZIMA · LASER ENGRAVING</text>
+    <text class="ts" x="${vx(BODY_Y) - 176}" y="${A - 139}">Ratel logosu, Ø${fmt(M.D)} gövdeye sarılır, 0,03–0,05 derin</text>
+    <text class="h" x="${X0 + (S * M.H) / 2}" y="${A + 252}" text-anchor="middle">YAN GÖRÜNÜŞ · KAZIMA YERİ</text>
     <text class="ts" x="${X0 + (S * M.H) / 2}" y="${A + 272}" text-anchor="middle">tırnak karşıdan · logo altında ortalı · ölçek ≈ 2:1</text>`;
 
 // ---------------- uçtan görünüş: açısal konum ----------------
@@ -140,35 +140,35 @@ const acinim = `
     <text class="ts" x="${AX + W + 16}" y="${AY + 28}">tırnak tarafında</text>
     <text class="ts" x="${AX + W + 16}" y="${AY + H}">↓ A yüzeyi tarafı</text>
     <text class="h" x="${AX}" y="${AY + H + 44}">AÇINIM · ÖLÇEK 5:1</text>
-    <text class="ts" x="${AX}" y="${AY + H + 64}">Logo silindir yüzeyin açılmış hali; kesikli çerçeve yalnız ölçü içindir, markalanmaz.</text>
+    <text class="ts" x="${AX}" y="${AY + H + 64}">Logo silindir yüzeyin açılmış hali; siyah alan kazınır; kesikli çerçeve yalnız ölçü içindir, kazınmaz.</text>
     <text class="ts" x="${AX}" y="${AY + H + 80}">Vektör dosyası 1:1, mm: ${LOGO_DOSYA}.dxf · ${LOGO_DOSYA}.svg</text>`;
 
-// ---------------- markalama şartları ----------------
+// ---------------- kazıma şartları ----------------
 const SARTLAR = [
-  ['Yöntem', 'Fiber lazer, yüzey markalama; koyu (siyah) kontrast.'],
-  ['Derinlik', 'Derinlik istenmez; kazıma yapılırsa en çok 0,05 mm.'],
-  ['Eksen', `Döner eksenle (rotary) silindire sarılır. Düz markalama olmaz:`],
+  ['Yöntem', 'Fiber lazer kazıma (engraving); boya ve dolgu yok.'],
+  ['Derinlik', '0,03–0,05 mm. Logo çelik renginde, mat; koyu (siyah) markalama olmaz.'],
+  ['Eksen', `Döner eksenle (rotary) silindire sarılır. Düz kazıma olmaz:`],
   ['', `${f1(ACI)}° yayda kenarlar odaktan ${f1(SEHIM)} mm uzaklaşır.`],
   ['Konum', `Logo alt kenarı A yüzeyinden ${fmt(MARK.alt)} ±0,3; ortası B ekseninde ±3°.`],
   ['Boyut', `Yükseklik ${fmt(MARK.yukseklik)} ±0,2; yay ${f1(YAY)} ±0,5. Oranlar korunur.`],
   ['Yön', 'Harf üstleri tırnak tarafında; ayna ya da ters baskı olmaz.'],
   ['Sıra', 'Tüm işleme ve çapak almadan sonra, son işlem.'],
-  ['Kabul', 'Okunur, kenarlar net, dolgu tam; kabartı, çapak ve yanık'],
-  ['', 'izi yok; markalama logonun dışına taşmaz.'],
+  ['Kabul', 'Kenarlar net, taban düzgün, derinlik eşit; kabartı, çapak ve'],
+  ['', 'yanık izi yok; kazıma logonun dışına taşmaz. Kontrast aranmaz.'],
 ];
 const sartlar = `
     ${bayrak(796, 466)}
-    <text class="tb" x="816" y="471">MARKALAMA ŞARTLARI · MARKING REQUIREMENTS</text>
+    <text class="tb" x="816" y="471">KAZIMA ŞARTLARI · ENGRAVING REQUIREMENTS</text>
     ${SARTLAR.map(([k, v], i) => `<text class="tb" x="784" y="${502 + i * 21}" style="font-size:13px">${k}</text><text class="tn" x="866" y="${502 + i * 21}">${v}</text>`).join('\n    ')}`;
 
 // ---------------- notlar ----------------
 const NOTES = [
-  'Bu resim yalnız lazer markalamayı tanımlar. Ölçü, malzeme ve toleranslar parçanın STEP modeli ve teknik resmindedir.',
+  'Bu resim yalnız lazer kazımayı tanımlar. Ölçü, malzeme ve toleranslar parçanın STEP modeli ve teknik resmindedir.',
   `Parça: kelepçe sıkma ucu Rev ${spec.rev}, ${spec.malzeme}, yüzey ${spec.yuzey}. Toplam boy ${fmt(M.H)}, gövde Ø${fmt(M.D)}.`,
   `A: gövde arka yüzü (sap tarafı). B: tırnak ekseni; iki tırnak simetrik, logo birinin altına gelir.`,
-  `Markalama bandı: A'dan ${f1(BANT[0] - BODY_Y)}–${f1(BANT[1] - BODY_Y)} mm arası düz silindir; logo bu bandın dışına taşmaz.`,
+  `Kazıma bandı: A'dan ${f1(BANT[0] - BODY_Y)}–${f1(BANT[1] - BODY_Y)} mm arası düz silindir; logo bu bandın dışına taşmaz.`,
   'Logo yalnız vektör dosyasından basılır; yeniden çizilmez, yazı tipine çevrilmez.',
-  'Çizim ISO 128 ve ISO 129-1, yazılar ISO 3098. Markalama yeri ve yöntemi bayrak notuyla (1) gösterilir.',
+  'Çizim ISO 128 ve ISO 129-1, yazılar ISO 3098. Kazıma yeri ve yöntemi bayrak notuyla (1) gösterilir.',
 ];
 
 const svg = sayfa(spec, {
@@ -176,7 +176,7 @@ const svg = sayfa(spec, {
   notlar: NOTES,
   not: { baslik: 822, ilk: 846, adim: 18 },
   stil: '\n      .mark{fill:#111;stroke:none}',
-  antet: { ad: 'KELEPÇE UCU · LAZER MARKALAMA', malzeme: `Çelik ${spec.malzemeKisa}` },
+  antet: { ad: 'KELEPÇE UCU · LAZER KAZIMA', malzeme: `Çelik ${spec.malzemeKisa}` },
 });
 
 await writeFile(path.join(ROOT, 'kelepce-ucu-markalama.svg'), svg);

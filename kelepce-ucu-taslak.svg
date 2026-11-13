@@ -92,7 +92,7 @@
     <path class="mark" fill-rule="evenodd" d="M400.9 561.2 400.6 560.6 399.9 560.0 399.5 559.8 398.6 559.8 397.8 560.2 397.4 560.7 397.2 561.2 397.1 562.2 397.9 563.3 398.3 563.6 399.3 563.7 400.3 563.2 400.7 562.8 400.9 562.3 400.9 561.2Z"/>
     
     <polyline class="lead" points="406.3,598.1 544,696 754,696"/>
-    <text class="tb" x="548" y="690">LAZER MARKALAMA</text>
+    <text class="tb" x="548" y="690">LAZER KAZIMA</text>
     <text class="ts" x="548" y="712">Ratel logosu · h 5 · yay 28,8 (103°)</text>
     <text class="ts" x="548" y="728">arka yüzden 4 · tırnak altında ortalı</text>
     <line class="thin" x1="344" y1="589.5" x2="344" y2="498.5"/>
@@ -186,7 +186,7 @@
     <text class="tn" x="780" y="476">3. Freze (bölücülü): altıgen sap SW 8 × 30, köşeler Ø9 kalır.</text>
     <text class="tn" x="780" y="496">4. Freze: iki tırnak 10 × 3,5, dış düz yüzler 30, uç pahları.</text>
     <text class="tn" x="780" y="516">5. Isıl işlem ve kaplama yok. Yüzey: işlenmiş, Ra 3,2 µm, kaplamasız.</text>
-    <text class="tn" x="780" y="536">6. Lazer markalama: Ratel logosu, 103° yay, döner eksenle; ayrı markalama resmine göre.</text>
+    <text class="tn" x="780" y="536">6. Lazer kazıma: Ratel logosu, 0,03–0,05 mm, 103° yay, döner eksenle; ayrı kazıma resmine göre.</text>
     <text class="tn" x="780" y="556">7. Deneme: akülü vidalamanın mandreninde oturma ve salgı, sonra gerçek kelepçede tork testi.</text>
     <text class="tb q" x="780" y="584">ÜRETİMDEN ÖNCE DOĞRULANACAK</text>
     <text class="tn" x="780" y="606">1. Gereken sıkma torku (N·m): sap ≈ 24 N·m'ye dayanır, tork ayarı bunun altında tutulur.</text>
@@ -201,7 +201,7 @@
     <text class="tn" x="40" y="908">5. Ek ısıl işlem ve kaplama yok; yüzey işlenmiş, Ra 3,2 µm, kaplamasız. Keskin kenarlar 0,3 × 45°.</text>
     <text class="tn" x="40" y="924.5">6. Üç ayaklı mandrenli akülü vidalamaya takılır; darbeli vidalama ve SDS matkap için değildir.</text>
     <text class="tn" x="40" y="941">7. Mandrende uç halkaya dayanana kadar sürülür, çeneler altıgenin yüzlerine oturur. 1/4″ hızlı bağlantıya girmez.</text>
-    <text class="tn" x="40" y="957.5">8. Markalama: Ratel logosu, ayrı lazer markalama resmine ve 1:1 vektör dosyasına göre; kabartı ve çapak bırakmaz.</text>
+    <text class="tn" x="40" y="957.5">8. Logo: lazerle 0,03–0,05 mm kazınır, boyanmaz; ayrı lazer kazıma resmine ve 1:1 vektör dosyasına göre, çapaksız.</text>
   </g>
 
   <g>
@@ -215,11 +215,11 @@
     <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
     <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
 
-    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">H — onaylı</text>
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">I — onaylı</text>
     <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">13.11.2026</text>
     <text class="tl" x="1190" y="887">DURUM</text><text class="tb" x="1190" y="906">ONAYLI</text>
 
-    <text class="tl" x="790" y="929">REV H</text>
-    <text class="t" x="790" y="947">Üretim standardı: 42CrMo4 ısıl işlemsiz, işlenmiş yüzey Ra 3,2, lazer logo.</text>
+    <text class="tl" x="790" y="929">REV I</text>
+    <text class="t" x="790" y="947">Logo lazer kazıma (0,03–0,05 mm), çelik renginde; koyu markalama değil.</text>
   </g>
 </svg>

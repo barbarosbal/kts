@@ -68,9 +68,9 @@
     
     <polygon class="thin" style="fill:#fff" points="169,61 182,83 156,83"/>
     <text class="tb" x="169" y="80" text-anchor="middle" style="font-size:12px">1</text>
-    <text class="tb" x="189" y="79">LAZER MARKALAMA · LASER MARKING</text>
-    <text class="ts" x="189" y="97">Ratel logosu, Ø32 gövdeye sarılır</text>
-    <text class="h" x="368.5" y="488" text-anchor="middle">YAN GÖRÜNÜŞ · MARKALAMA YERİ</text>
+    <text class="tb" x="189" y="79">LAZER KAZIMA · LASER ENGRAVING</text>
+    <text class="ts" x="189" y="97">Ratel logosu, Ø32 gövdeye sarılır, 0,03–0,05 derin</text>
+    <text class="h" x="368.5" y="488" text-anchor="middle">YAN GÖRÜNÜŞ · KAZIMA YERİ</text>
     <text class="ts" x="368.5" y="508" text-anchor="middle">tırnak karşıdan · logo altında ortalı · ölçek ≈ 2:1</text>
   </g>
 
@@ -118,53 +118,53 @@
     <text class="ts" x="646.375510605837" y="628">tırnak tarafında</text>
     <text class="ts" x="646.375510605837" y="683.3333333333334">↓ A yüzeyi tarafı</text>
     <text class="h" x="150" y="727.3333333333334">AÇINIM · ÖLÇEK 5:1</text>
-    <text class="ts" x="150" y="747.3333333333334">Logo silindir yüzeyin açılmış hali; kesikli çerçeve yalnız ölçü içindir, markalanmaz.</text>
-    <text class="ts" x="150" y="763.3333333333334">Vektör dosyası 1:1, mm: kelepce-ucu-revH-logo-1-1.dxf · kelepce-ucu-revH-logo-1-1.svg</text>
+    <text class="ts" x="150" y="747.3333333333334">Logo silindir yüzeyin açılmış hali; siyah alan kazınır; kesikli çerçeve yalnız ölçü içindir, kazınmaz.</text>
+    <text class="ts" x="150" y="763.3333333333334">Vektör dosyası 1:1, mm: kelepce-ucu-revI-logo-1-1.dxf · kelepce-ucu-revI-logo-1-1.svg</text>
   </g>
 
   <g>
     
     <polygon class="thin" style="fill:#fff" points="796,453 809,475 783,475"/>
     <text class="tb" x="796" y="472" text-anchor="middle" style="font-size:12px">1</text>
-    <text class="tb" x="816" y="471">MARKALAMA ŞARTLARI · MARKING REQUIREMENTS</text>
-    <text class="tb" x="784" y="502" style="font-size:13px">Yöntem</text><text class="tn" x="866" y="502">Fiber lazer, yüzey markalama; koyu (siyah) kontrast.</text>
-    <text class="tb" x="784" y="523" style="font-size:13px">Derinlik</text><text class="tn" x="866" y="523">Derinlik istenmez; kazıma yapılırsa en çok 0,05 mm.</text>
-    <text class="tb" x="784" y="544" style="font-size:13px">Eksen</text><text class="tn" x="866" y="544">Döner eksenle (rotary) silindire sarılır. Düz markalama olmaz:</text>
+    <text class="tb" x="816" y="471">KAZIMA ŞARTLARI · ENGRAVING REQUIREMENTS</text>
+    <text class="tb" x="784" y="502" style="font-size:13px">Yöntem</text><text class="tn" x="866" y="502">Fiber lazer kazıma (engraving); boya ve dolgu yok.</text>
+    <text class="tb" x="784" y="523" style="font-size:13px">Derinlik</text><text class="tn" x="866" y="523">0,03–0,05 mm. Logo çelik renginde, mat; koyu (siyah) markalama olmaz.</text>
+    <text class="tb" x="784" y="544" style="font-size:13px">Eksen</text><text class="tn" x="866" y="544">Döner eksenle (rotary) silindire sarılır. Düz kazıma olmaz:</text>
     <text class="tb" x="784" y="565" style="font-size:13px"></text><text class="tn" x="866" y="565">103,2° yayda kenarlar odaktan 6,1 mm uzaklaşır.</text>
     <text class="tb" x="784" y="586" style="font-size:13px">Konum</text><text class="tn" x="866" y="586">Logo alt kenarı A yüzeyinden 4 ±0,3; ortası B ekseninde ±3°.</text>
     <text class="tb" x="784" y="607" style="font-size:13px">Boyut</text><text class="tn" x="866" y="607">Yükseklik 5 ±0,2; yay 28,8 ±0,5. Oranlar korunur.</text>
     <text class="tb" x="784" y="628" style="font-size:13px">Yön</text><text class="tn" x="866" y="628">Harf üstleri tırnak tarafında; ayna ya da ters baskı olmaz.</text>
     <text class="tb" x="784" y="649" style="font-size:13px">Sıra</text><text class="tn" x="866" y="649">Tüm işleme ve çapak almadan sonra, son işlem.</text>
-    <text class="tb" x="784" y="670" style="font-size:13px">Kabul</text><text class="tn" x="866" y="670">Okunur, kenarlar net, dolgu tam; kabartı, çapak ve yanık</text>
-    <text class="tb" x="784" y="691" style="font-size:13px"></text><text class="tn" x="866" y="691">izi yok; markalama logonun dışına taşmaz.</text>
+    <text class="tb" x="784" y="670" style="font-size:13px">Kabul</text><text class="tn" x="866" y="670">Kenarlar net, taban düzgün, derinlik eşit; kabartı, çapak ve</text>
+    <text class="tb" x="784" y="691" style="font-size:13px"></text><text class="tn" x="866" y="691">yanık izi yok; kazıma logonun dışına taşmaz. Kontrast aranmaz.</text>
   </g>
 
   <g>
     <text class="tb" x="40" y="822">NOTLAR</text>
-    <text class="tn" x="40" y="846">1. Bu resim yalnız lazer markalamayı tanımlar. Ölçü, malzeme ve toleranslar parçanın STEP modeli ve teknik resmindedir.</text>
-    <text class="tn" x="40" y="864">2. Parça: kelepçe sıkma ucu Rev H, 42CrMo4 (1.7225), yüzey işlenmiş, Ra 3,2 µm, kaplamasız. Toplam boy 71, gövde Ø32.</text>
+    <text class="tn" x="40" y="846">1. Bu resim yalnız lazer kazımayı tanımlar. Ölçü, malzeme ve toleranslar parçanın STEP modeli ve teknik resmindedir.</text>
+    <text class="tn" x="40" y="864">2. Parça: kelepçe sıkma ucu Rev I, 42CrMo4 (1.7225), yüzey işlenmiş, Ra 3,2 µm, kaplamasız. Toplam boy 71, gövde Ø32.</text>
     <text class="tn" x="40" y="882">3. A: gövde arka yüzü (sap tarafı). B: tırnak ekseni; iki tırnak simetrik, logo birinin altına gelir.</text>
-    <text class="tn" x="40" y="900">4. Markalama bandı: A'dan 1–12,4 mm arası düz silindir; logo bu bandın dışına taşmaz.</text>
+    <text class="tn" x="40" y="900">4. Kazıma bandı: A'dan 1–12,4 mm arası düz silindir; logo bu bandın dışına taşmaz.</text>
     <text class="tn" x="40" y="918">5. Logo yalnız vektör dosyasından basılır; yeniden çizilmez, yazı tipine çevrilmez.</text>
-    <text class="tn" x="40" y="936">6. Çizim ISO 128 ve ISO 129-1, yazılar ISO 3098. Markalama yeri ve yöntemi bayrak notuyla (1) gösterilir.</text>
+    <text class="tn" x="40" y="936">6. Çizim ISO 128 ve ISO 129-1, yazılar ISO 3098. Kazıma yeri ve yöntemi bayrak notuyla (1) gösterilir.</text>
   </g>
 
   <g>
     <rect x="780" y="780" width="580" height="175" class="grid" stroke-width="1.6"/>
     <path class="grid" d="M780 830 H1360 M780 872 H1360 M780 914 H1360"/>
     <path class="grid" d="M980 830 V914 M1180 830 V914"/>
-    <text x="795" y="814" font-size="22" font-weight="700" fill="#111" letter-spacing=".5">KELEPÇE UCU · LAZER MARKALAMA</text>
+    <text x="795" y="814" font-size="22" font-weight="700" fill="#111" letter-spacing=".5">KELEPÇE UCU · LAZER KAZIMA</text>
     <text class="ts" x="1345" y="814" text-anchor="end">Teknik resim</text>
 
     <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">Çelik 42CrMo4</text>
     <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
     <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
 
-    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">H — onaylı</text>
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">I — onaylı</text>
     <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">13.11.2026</text>
     <text class="tl" x="1190" y="887">DURUM</text><text class="tb" x="1190" y="906">ONAYLI</text>
 
-    <text class="tl" x="790" y="929">REV H</text>
-    <text class="t" x="790" y="947">Üretim standardı: 42CrMo4 ısıl işlemsiz, işlenmiş yüzey Ra 3,2, lazer logo.</text>
+    <text class="tl" x="790" y="929">REV I</text>
+    <text class="t" x="790" y="947">Logo lazer kazıma (0,03–0,05 mm), çelik renginde; koyu markalama değil.</text>
   </g>
 </svg>
