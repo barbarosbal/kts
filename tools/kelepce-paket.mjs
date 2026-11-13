@@ -29,7 +29,7 @@ const B2 = `kelepce-ucu-v2-rev${S2.rev}`;
 const FILES = {
   v1: `${B1}.step`,
   v1Pdf: `${B1}-teknik-resim.pdf`,
-  v1Mark: `${B1}-lazer-markalama.pdf`,
+  v1Mark: `${B1}-lazer-kazima.pdf`,
   v1Logo: `${B1}-logo-1-1.dxf`,
   v1LogoSvg: `${B1}-logo-1-1.svg`,
   v2Mil: `${B2}-mil.step`,
@@ -249,7 +249,7 @@ ${planCss(S1.onayli && S2.onayli)}</style>
     ${dl(FILES.zip, 'Paketin tamamı (ZIP)', 'STEP + teknik resim, iki uç', 'main')}
     ${dl(FILES.v1, 'STEP · Kelepçe ucu v1', 'Tek parça mil, AP242, mm')}
     ${dl(FILES.v1Pdf, 'Teknik resim · v1 (PDF)', 'A3, ölçülü')}
-    ${dl(FILES.v1Mark, 'Lazer markalama resmi · v1 (PDF)', 'A3, logonun yeri, açınım ve şartlar')}
+    ${dl(FILES.v1Mark, 'Lazer kazıma resmi · v1 (PDF)', 'A3, logonun yeri, açınım ve şartlar')}
     ${dl(FILES.v1Logo, 'Logo · v1 (DXF, 1:1)', 'Lazer yazılımı için kapalı çoklu çizgiler, mm')}
     ${dl(FILES.v1LogoSvg, 'Logo · v1 (SVG, 1:1)', 'Aynı logo, mm ölçülü vektör')}
     ${dl(FILES.v2Mil, 'STEP · v2 mil', 'Çelik mil, AP242, mm')}
@@ -270,7 +270,7 @@ ${planCss(S1.onayli && S2.onayli)}</style>
 </tbody></table>
 <table><thead><tr><th>Kalem</th><th>Değer</th></tr></thead><tbody>
 ${satir('Adet', '1, 3 ve 10 adet için ayrı fiyat')}
-${satir('Lazer logo (v1)', `Platformda “Lazer markalama” seçilir; ${FILES.v1Mark} ve ${FILES.v1Logo} parçaya ek dosya olarak yüklenir`)}
+${satir('Lazer logo (v1)', `Platformda “Lazer kazıma” seçilir; ${FILES.v1Mark} ve ${FILES.v1Logo} parçaya ek dosya olarak yüklenir`)}
 ${satir('Hazır alınan (v2)', `${S2.rulman.adet} × ${esc(S2.rulman.kod)} rulman, 1 × ${esc(S2.segman.standart)} ${esc(S2.segman.olcu)} segman; montaj resimdeki sırayla`)}
 ${satir('Genel tolerans', esc(S1.genelTolerans))}
 ${satir('Tahmini ağırlık', `v1 ${kg(OZ.v1.hacim, 7.85)} kg · v2 mil ${kg(OZ.v2Mil.hacim, 7.85)} kg · v2 kovan ${kg(OZ.v2Kovan.hacim, 2.70)} kg`)}

@@ -1,8 +1,8 @@
 {
   "parca": "Kelepçe Sıkma Ucu",
-  "rev": "H",
+  "rev": "I",
   "tarih": "13.11.2026",
-  "revNot": "Üretim standardı: 42CrMo4 ısıl işlemsiz, işlenmiş yüzey Ra 3,2, lazer logo.",
+  "revNot": "Logo lazer kazıma (0,03–0,05 mm), çelik renginde; koyu markalama değil.",
   "onayli": true,
   "durum": "Kelepçe ölçüleri onaylı",
   "malzeme": "42CrMo4 (1.7225)",
@@ -37,7 +37,7 @@
   },
 
   "markalama": {
-    "aciklama": "Ratel logosu, tek renk lazer markalama. Gövde çevresine sarılır, tırnaklardan birinin altında ortalanır; işlemeden sonra döner eksenli fiber lazerle koyu markalanır. Yeri ve şartları kelepce-ucu-markalama.svg resminde.",
+    "aciklama": "Ratel logosu, lazer kazıma. Gövde çevresine sarılır, tırnaklardan birinin altında ortalanır; işlemeden sonra döner eksenli fiber lazerle 0,03–0,05 mm kazınır, boyanmaz, çelik renginde kalır. Yeri ve şartları kelepce-ucu-markalama.svg resminde.",
     "logo": "brand/ratel-lockup.svg",
     "yukseklik": 5,
     "alt": 4

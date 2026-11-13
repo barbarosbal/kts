@@ -54,7 +54,7 @@ function profile() {
   ];
 }
 
-// Ratel logosu: lazer markalama (işlenmiş çelikte koyu), gövde çevresine sarılır. Logo tek renk maskeye çevrilir,
+// Ratel logosu: lazer kazıma (boyasız, çelik renginde mat iz), gövde çevresine sarılır. Logo tek renk maskeye çevrilir,
 // gövdenin hemen üstündeki ince bir bantta gösterilir; ortası tırnaklardan birinin (−X) altında.
 const LOGO = await (async () => {
   try {
@@ -87,10 +87,10 @@ function logoBand() {
   const geo = new THREE.CylinderGeometry(r, r, MARK.yukseklik, 128, 1, true, 1.5 * Math.PI - aci / 2, aci)
     .translate(0, MARK_Y + MARK.yukseklik / 2, 0);
   const mat = new THREE.MeshStandardMaterial({
-    color: 0x24272b,
+    color: 0xaab0b6,
     map: tex,
-    metalness: 0.3,
-    roughness: 0.75,
+    metalness: 0.55,
+    roughness: 0.95,
     transparent: true,
     depthWrite: false,
     polygonOffset: true,
@@ -129,7 +129,7 @@ function annotate(a) {
   if (LOGO) {
     const t = THREE.MathUtils.degToRad(-80);
     a.callout([BODY_R * Math.sin(t), MARK_Y + MARK.yukseklik / 2, BODY_R * Math.cos(t)], [-48, FACE_Y + 5, 6],
-      'Ratel logosu', `lazer markalama · h ${metin(MARK.yukseklik)}`);
+      'Ratel logosu', `lazer kazıma · h ${metin(MARK.yukseklik)}`);
   }
   a.callout([-SAP_R, M.L / 2, 0], [-32, 12, 6], 'Altıgen sap', `SW ${metin(SPEC.kavrama.sw)} × ${metin(M.L)} · akülü vidalama mandreni`);
 }

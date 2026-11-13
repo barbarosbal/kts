@@ -98,7 +98,7 @@ const MN = [548, 690];
 const logoUc = logoNokta(LW * 0.78, LH * 0.62).map((n) => +n.toFixed(1));
 const logoNot = `
     <polyline class="lead" points="${logoUc.join(',')} ${MN[0] - 4},${MN[1] + 6} ${MN[0] + 206},${MN[1] + 6}"/>
-    <text class="tb" x="${MN[0]}" y="${MN[1]}">LAZER MARKALAMA</text>
+    <text class="tb" x="${MN[0]}" y="${MN[1]}">LAZER KAZIMA</text>
     <text class="ts" x="${MN[0]}" y="${MN[1] + 22}">Ratel logosu · h ${fmt(MARK.yukseklik)} · yay ${fmt(+MARK_YAY.toFixed(1))} (${MARK_ACI}°)</text>
     <text class="ts" x="${MN[0]}" y="${MN[1] + 38}">arka yüzden ${fmt(MARK.alt)} · tırnak altında ortalı</text>`;
 
@@ -152,7 +152,7 @@ const ISLEM = [
   `Freze (bölücülü): altıgen sap SW ${fmt(KV_SW)} × ${fmt(M.L)}, köşeler Ø${fmt(M.S)} kalır.`,
   `Freze: iki tırnak ${fmt(M.V)} × ${fmt(M.U)}, dış düz yüzler ${fmt(2 * OUTER_X)}, uç pahları.`,
   `Isıl işlem ve kaplama yok. Yüzey: ${spec.yuzey}.`,
-  `Lazer markalama: Ratel logosu, ${MARK_ACI}° yay, döner eksenle; ayrı markalama resmine göre.`,
+  `Lazer kazıma: Ratel logosu, 0,03–0,05 mm, ${MARK_ACI}° yay, döner eksenle; ayrı kazıma resmine göre.`,
   'Deneme: akülü vidalamanın mandreninde oturma ve salgı, sonra gerçek kelepçede tork testi.',
 ];
 
@@ -180,7 +180,7 @@ const NOTES = [
   `Ek ısıl işlem ve kaplama yok; yüzey ${spec.yuzey}. Keskin kenarlar 0,3 × 45°.`,
   'Üç ayaklı mandrenli akülü vidalamaya takılır; darbeli vidalama ve SDS matkap için değildir.',
   'Mandrende uç halkaya dayanana kadar sürülür, çeneler altıgenin yüzlerine oturur. 1/4″ hızlı bağlantıya girmez.',
-  'Markalama: Ratel logosu, ayrı lazer markalama resmine ve 1:1 vektör dosyasına göre; kabartı ve çapak bırakmaz.',
+  'Logo: lazerle 0,03–0,05 mm kazınır, boyanmaz; ayrı lazer kazıma resmine ve 1:1 vektör dosyasına göre, çapaksız.',
 ];
 const svg = sayfa(spec, {
   bloklar: [yarimKesit, yanGorunus, agizG, kesitAG, planlar],
