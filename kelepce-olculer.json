@@ -1,15 +1,15 @@
 {
   "parca": "Kelepçe Sıkma Ucu",
-  "rev": "G",
-  "tarih": "06.11.2026",
-  "revNot": "Sap 8 mm altıgen: yalnız akülü vidalama. SDS kanalları kalktı; L 40 → 30, H 81 → 71.",
+  "rev": "H",
+  "tarih": "13.11.2026",
+  "revNot": "Üretim standardı: 42CrMo4 ısıl işlemsiz, işlenmiş yüzey Ra 3,2, lazer logo.",
   "onayli": true,
   "durum": "Kelepçe ölçüleri onaylı",
-  "malzeme": "42CrMo4+QT (1.7225), ıslahlı çubuk",
-  "malzemeKisa": "42CrMo4+QT",
-  "sertlik": "≈ 28–32 HRC",
-  "yuzey": "kumlama + siyah oksit",
-  "adet": "1–3 (prototip, fason)",
+  "malzeme": "42CrMo4 (1.7225)",
+  "malzemeKisa": "42CrMo4",
+  "sertlik": "teslim hali, ek ısıl işlem yok",
+  "yuzey": "işlenmiş, Ra 3,2 µm, kaplamasız",
+  "adet": "50 (ilk parti, fason)",
   "genelTolerans": "ISO 2768-m",
 
   "olculer": {
@@ -37,7 +37,7 @@
   },
 
   "markalama": {
-    "aciklama": "Ratel logosu, tek renk lazer markalama. Gövde çevresine sarılır, tırnaklardan birinin altında ortalanır; siyah oksitten sonra döner eksenli lazerle işlenir.",
+    "aciklama": "Ratel logosu, tek renk lazer markalama. Gövde çevresine sarılır, tırnaklardan birinin altında ortalanır; işlemeden sonra döner eksenli fiber lazerle koyu markalanır. Yeri ve şartları kelepce-ucu-markalama.svg resminde.",
     "logo": "brand/ratel-lockup.svg",
     "yukseklik": 5,
     "alt": 4

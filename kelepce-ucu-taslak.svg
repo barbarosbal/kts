@@ -185,11 +185,11 @@
     <text class="tn" x="780" y="456">2. Torna: alın yuvası Ø21, orta cep Ø15 × 7, delik Ø4.</text>
     <text class="tn" x="780" y="476">3. Freze (bölücülü): altıgen sap SW 8 × 30, köşeler Ø9 kalır.</text>
     <text class="tn" x="780" y="496">4. Freze: iki tırnak 10 × 3,5, dış düz yüzler 30, uç pahları.</text>
-    <text class="tn" x="780" y="516">5. Isıl işlem yok: çubuk ıslahlı (+QT) gelir, ≈ 28–32 HRC. Yüzey: kumlama + siyah oksit.</text>
-    <text class="tn" x="780" y="536">6. Lazer markalama: Ratel logosu, gövde çevresinde 103° yay, döner eksenle.</text>
+    <text class="tn" x="780" y="516">5. Isıl işlem ve kaplama yok. Yüzey: işlenmiş, Ra 3,2 µm, kaplamasız.</text>
+    <text class="tn" x="780" y="536">6. Lazer markalama: Ratel logosu, 103° yay, döner eksenle; ayrı markalama resmine göre.</text>
     <text class="tn" x="780" y="556">7. Deneme: akülü vidalamanın mandreninde oturma ve salgı, sonra gerçek kelepçede tork testi.</text>
     <text class="tb q" x="780" y="584">ÜRETİMDEN ÖNCE DOĞRULANACAK</text>
-    <text class="tn" x="780" y="606">1. Gereken sıkma torku (N·m): sap ≈ 40 N·m'ye dayanır, tork ayarı bunun altında tutulur.</text>
+    <text class="tn" x="780" y="606">1. Gereken sıkma torku (N·m): sap ≈ 24 N·m'ye dayanır, tork ayarı bunun altında tutulur.</text>
   </g>
 
   <g>
@@ -197,11 +197,11 @@
     <text class="tn" x="40" y="842">1. Ölçüler onaylıdır. Çizim orantılıdır, değerler esastır.</text>
     <text class="tn" x="40" y="858.5">2. Genel tolerans ISO 2768-m. Ağız açıklığı A en az 23: +0,50 / 0.</text>
     <text class="tn" x="40" y="875">3. Sap: altıgen SW 8 × 30, köşeler Ø9 çapında tornalanır; 10 ve 13 mm mandrene girer.</text>
-    <text class="tn" x="40" y="891.5">4. Gövde ile sap ekseni arasında salgı en çok 0,10. Malzeme: 42CrMo4+QT (1.7225), ıslahlı çubuk.</text>
-    <text class="tn" x="40" y="908">5. Sertlik ≈ 28–32 HRC (ıslahlı çubuk, ek ısıl işlem yok), yüzey kumlama + siyah oksit. Keskin kenarlar 0,3 × 45°.</text>
+    <text class="tn" x="40" y="891.5">4. Gövde ile sap ekseni arasında salgı en çok 0,10. Malzeme: 42CrMo4 (1.7225).</text>
+    <text class="tn" x="40" y="908">5. Ek ısıl işlem ve kaplama yok; yüzey işlenmiş, Ra 3,2 µm, kaplamasız. Keskin kenarlar 0,3 × 45°.</text>
     <text class="tn" x="40" y="924.5">6. Üç ayaklı mandrenli akülü vidalamaya takılır; darbeli vidalama ve SDS matkap için değildir.</text>
     <text class="tn" x="40" y="941">7. Mandrende uç halkaya dayanana kadar sürülür, çeneler altıgenin yüzlerine oturur. 1/4″ hızlı bağlantıya girmez.</text>
-    <text class="tn" x="40" y="957.5">8. Markalama: Ratel logosu (brand/ratel-lockup.svg), tek renk, siyah oksitten sonra. Kabartı ve çapak bırakmaz.</text>
+    <text class="tn" x="40" y="957.5">8. Markalama: Ratel logosu, ayrı lazer markalama resmine ve 1:1 vektör dosyasına göre; kabartı ve çapak bırakmaz.</text>
   </g>
 
   <g>
@@ -211,15 +211,15 @@
     <text x="795" y="814" font-size="22" font-weight="700" fill="#111" letter-spacing=".5">KELEPÇE SIKMA UCU</text>
     <text class="ts" x="1345" y="814" text-anchor="end">Teknik resim</text>
 
-    <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">Çelik 42CrMo4+QT</text>
+    <text class="tl" x="790" y="845">MALZEME</text><text class="tb" x="790" y="864">Çelik 42CrMo4</text>
     <text class="tl" x="990" y="845">ÖLÇEK</text><text class="tb" x="990" y="864">Ölçeksiz</text>
     <text class="tl" x="1190" y="845">BİRİM</text><text class="tb" x="1190" y="864">mm</text>
 
-    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">G — onaylı</text>
-    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">06.11.2026</text>
+    <text class="tl" x="790" y="887">REVİZYON</text><text class="tb" x="790" y="906">H — onaylı</text>
+    <text class="tl" x="990" y="887">TARİH</text><text class="tb" x="990" y="906">13.11.2026</text>
     <text class="tl" x="1190" y="887">DURUM</text><text class="tb" x="1190" y="906">ONAYLI</text>
 
-    <text class="tl" x="790" y="929">REV G</text>
-    <text class="t" x="790" y="947">Sap 8 mm altıgen: yalnız akülü vidalama. SDS kanalları kalktı; L 40 → 30, H 81 → 71.</text>
+    <text class="tl" x="790" y="929">REV H</text>
+    <text class="t" x="790" y="947">Üretim standardı: 42CrMo4 ısıl işlemsiz, işlenmiş yüzey Ra 3,2, lazer logo.</text>
   </g>
 </svg>

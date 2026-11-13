@@ -151,8 +151,8 @@ const ISLEM = [
   `Torna: alın yuvası Ø${fmt(M.W)}, orta cep Ø${fmt(M.P)} × ${fmt(M.Q)}, delik Ø${fmt(M.J)}.`,
   `Freze (bölücülü): altıgen sap SW ${fmt(KV_SW)} × ${fmt(M.L)}, köşeler Ø${fmt(M.S)} kalır.`,
   `Freze: iki tırnak ${fmt(M.V)} × ${fmt(M.U)}, dış düz yüzler ${fmt(2 * OUTER_X)}, uç pahları.`,
-  `Isıl işlem yok: çubuk ıslahlı (+QT) gelir, ${spec.sertlik}. Yüzey: ${spec.yuzey}.`,
-  `Lazer markalama: Ratel logosu, gövde çevresinde ${MARK_ACI}° yay, döner eksenle.`,
+  `Isıl işlem ve kaplama yok. Yüzey: ${spec.yuzey}.`,
+  `Lazer markalama: Ratel logosu, ${MARK_ACI}° yay, döner eksenle; ayrı markalama resmine göre.`,
   'Deneme: akülü vidalamanın mandreninde oturma ve salgı, sonra gerçek kelepçede tork testi.',
 ];
 
@@ -162,7 +162,7 @@ const ACIK = [
     `Tırnak eni V (şimdilik ${fmt(M.V)}); boy C ${fmt(M.C)} onaylı.`,
     `Orta cep Ø${fmt(M.P)} × ${fmt(M.Q)} kelepçenin ortasındaki parçayı alıyor mu?`,
   ]),
-  `Gereken sıkma torku (N·m): sap ≈ 40 N·m'ye dayanır, tork ayarı bunun altında tutulur.`,
+  `Gereken sıkma torku (N·m): sap ≈ 24 N·m'ye dayanır, tork ayarı bunun altında tutulur.`,
 ];
 
 const planlar = `
@@ -177,10 +177,10 @@ const NOTES = [
   `Genel tolerans ${spec.genelTolerans}. Ağız açıklığı A en az ${fmt(M.A)}: +0,50 / 0.`,
   `Sap: altıgen SW ${fmt(KV_SW)} × ${fmt(M.L)}, köşeler Ø${fmt(M.S)} çapında tornalanır; 10 ve 13 mm mandrene girer.`,
   `Gövde ile sap ekseni arasında salgı en çok 0,10. Malzeme: ${spec.malzeme}.`,
-  `Sertlik ${spec.sertlik} (ıslahlı çubuk, ek ısıl işlem yok), yüzey ${spec.yuzey}. Keskin kenarlar 0,3 × 45°.`,
+  `Ek ısıl işlem ve kaplama yok; yüzey ${spec.yuzey}. Keskin kenarlar 0,3 × 45°.`,
   'Üç ayaklı mandrenli akülü vidalamaya takılır; darbeli vidalama ve SDS matkap için değildir.',
   'Mandrende uç halkaya dayanana kadar sürülür, çeneler altıgenin yüzlerine oturur. 1/4″ hızlı bağlantıya girmez.',
-  `Markalama: Ratel logosu (${MARK.logo}), tek renk, siyah oksitten sonra. Kabartı ve çapak bırakmaz.`,
+  'Markalama: Ratel logosu, ayrı lazer markalama resmine ve 1:1 vektör dosyasına göre; kabartı ve çapak bırakmaz.',
 ];
 const svg = sayfa(spec, {
   bloklar: [yarimKesit, yanGorunus, agizG, kesitAG, planlar],

@@ -13,7 +13,8 @@ import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { ROOT, TAR, esc, fmt, fileSizes, planCss, printDrawing } from './paket-ortak.mjs';
+import { ROOT, TAR, Dxf, esc, fmt, fileSizes, planCss, printDrawing } from './paket-ortak.mjs';
+import { markaOku, markaDxf } from './marka.mjs';
 
 const OUT = path.join(ROOT, 'uretim', 'kelepce');
 const oku = async (f) => JSON.parse(await readFile(path.join(ROOT, f), 'utf8'));
@@ -28,6 +29,9 @@ const B2 = `kelepce-ucu-v2-rev${S2.rev}`;
 const FILES = {
   v1: `${B1}.step`,
   v1Pdf: `${B1}-teknik-resim.pdf`,
+  v1Mark: `${B1}-lazer-markalama.pdf`,
+  v1Logo: `${B1}-logo-1-1.dxf`,
+  v1LogoSvg: `${B1}-logo-1-1.svg`,
   v2Mil: `${B2}-mil.step`,
   v2Kovan: `${B2}-kovan.step`,
   v2Pdf: `${B2}-teknik-resim.pdf`,
@@ -167,7 +171,7 @@ const v2Mil = mil(S2, M2, profilV2(S2, M2));
 const v2Kovan = kovan(S2, M2);
 
 await mkdir(OUT, { recursive: true });
-for (const f of await readdir(OUT)) if (/\.(step|pdf|zip|stl)$/.test(f)) await rm(path.join(OUT, f));
+for (const f of await readdir(OUT)) if (/\.(step|pdf|zip|stl|dxf|svg)$/.test(f)) await rm(path.join(OUT, f));
 
 const kaydet = async (file, shape, name, color) => {
   const blob = exportSTEP([{ shape, name, color }], { unit: 'MM', modelUnit: 'MM' });
@@ -191,6 +195,24 @@ if (process.env.KELEPCE_STL) {
 // ---------------- teknik resim PDF ----------------
 if (await printDrawing(path.join(ROOT, 'kelepce-ucu-taslak.svg'), path.join(OUT, FILES.v1Pdf))) console.log(`PDF   ${FILES.v1Pdf}`);
 if (await printDrawing(path.join(ROOT, 'kelepce-ucu-v2-taslak.svg'), path.join(OUT, FILES.v2Pdf))) console.log(`PDF   ${FILES.v2Pdf}`);
+if (await printDrawing(path.join(ROOT, 'kelepce-ucu-markalama.svg'), path.join(OUT, FILES.v1Mark))) console.log(`PDF   ${FILES.v1Mark}`);
+
+// ---------------- v1 lazer logosu: 1:1 açınım (DXF, SVG) ----------------
+// Logo gövdeye sarılmadan önceki düz hali; lazer yazılımı döner eksende Ø D üzerine sarar. Alt orta noktası orijinde.
+{
+  const MK = S1.markalama;
+  const LOGO = await markaOku(MK.logo);
+  const yay = (MK.yukseklik * LOGO.LW) / LOGO.LH;
+  const d = new Dxf();
+  markaDxf(d, 'MARKA', LOGO, MK.yukseklik);
+  d.text('YAZI', [-yay / 2, -4], 1.5, `Ratel logosu - kelepce sikma ucu Rev ${S1.rev} - 1:1 mm - yukseklik ${fmt(MK.yukseklik)} - yay ${fmt(yay, 2)}`);
+  d.text('YAZI', [-yay / 2, -7], 1.5, `Doner eksenle Ø${M1.D} govdeye sarilir; yer ve sartlar ${FILES.v1Mark}. YAZI katmani markalanmaz.`);
+  await writeFile(path.join(OUT, FILES.v1Logo), d.toString(), 'latin1');
+  const svg = (await readFile(path.join(ROOT, MK.logo), 'utf8'))
+    .replace(/<svg\b[^>]*>/, (tag) => tag.replace(/\swidth="[^"]*"/, ` width="${yay.toFixed(3)}mm"`).replace(/\sheight="[^"]*"/, ` height="${MK.yukseklik}mm"`));
+  await writeFile(path.join(OUT, FILES.v1LogoSvg), svg);
+  console.log(`MARKA ${FILES.v1Logo}, ${FILES.v1LogoSvg} · ${fmt(MK.yukseklik)} × ${fmt(yay, 2)} mm`);
+}
 
 // ---------------- indirme sayfası ----------------
 const kg = (cm3, yog) => fmt((cm3 / 1000) * yog / 1000, 2);
@@ -213,7 +235,7 @@ ${planCss(S1.onayli && S2.onayli)}</style>
   <div>
     <img src="../../brand/ratel-lockup.svg" alt="Ratel Systems">
     <h1>Teklif Paketi — Kelepçe Sıkma Uçları</h1>
-    <div class="meta">v1 Rev ${S1.rev} · v2 Rev ${S2.rev} · ${S2.tarih} · ${esc(S1.malzeme)}</div>
+    <div class="meta">v1 Rev ${S1.rev} · ${S1.tarih} · v2 Rev ${S2.rev} · ${S2.tarih}</div>
   </div>
   <div style="text-align:right">
     <span class="badge">${esc(S1.durum)}</span><br>
@@ -227,6 +249,9 @@ ${planCss(S1.onayli && S2.onayli)}</style>
     ${dl(FILES.zip, 'Paketin tamamı (ZIP)', 'STEP + teknik resim, iki uç', 'main')}
     ${dl(FILES.v1, 'STEP · Kelepçe ucu v1', 'Tek parça mil, AP242, mm')}
     ${dl(FILES.v1Pdf, 'Teknik resim · v1 (PDF)', 'A3, ölçülü')}
+    ${dl(FILES.v1Mark, 'Lazer markalama resmi · v1 (PDF)', 'A3, logonun yeri, açınım ve şartlar')}
+    ${dl(FILES.v1Logo, 'Logo · v1 (DXF, 1:1)', 'Lazer yazılımı için kapalı çoklu çizgiler, mm')}
+    ${dl(FILES.v1LogoSvg, 'Logo · v1 (SVG, 1:1)', 'Aynı logo, mm ölçülü vektör')}
     ${dl(FILES.v2Mil, 'STEP · v2 mil', 'Çelik mil, AP242, mm')}
     ${dl(FILES.v2Kovan, 'STEP · v2 kovan', 'Alüminyum kovan, tırtıl resimde')}
     ${dl(FILES.v2Pdf, 'Teknik resim · v2 (PDF)', 'A3, montaj ve parça listesi')}
@@ -239,20 +264,20 @@ ${planCss(S1.onayli && S2.onayli)}</style>
 <h2>Anında teklif platformuna (Xometry vb.) yükleme</h2>
 <p>Her parça ayrı yüklenir; teknik resim PDF'i ilgili parçaya eklenir (diş, tolerans, ısıl işlem ve yüzey resimde).</p>
 <table><thead><tr><th>Parça</th><th>Dosya</th><th>Süreç</th><th>Malzeme</th><th>Isıl işlem / yüzey</th><th>Not</th></tr></thead><tbody>
-<tr><td><b>v1 mil</b></td><td>${FILES.v1}</td><td>CNC torna + freze (C eksen)</td><td>42CrMo4+QT (1.7225, AISI 4140), ıslahlı çubuk</td><td>Ek ısıl işlem yok (${esc(S1.sertlik)}) · kumlama + siyah oksit</td><td>8 mm altıgen sap (SW ${fmt(S1.kavrama.sw)} × ${fmt(M1.L)}) · lazer logo (Ratel)</td></tr>
+<tr><td><b>v1 mil</b></td><td>${FILES.v1}</td><td>CNC torna + freze (C eksen)</td><td>${esc(S1.malzeme)} · AISI 4140</td><td>Isıl işlem ve kaplama yok · ${esc(S1.yuzey)}</td><td>8 mm altıgen sap (SW ${fmt(S1.kavrama.sw)} × ${fmt(M1.L)}) · lazer logo (Ratel)</td></tr>
 <tr><td><b>v2 mil</b></td><td>${FILES.v2Mil}</td><td>CNC torna + freze (C eksen)</td><td>42CrMo4+QT (1.7225, AISI 4140), ıslahlı çubuk</td><td>Ek ısıl işlem yok (${esc(S2.sertlik)}) · kumlama + siyah oksit</td><td>8 mm altıgen sap · yatak yeri Ø${fmt(S2.yatak.cap)} ${esc(S2.yatak.tolerans)} ince tornalanır · segman kanalı DIN 471</td></tr>
 <tr><td><b>v2 kovan</b></td><td>${FILES.v2Kovan}</td><td>CNC torna + tırtıl</td><td>${esc(S2.kovan.malzeme)}</td><td>${esc(S2.kovan.yuzey)}</td><td>Rulman yuvaları Ø${fmt(S2.rulman.D)} ${esc(S2.kovan.yatakTolerans)} · tırtıl ${esc(S2.kovan.tirtil.tip)} ${fmt(S2.kovan.tirtil.adim)} (STEP'te düz) · lazer logo (Ratel)</td></tr>
 </tbody></table>
 <table><thead><tr><th>Kalem</th><th>Değer</th></tr></thead><tbody>
 ${satir('Adet', '1, 3 ve 10 adet için ayrı fiyat')}
-${satir('Prototip', 'Siyah oksit ve lazer logo istenmezse platformda yüzey işlemi seçilmez, sipariş notuna yazılır')}
+${satir('Lazer logo (v1)', `Platformda “Lazer markalama” seçilir; ${FILES.v1Mark} ve ${FILES.v1Logo} parçaya ek dosya olarak yüklenir`)}
 ${satir('Hazır alınan (v2)', `${S2.rulman.adet} × ${esc(S2.rulman.kod)} rulman, 1 × ${esc(S2.segman.standart)} ${esc(S2.segman.olcu)} segman; montaj resimdeki sırayla`)}
 ${satir('Genel tolerans', esc(S1.genelTolerans))}
 ${satir('Tahmini ağırlık', `v1 ${kg(OZ.v1.hacim, 7.85)} kg · v2 mil ${kg(OZ.v2Mil.hacim, 7.85)} kg · v2 kovan ${kg(OZ.v2Kovan.hacim, 2.70)} kg`)}
 ${satir('Deneme', 'Akülü vidalamanın mandreninde oturma ve salgı; v2 kovan elde serbest dönmeli')}
 </tbody></table>
 
-<footer>Kelepçe sıkma uçları · v1 Rev ${S1.rev}, v2 Rev ${S2.rev} · ${S2.tarih} · Bu sayfa ve ekleri <code>kelepce-olculer.json</code> ve <code>kelepce-v2-olculer.json</code> dosyalarından üretildi.</footer>
+<footer>Kelepçe sıkma uçları · v1 Rev ${S1.rev} (${S1.tarih}), v2 Rev ${S2.rev} (${S2.tarih}) · Bu sayfa ve ekleri <code>kelepce-olculer.json</code> ve <code>kelepce-v2-olculer.json</code> dosyalarından üretildi.</footer>
 </main>
 </body>
 </html>
@@ -261,7 +286,7 @@ ${satir('Deneme', 'Akülü vidalamanın mandreninde oturma ve salgı; v2 kovan e
 
 const sayfaYolu = path.join(OUT, 'index.html');
 await writeFile(sayfaYolu, sayfa());
-const paket = [FILES.v1, FILES.v1Pdf, FILES.v2Mil, FILES.v2Kovan, FILES.v2Pdf].filter((f) => existsSync(path.join(OUT, f)));
+const paket = [FILES.v1, FILES.v1Pdf, FILES.v1Mark, FILES.v1Logo, FILES.v1LogoSvg, FILES.v2Mil, FILES.v2Kovan, FILES.v2Pdf].filter((f) => existsSync(path.join(OUT, f)));
 execFileSync(TAR, ['-a', '-c', '-f', path.join(OUT, FILES.zip), '-C', OUT, ...paket, '-C', ROOT, 'kelepce-olculer.json', 'kelepce-v2-olculer.json']);
 console.log(`ZIP   ${FILES.zip}`);
 await writeFile(sayfaYolu, sayfa(await fileSizes(OUT, Object.values(FILES))));

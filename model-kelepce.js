@@ -54,7 +54,7 @@ function profile() {
   ];
 }
 
-// Ratel logosu: lazer markalama, gövde çevresine sarılır. Logo tek renk maskeye çevrilir,
+// Ratel logosu: lazer markalama (işlenmiş çelikte koyu), gövde çevresine sarılır. Logo tek renk maskeye çevrilir,
 // gövdenin hemen üstündeki ince bir bantta gösterilir; ortası tırnaklardan birinin (−X) altında.
 const LOGO = await (async () => {
   try {
@@ -87,10 +87,10 @@ function logoBand() {
   const geo = new THREE.CylinderGeometry(r, r, MARK.yukseklik, 128, 1, true, 1.5 * Math.PI - aci / 2, aci)
     .translate(0, MARK_Y + MARK.yukseklik / 2, 0);
   const mat = new THREE.MeshStandardMaterial({
-    color: 0xd4d8dc,
+    color: 0x24272b,
     map: tex,
-    metalness: 0.2,
-    roughness: 0.6,
+    metalness: 0.3,
+    roughness: 0.75,
     transparent: true,
     depthWrite: false,
     polygonOffset: true,
@@ -125,7 +125,7 @@ function annotate(a) {
   hdim(M.H + 7, MOUTH_X, `A ≥ ${metin(M.A)}`);
 
   a.callout([-OUTER_X, M.H - 6, 0], [-40, M.H + 2, 6], `Tırnak ${metin(M.V)} × ${metin(M.U)}`, SPEC.onayli ? `boy ${metin(M.C)}` : 'En ve boy varsayım');
-  a.callout([-BODY_R, BODY_Y + 2, 0], [-42, BODY_Y - 2, 6], `Gövde Ø${metin(M.D)}`, `${SPEC.malzemeKisa} · ${SPEC.sertlik}`);
+  a.callout([-BODY_R, BODY_Y + 2, 0], [-42, BODY_Y - 2, 6], `Gövde Ø${metin(M.D)}`, `${SPEC.malzemeKisa} · ${SPEC.yuzey}`);
   if (LOGO) {
     const t = THREE.MathUtils.degToRad(-80);
     a.callout([BODY_R * Math.sin(t), MARK_Y + MARK.yukseklik / 2, BODY_R * Math.cos(t)], [-48, FACE_Y + 5, 6],
