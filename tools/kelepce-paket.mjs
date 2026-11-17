@@ -234,19 +234,26 @@ ${planCss(S1.onayli && S2.onayli)}</style>
 <header>
   <div>
     <img src="../../brand/ratel-lockup.svg" alt="Ratel Systems">
-    <h1>Teklif Paketi — Kelepçe Sıkma Uçları</h1>
-    <div class="meta">v1 Rev ${S1.rev} · ${S1.tarih} · v2 Rev ${S2.rev} · ${S2.tarih}</div>
+    <h1>Kelepçe Sıkma Uçları — Dosyalar</h1>
+    <div class="meta">Güncel tek parça uç: Rev J · 17.11.2026 · Aşağıda Rev ${S1.rev} referansı ve v2 dosyaları</div>
   </div>
   <div style="text-align:right">
-    <span class="badge">${esc(S1.durum)}</span><br>
+    <span class="badge">Rev J · numune adayı</span><br>
     <a class="back noprint" href="../../?model=kelepce">← 3D model</a>
   </div>
 </header>
 
 <section class="noprint">
-  <h2>İndir</h2>
+  <h2>Güncel tek parça uç · Rev J</h2>
+  <p>C45E+QT · Ø34 gövde · SW9 sap · Ø9 boyun · R2 dipler. Tırnakların 20 mm düz çalışma alanı korundu.</p>
   <div class="grid">
-    ${dl(FILES.zip, 'Paketin tamamı (ZIP)', 'STEP + teknik resim, iki uç', 'main')}
+    <a class="dl main" href="../kelepce-revJ/"><b>Rev J dosyaları ve inceleme paketi</b><span>STEP, teknik resim, lazer kazıma, logo DXF ve karşılaştırma</span></a>
+    <a class="dl" href="../kelepce-revJ/kelepce-revJ-inceleme-paketi.zip" download><b>Rev J · ZIP indir</b><span>Tek parça uç için güncel dosyalar</span></a>
+  </div>
+  <p class="callout">Rev J için fiziksel uyum, çalışma torku ve malzemenin teslim özellikleri numuneyle doğrulanacak. Önceki fiyat bu revizyonun teklifi değildir.</p>
+  <h2>Rev I referansı ve ayrı ürün v2</h2>
+  <div class="grid">
+    ${dl(FILES.zip, 'Önceki paket (ZIP)', 'Rev I + v2 · Rev J içermez')}
     ${dl(FILES.v1, 'STEP · Kelepçe ucu v1', 'Tek parça mil, AP242, mm')}
     ${dl(FILES.v1Pdf, 'Teknik resim · v1 (PDF)', 'A3, ölçülü')}
     ${dl(FILES.v1Mark, 'Lazer kazıma resmi · v1 (PDF)', 'A3, logonun yeri, açınım ve şartlar')}
@@ -256,9 +263,7 @@ ${planCss(S1.onayli && S2.onayli)}</style>
     ${dl(FILES.v2Kovan, 'STEP · v2 kovan', 'Alüminyum kovan, tırtıl resimde')}
     ${dl(FILES.v2Pdf, 'Teknik resim · v2 (PDF)', 'A3, montaj ve parça listesi')}
   </div>
-  ${S1.onayli && S2.onayli
-    ? `<p class="callout"><b>Kelepçe ölçüleri onaylı.</b> Ağız A ${fmt(M1.A)}, tırnak ${fmt(M1.V)} × ${fmt(M1.U)} × ${fmt(M1.C)}, orta cep Ø${fmt(M1.P)} × ${fmt(M1.Q)}, altıgen sap SW ${fmt(S1.kavrama.sw)} × ${fmt(M1.L)}. Uç akülü vidalamanın üç ayaklı mandrenine takılır.</p>`
-    : `<p class="callout"><b>Taslak.</b> Turuncu ölçüler varsayım, gerçek kelepçe ölçülünce kesinleşir. Fiyat bu paketle istenebilir, sipariş kesin ölçüyle verilir.</p>`}
+  <p class="callout"><b>Aşağıdaki tablo Rev I ve v2 içindir.</b> Rev J malzeme, ölçü ve lazer şartları için güncel dosyalar kullanılır.</p>
 </section>
 
 <h2>Anında teklif platformuna (Xometry vb.) yükleme</h2>
@@ -291,3 +296,4 @@ execFileSync(TAR, ['-a', '-c', '-f', path.join(OUT, FILES.zip), '-C', OUT, ...pa
 console.log(`ZIP   ${FILES.zip}`);
 await writeFile(sayfaYolu, sayfa(await fileSizes(OUT, Object.values(FILES))));
 console.log('HTML  uretim/kelepce/index.html');
+

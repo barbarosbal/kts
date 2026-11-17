@@ -1,13 +1,14 @@
 # KTS — Kazan Altı Parçası, Oynar Rekor ve Kelepçe Sıkma Uçları
 
-Pirinç (CW511L) parçaların ve çelik (42CrMo4) sıkma uçlarının 360° döndürülebilir 3D modelleri, teknik çizimleri ve fason üretim paketi.
+Pirinç (CW511L) parçaların ve çelik sıkma uçlarının 360° döndürülebilir 3D modelleri, teknik çizimleri ve fason üretim paketi. Güncel tek parça kelepçe ucu **Rev J**, C45E+QT teslim şartıyla teklif / numune adayıdır; fiziksel uyum ve çalışma torku henüz doğrulanmadı.
 
-- Canlı model: https://eng.ratel.systems (`?model=kelepce-v2`, `?model=kelepce`, `?model=kazan`, `?model=rekor`; adres boşsa menüdeki ilk model, v2 açılır)
+- Canlı model: https://eng.ratel.systems (`?model=kelepce` güncel Rev J, `?model=kelepce-revI` önceki geometri, `?model=kelepce-v2`, `?model=kazan`, `?model=rekor`; adres boşsa Rev J açılır)
 - Gömülü görünüm: adrese `&embed=1` eklenince yalnız model ve İzo/Ön/Üst/Alt görünür; başlık bloğu (logo, ad, **Modeller**, **Üretim paketi**), **Ayrık** ve **Teknik çizim** gizlenir, A / T kısayolları ve `#teknik` kapanır; İzo/Ön/Üst/Alt her genişlikte sağ üstte durur (ör. ratel.systems/shop: `?model=kelepce&embed=1`).
 - Üretim paketleri: https://eng.ratel.systems/uretim/ (kazan altı parçası), https://eng.ratel.systems/uretim/rekor/ (oynar rekor), https://eng.ratel.systems/uretim/kelepce/ (kelepçe uçları, teklif paketi)
 
 ## Ölçüler tek yerde
 
+- `kelepce-revJ-olculer.json`: güncel tek parça Rev J. CAD ve kontrol raporu `tools/kelepce-revJ.mjs` ile, teknik resim ve lazer vektörleri `tools/kelepce-revJ-resim.mjs` ile üretilir. Görüntüleyici `model-kelepce-revJ.js`, aynı OpenCascade katısının `uretim/kelepce-revJ/revJ-mesh.json` ağını kullanır. Üretici incelemesi için STEP, PDF/SVG, 1:1 logo DXF, karşılaştırma ve ZIP: [Rev J paketi](uretim/kelepce-revJ/). Lazer **0,03–0,05 mm metal kaldırarak kazıma**, boyasız ve çelik rengindedir. Yeni fiyat ve C45E+QT teslimi ayrıca teyit edilir.
 - `olculer.json`: kazan altı parçası. 3D görüntüleyici, STEP, DXF, teknik resim ve üretim planı bu dosyadan üretilir. `markalama` alanı gövdenin boş tarafına sarılan Bahr logosunun (`brand/bahr-logo.svg`, lazer markalama) yüksekliğini, yerini ve açısını tutar.
 - `rekor-olculer.json`: oynar rekor (ölçüler onaylı). 3D görüntüleyici, STEP, DXF, teknik resim ve üretim planı bu dosyadan üretilir. `markalama` alanı bileziğin bir altıgen yüzündeki Bahr logosunun yüksekliğini ve yerini tutar.
 - `kelepce-olculer.json`: kelepçe sıkma ucu (taslak, `varsayim` işaretli ölçüler gerçek kelepçe ölçülünce kesinleşir). 3D görüntüleyici, teknik çizim ve teklif paketi (`uretim/kelepce/`, `npm run kelepce`) bu dosyadan üretilir. `markalama` alanı gövdeye sarılan Ratel logosunun (`brand/ratel-lockup.svg`, lazer kazıma) yüksekliğini ve yerini tutar; `tools/kelepce-markalama.mjs` atölye için lazer kazıma resmini (`kelepce-ucu-markalama.svg`, pakette PDF) üretir, 1:1 logo DXF/SVG'si pakete yazılır.
@@ -22,7 +23,7 @@ Pirinç (CW511L) parçaların ve çelik (42CrMo4) sıkma uçlarının 360° dön
    cd tools && npm install && npm run build
    ```
 
-   Yalnızca rekor değiştiyse `npm run rekor`, yalnızca görüntüleyici veya kelepçe uçları değiştiyse `npm run site` yeterlidir.
+   Yalnızca rekor değiştiyse `npm run rekor`; önceki kelepçe uçlarının çizimleri için `npm run site`. **Rev J** için `npm run kelepce:revj`, ardından `node onbellek.mjs` çalıştırılır. PDF alternatifleri ve numune kontrolü [Rev J notlarında](uretim/kelepce-revJ/README.md).
 
 3. Değişiklikler commit edilip `main`'e push edilir; GitHub Pages birkaç dakikada yayınlar.
 
@@ -39,3 +40,4 @@ Pirinç (CW511L) parçaların ve çelik (42CrMo4) sıkma uçlarının 360° dön
 ## Bahr logosu
 
 `brand/bahr-logo.svg` (işaret + "Bahr"; yazı Inter Regular ile Medium arası, gövdesi Regular'dan %15 kalın; kurgu: işaretin tepesi, B'nin sağ üst omzu ve a'nın tepesi tek doğruya teğet, bağ uçları yazı tabanında) ve `brand/bahr-isaret.svg` (yalnız işaret, başörtüsü bağı) Figma'daki "Bahr — Logo" dosyasından gelir; yazı yola çevrilmiştir. Pirinç parçalarda lazer markalama olarak kullanılır; 3D görüntüleyicide iz rengi `ortak.js` içindeki `PIRINC_IZI`'dir.
+
