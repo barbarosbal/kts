@@ -7,10 +7,12 @@
     "build": "node build.mjs && npm run rekor",
     "rekor": "node rekor.mjs && node rekor-paket.mjs && node onbellek.mjs",
     "site": "node rekor.mjs && node kelepce.mjs && node kelepce-v2.mjs && node kelepce-markalama.mjs && node onbellek.mjs",
-    "kelepce": "node kelepce-paket.mjs"
+    "kelepce": "node kelepce-paket.mjs",
+    "kelepce:revj": "node kelepce-revJ.mjs && node kelepce-revJ-resim.mjs && node kelepce-revJ-paket.mjs"
   },
   "devDependencies": {
     "replicad": "1.1.0",
     "replicad-opencascadejs": "1.1.0"
   }
 }
+

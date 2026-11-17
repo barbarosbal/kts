@@ -1,0 +1,13 @@
+import {readFile,writeFile,stat} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import path from 'node:path';
+import {ROOT,TAR} from './paket-ortak.mjs';
+const out=path.join(ROOT,'uretim','kelepce-revJ');
+const files=['README.md','kelepce-ucu-revJ.step','kelepce-ucu-revJ-teknik-resim.pdf','kelepce-ucu-revJ-teknik-resim.svg','kelepce-ucu-revJ-lazer-kazima.pdf','kelepce-ucu-revJ-lazer-kazima.svg','kelepce-ucu-revJ-logo-1-1.dxf','kelepce-ucu-revJ-logo-1-1.svg','revI-revJ-karsilastirma.png','kelepce-revJ-olculer.json','kontrol-raporu.json'];
+const sums=[];
+for(const f of files)sums.push(createHash('sha256').update(await readFile(path.join(out,f))).digest('hex')+'  '+f);
+await writeFile(path.join(out,'sha256sums.txt'),sums.join('\n')+'\n');
+const archive=path.join(out,'kelepce-revJ-inceleme-paketi.zip');
+execFileSync(TAR,['-a','-c','-f',archive,'-C',out,...files,'sha256sums.txt']);
+console.log('ZIP '+archive+' ('+(await stat(archive)).size+' bytes)');
