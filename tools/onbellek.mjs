@@ -7,9 +7,10 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const FILES = [
-  'app.js', 'ortak.js', 'model-kazan.js', 'model-rekor.js', 'kelepce-ortak.js', 'model-kelepce.js', 'model-kelepce-v2.js',
+  'app.js', 'ortak.js', 'model-kazan.js', 'model-rekor.js', 'kelepce-ortak.js', 'model-kelepce.js', 'model-kelepce-revJ.js', 'model-kelepce-v2.js',
   'style.css', 'olculer.json', 'rekor-olculer.json', 'kelepce-olculer.json', 'kelepce-v2-olculer.json',
   'kazan-alti-parcasi-taslak.svg', 'oynar-rekor-taslak.svg', 'kelepce-ucu-taslak.svg', 'kelepce-ucu-v2-taslak.svg',
+  'kelepce-revJ-olculer.json', 'uretim/kelepce-revJ/revJ-mesh.json', 'uretim/kelepce-revJ/kelepce-ucu-revJ-teknik-resim.svg',
 ];
 
 const h = createHash('sha1');
@@ -20,3 +21,4 @@ const indexPath = path.join(ROOT, 'index.html');
 const html = await readFile(indexPath, 'utf8');
 await writeFile(indexPath, html.replace(/\?v=[\w-]+/g, `?v=${v}`));
 console.log(`HTML  önbellek etiketi ${v}`);
+

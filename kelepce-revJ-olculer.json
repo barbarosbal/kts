@@ -1,0 +1,132 @@
+{
+  "parca": "Kelepçe Sıkma Ucu",
+  "rev": "J",
+  "tarih": "17.11.2026",
+  "revNot": "Tek parça güçlendirme adayı; uyum ve tork testi bekliyor.",
+  "onayli": false,
+  "durum": "TEKLIF / NUMUNE ADAYI - uretim onayi degil",
+  "malzeme": "C45E+QT (1.1191), ön ıslahlı çubuk",
+  "malzemeKisa": "C45E+QT",
+  "sertlik": "Teslim sertliği ve Rp0,2 raporlanacak; Rp0,2 en az 430 MPa (stok çapı 16-40 mm)",
+  "yuzey": "işlenmiş, Ra 3,2 µm, kaplamasız",
+  "adet": "1 numune, üretim öncesi teknik onayla",
+  "genelTolerans": "ISO 2768-m",
+  "olculer": {
+    "H": {
+      "deger": 71,
+      "aciklama": "Toplam boy"
+    },
+    "D": {
+      "deger": 34,
+      "aciklama": "Gövde çapı"
+    },
+    "A": {
+      "deger": 23,
+      "aciklama": "Ağız açıklığı, en az"
+    },
+    "C": {
+      "deger": 22,
+      "aciklama": "Tırnak toplam boyu: 2 mm dip radyüsü + 20 mm düz çalışma boyu"
+    },
+    "U": {
+      "deger": 3.5,
+      "aciklama": "Tırnak kalınlığı"
+    },
+    "V": {
+      "deger": 10,
+      "aciklama": "Tırnak eni"
+    },
+    "W": {
+      "deger": 21,
+      "aciklama": "Alın yuvası çapı"
+    },
+    "Y": {
+      "deger": 2,
+      "aciklama": "Alın yuvası derinliği"
+    },
+    "P": {
+      "deger": 15,
+      "aciklama": "Orta cep çapı"
+    },
+    "Q": {
+      "deger": 7,
+      "aciklama": "Orta cep derinliği, alından"
+    },
+    "J": {
+      "deger": 4,
+      "aciklama": "Orta delik çapı"
+    },
+    "S": {
+      "deger": 10,
+      "aciklama": "Sap köşe zarfı; üst sapma 0, alt sapma -0,05 mm"
+    },
+    "L": {
+      "deger": 30,
+      "aciklama": "Altıgen sap boyu (mandrende tutulan boy)"
+    },
+    "T": {
+      "deger": 3,
+      "aciklama": "Sap bitiminden gövde omzuna geçiş"
+    },
+    "N": {
+      "deger": 9,
+      "aciklama": "Boyun çapı"
+    },
+    "Z": {
+      "deger": 13,
+      "aciklama": "R2 boyun radyüsünün gövde omzuna ulaştığı çap"
+    }
+  },
+  "kavrama": {
+    "sw": 9,
+    "aciklama": "SW 9 x 30 mm; köşeler Ø10 +0/-0,05 mm. Üç ayaklı 10 veya 13 mm mandrende numune ile doğrulanacak; 1/4 inç hızlı bağlantı değildir."
+  },
+  "markalama": {
+    "aciklama": "Ratel logosu, lazer kazıma. Gövde çevresine sarılır, tırnaklardan birinin altında ortalanır; işlemeden sonra döner eksenli fiber lazerle 0,03–0,05 mm kazınır, boyanmaz, çelik renginde kalır. Yeri ve şartları kelepce-ucu-markalama.svg resminde.",
+    "logo": "brand/ratel-lockup.svg",
+    "yukseklik": 5,
+    "alt": 4
+  },
+  "halka": {
+    "tip": "Ayrı dar halka yerine gövde omzu",
+    "konum": 0,
+    "kalinlik": 0
+  },
+  "onKanal": {
+    "konum": 0,
+    "derinlik": 0
+  },
+  "pah": {
+    "sap": 0,
+    "sapNotu": "Sap ucunda konik pah yok; yalniz capak giderme, en cok 0,2 mm. Kavrama boyu azaltilmasin.",
+    "govde": 1,
+    "alin": 0.3,
+    "halka": 0.3,
+    "uc": {
+      "ic": 1.5,
+      "dis": 1,
+      "yan": 2
+    }
+  },
+  "guclendirme": {
+    "boyunR": 2,
+    "tirnakDipR": 2,
+    "tirnakCalismaBoyu": 20,
+    "tirnakKokEni": 14,
+    "korunan": [
+      "H=71",
+      "A=23 +0,50/0",
+      "V=10",
+      "U=3,5",
+      "duz calisma boyu=20",
+      "W=21",
+      "Y=2",
+      "P=15",
+      "Q=7",
+      "J=4"
+    ],
+    "uyumNotu": "R2 dip geçişi eski çalışma alanının arkasında. Dış gövde zarfı Ø32'den Ø34'e büyür. Yeni omuz/oturma ve gerçek kelepçe çevre açıklığı numuneyle doğrulanır.",
+    "torkDurumu": "Onaylanmış çalışma torku yok. Eski sap için yaklaşık 24 N.m notu bu revizyon için geçerli bir tork sınırı değildir.",
+    "analizDurumu": "Geometri doğrulaması ve nominal kesit karşılaştırması; FEA veya fiziksel tork deneyi değildir."
+  }
+}

@@ -1,0 +1,99 @@
+{
+  "revision": "J",
+  "date": "2026-11-17",
+  "status": "REVIEW CANDIDATE - NOT APPROVED FOR PRODUCTION",
+  "units": "mm",
+  "solids": 1,
+  "bounds": [
+    [
+      -17,
+      -17,
+      0
+    ],
+    [
+      17,
+      17,
+      71
+    ]
+  ],
+  "volumeMm3": 16663.54920425313,
+  "estimatedMassGrams": 130.80886125338705,
+  "legacyVolumeMm3": 14531.015241303081,
+  "legacyMassGrams": 114.06846964422918,
+  "checks": {
+    "brepValid": true,
+    "stepBrepValid": true,
+    "stockEscapeMm3": 0,
+    "legacyGeometryErrorMm3": 0,
+    "legacyRebuildVolumeErrorMm3": 0.000006745491191395558,
+    "workingTipsAddedMm3": 0,
+    "workingTipsRemovedMm3": 0,
+    "stepRoundTripVolumeErrorMm3": 5.602487362921238e-10,
+    "stepRoundTripSolids": 1
+  },
+  "changed": {
+    "bodyDiameter": [
+      32,
+      34
+    ],
+    "hexAcrossFlats": [
+      8,
+      9
+    ],
+    "shankEnvelope": [
+      9,
+      10
+    ],
+    "neckDiameter": [
+      8,
+      9
+    ],
+    "neckTransitionLength": [
+      5,
+      3
+    ],
+    "bodyShoulderZ": [
+      35,
+      33
+    ],
+    "pocketFaceZ": [
+      51,
+      49
+    ],
+    "neckFilletRadius": [
+      0,
+      2
+    ],
+    "jawRootFilletRadius": [
+      0,
+      2
+    ],
+    "jawTotalLength": [
+      20,
+      22
+    ],
+    "straightWorkingLength": [
+      20,
+      20
+    ]
+  },
+  "preserved": [
+    "23 +0.50/0 mouth",
+    "10 x 3.5 x 20 straight working tips",
+    "71 overall",
+    "30 grip length",
+    "central seat and pocket diameters/depths relative to new face"
+  ],
+  "qualifications": [
+    "No approved working torque",
+    "No FEA or physical load/fit test performed",
+    "New body envelope, shoulder seating, 2 mm rearward pocket-face shift and C45E+QT delivery properties require verification"
+  ],
+  "materialSpec": "C45E+QT (1.1191), ön ıslahlı çubuk",
+  "deliveryRequirement": "Teslim sertliği ve Rp0,2 raporlanacak; Rp0,2 en az 430 MPa (stok çapı 16-40 mm)",
+  "nominalComparisons": {
+    "neckSectionTorsionFactorSameSteel": 1.423828125,
+    "neckPolarInertiaFactorSameSteel": 1.601806640625,
+    "warning": "Ideal circular neck only; excludes shoulders, hex shank, jaws, fatigue and material change. Not a tool torque rating."
+  }
+}
