@@ -46,6 +46,25 @@
   <path class="thin" stroke-width="1.6" d="M765,221.3 A10.8,10.8 0 0 1 765,238.8"/>
   <path class="thin" stroke-width="1.6" d="M768.6,217.2 A15.7,15.7 0 0 1 768.6,242.8"/>
   <path class="thin" stroke-width="1.6" d="M772.2,213.2 A20.7,20.7 0 0 1 772.2,246.8"/>
+  <line class="dim" x1="597.1" y1="200" x2="597.1" y2="149"/>
+  <line class="dim" x1="639.6" y1="183" x2="639.6" y2="149"/>
+  <line class="dima" x1="597.1" y1="153" x2="639.6" y2="153"/>
+  <rect x="596.4" y="143" width="44" height="20" fill="#fff"/>
+  <text class="tb q" x="618.4" y="158" text-anchor="middle">8,5</text>
+  <line class="dim" x1="757.1" y1="210" x2="757.1" y2="149"/>
+  <line class="dim" x1="729.6" y1="183" x2="729.6" y2="149"/>
+  <line class="dima" x1="729.6" y1="153" x2="757.1" y2="153"/>
+  <rect x="721.4" y="143" width="44" height="20" fill="#fff"/>
+  <text class="tb q" x="743.4" y="158" text-anchor="middle">5,5</text>
+  <polyline class="lead" points="516.6,185 486.6,74 656.6,74"/>
+  <text class="tb" x="490.6" y="68">tipay LOGOSU</text>
+  <text class="ts" x="490.6" y="88">kalıpta gömme · h 14</text>
+  <polyline class="lead" points="645.6,191 724.6,74 984.6,74"/>
+  <text class="tb" x="728.6" y="68">KİMLİK MODÜLÜ 18 × 18 · GÖMME</text>
+  <text class="ts" x="728.6" y="88">cep 18,4 · yüzeyle aynı hizada, çıkıntı yok · NFC Ø16 (kesikli)</text>
+  <polyline class="lead" points="775.1,218 887.1,132 1057.1,132"/>
+  <text class="tb" x="891.1" y="126">DOKUN İŞARETİ</text>
+  <text class="ts" x="891.1" y="146">kalıpta gömme · h 7</text>
   <text class="tl" x="154" y="301">AÇILIM KESİĞİ</text>
   <text class="tl" x="1215.2" y="301" text-anchor="end">AÇILIM KESİĞİ</text>
   <line class="dim" x1="150" y1="287" x2="150" y2="363"/>
@@ -58,30 +77,11 @@
   <line class="dima" x1="639.6" y1="315" x2="729.6" y2="315"/>
   <rect x="662.6" y="305" width="44" height="20" fill="#fff"/>
   <text class="tb q" x="684.6" y="320" text-anchor="middle">18</text>
-  <line class="dim" x1="597.1" y1="196" x2="597.1" y2="149"/>
-  <line class="dim" x1="639.6" y1="183" x2="639.6" y2="149"/>
-  <line class="dima" x1="597.1" y1="153" x2="639.6" y2="153"/>
-  <rect x="596.4" y="143" width="44" height="20" fill="#fff"/>
-  <text class="tb q" x="618.4" y="158" text-anchor="middle">8,5</text>
-  <line class="dim" x1="757.1" y1="208" x2="757.1" y2="149"/>
-  <line class="dim" x1="729.6" y1="183" x2="729.6" y2="149"/>
-  <line class="dima" x1="729.6" y1="153" x2="757.1" y2="153"/>
-  <rect x="721.4" y="143" width="44" height="20" fill="#fff"/>
-  <text class="tb q" x="743.4" y="158" text-anchor="middle">5,5</text>
   <line class="dim" x1="1221.2" y1="175" x2="1269.2" y2="175"/>
   <line class="dim" x1="1221.2" y1="285" x2="1269.2" y2="285"/>
   <line class="dima" x1="1265.2" y1="175" x2="1265.2" y2="285"/>
   <rect x="1240" y="220" width="50.4" height="20" fill="#fff"/>
   <text class="tb q" x="1265.2" y="235" text-anchor="middle">W = 22</text>
-  <polyline class="lead" points="516.6,185 476.6,74 666.6,74"/>
-  <text class="tb" x="480.6" y="68">tipay LOGOSU</text>
-  <text class="ts" x="480.6" y="88">kalıpta gömme · h 14</text>
-  <polyline class="lead" points="645.6,191 724.6,74 984.6,74"/>
-  <text class="tb" x="728.6" y="68">KİMLİK MODÜLÜ 18 × 18 · GÖMME</text>
-  <text class="ts" x="728.6" y="88">cep 18,4 · yüzeyle aynı hizada, çıkıntı yok · NFC Ø16 (kesikli)</text>
-  <polyline class="lead" points="777.1,216 897.1,132 1067.1,132"/>
-  <text class="tb" x="901.1" y="126">DOKUN İŞARETİ</text>
-  <text class="ts" x="901.1" y="146">kalıpta gömme · h 7</text>
   <text class="h" x="684.6" y="407" text-anchor="middle">AÇILMIŞ HALKA · DIŞ YÜZ · M BOY · 1,32:1</text>
   <polygon class="vis" fill="url(#h1)" points="172.8,640 447.2,640 464,623.2 464,614.8 447.2,598 434.6,598 434.6,602.2 438.8,602.2 438.8,615.5 181.2,615.5 181.2,602.2 185.4,602.2 185.4,598 172.8,598 156,614.8 156,623.2"/>
   <rect x="198" y="610.6" width="224" height="4.9" fill="#111"/>
@@ -179,10 +179,10 @@
   <text class="tb" x="1065" y="652">QR plakası</text>
   <text class="tl" x="1065" y="667">PC 18 × 18 × 0,8 · ters baskı · tekil QR</text>
   <text class="h" x="1035" y="706">NOTLAR</text>
-  <text class="ts" x="1035" y="730">TASLAK: ölçüler varsayım; numune, elden geçiş,</text>
-  <text class="ts" x="1035" y="748">oturma ve tarama / dokunma testiyle kesinleşir.</text>
+  <text class="ts" x="1035" y="730">TASLAK: ölçüler varsayım; numune, oturma ve</text>
+  <text class="ts" x="1035" y="748">tarama / dokunma testiyle kesinleşir.</text>
   <text class="ts" x="1035" y="766">Tüm bileklikler NFC + QR; NFC'siz model yoktur.</text>
-  <text class="ts" x="1035" y="784">Modül çıkıntısız: üst yüz halka yüzüyle aynı hizada.</text>
+  <text class="ts" x="1035" y="784">Modül çıkıntısız: üst yüz kayış yüzüyle aynı hizada.</text>
   <text class="ts" x="1035" y="802">Kayış üreticisi kimlik görmez: modül (2 + 3)</text>
   <text class="ts" x="1035" y="820">tipay'de cebe bastırılarak takılır.</text>
   <text class="ts" x="1035" y="838">QR yükü yalnız origin + /a/&lt;publicId&gt;.</text>
@@ -190,7 +190,7 @@
   <text class="ts" x="1035" y="874">Silikonun cilt temasına uygunluk belgesi istenir.</text>
   <rect class="grid" x="1035" y="862" width="330" height="96" stroke-width="1.6"/>
   <line class="grid" x1="1035" y1="902" x2="1365" y2="902"/>
-  <text class="h" x="1047" y="889">tipay Bileklik · NFC + QR</text>
+  <text class="h" x="1047" y="889" textLength="260" lengthAdjust="spacingAndGlyphs">tipay Bileklik · NFC + QR</text>
   <text class="ts" x="1047" y="922">Rev B · 26.11.2026 · TASLAK · ölçüler mm</text>
   <text class="ts" x="1047" y="942">Seri: sıkıştırma kalıp · prototip: üretan döküm</text>
   <text class="tl" x="1353" y="922" text-anchor="end">Ratel Systems</text>

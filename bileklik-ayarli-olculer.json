@@ -1,0 +1,51 @@
+{
+  "parca": "tipay Bileklik Ayarlı · NFC + QR",
+  "rev": "A",
+  "tarih": "26.11.2026",
+  "revNot": "Kapalı halkanın (bileklik Rev B) ayarlı eşi: ön yüz aynı (W 22, gömme 18 × 18 QR + NFC, logo, dokun işareti); toka bileğin arkasında, tek beden.",
+  "onayli": false,
+  "durum": "Taslak · ölçüler varsayım, prototip ve tarama / dokunma testiyle kesinleşir",
+  "malzeme": "Silikon kauçuk (VMQ), cilt temasına uygun, koyu gri mat",
+  "malzemeKisa": "Silikon VMQ",
+  "uretim": "Seri: sıkıştırma kalıplama · prototip: silikon kalıpta üretan döküm",
+
+  "olculer": {
+    "W": { "deger": 22,  "aciklama": "Kayış eni" },
+    "T": { "deger": 3,   "aciklama": "Kayış kalınlığı (gömme modül için)" },
+    "Q": { "deger": 18,  "aciklama": "QR plakası, kare" },
+    "C": { "deger": 195, "aciklama": "Gösterilen takılı halin iç çevresi (orta delik)" },
+    "p": { "deger": 7,   "aciklama": "Ayar deliği adımı" },
+    "n": { "deger": 7,   "aciklama": "Ayar deliği sayısı" },
+    "d": { "deger": 4,   "aciklama": "Ayar deliği çapı" },
+    "c": { "deger": 1.2, "aciklama": "Kenar yuvarlatması" }
+  },
+
+  "ayar": {
+    "aciklama": "Kuyruk, baş ucunun üstünden geçer; baştaki mantar pim kuyruktaki deliklerden birine girer, artan kuyruk tutucu halkanın altından geçer. Toka modülün tam karşısında, bileğin arkasında. Gösterilen hal: orta (4.) delik.",
+    "takili": 3
+  },
+
+  "pim":    { "konum": 26, "sapCap": 3.8, "basCap": 6, "basBoy": 1.1 },
+  "tutucu": { "konum": 48, "en": 5, "et": 1.4 },
+  "kuyruk": { "uc": 66 },
+
+  "yerlesim": {
+    "aciklama": "Modül açısı (0 = +Z); logo + modül + işaret dizisi açılıştaki izometrik kameraya (-50°) ortalanır. Boşluklar plaka kenarından (mm).",
+    "modulAci": -37,
+    "logoBosluk": 8.5,
+    "nfcBosluk": 5.5
+  },
+
+  "modul": {
+    "aciklama": "Kapalı halkayla aynı kimlik modülü: tipay'de cebe bastırılır, üst yüzü kayış yüzüyle aynı hizada. Kayış üreticisi kimlik görmez.",
+    "cep":   { "en": 18.4, "derinlik": 1.25, "dudak": 0.3 },
+    "plaka": { "kalinlik": 0.8, "malzeme": "PC, ters baskı, kayış eğrisine ısıl şekillendirilmiş" },
+    "nfc":   { "cap": 16, "kalinlik": 0.35, "cip": "NTAG213 / NTAG215 · ileri sürüm NTAG 424 DNA" }
+  },
+
+  "qr": { "modul": 37, "sessiz": 4, "ecc": "H" },
+  "logo": { "metin": "tipay", "yukseklik": 14 },
+  "nfcIsareti": { "yukseklik": 7 },
+
+  "ayrik": { "plaka": 10, "plakaY": 30, "nfc": 5, "nfcY": 15 }
+}
