@@ -136,6 +136,7 @@ function nfcIsareti() {
 // ---------------- ön yüz ----------------
 // POD: modül açısı, R: kayışın dış yarıçapı (modül bölgesinde), YC: kayış orta yüksekliği.
 // Döner: halkaya eklenecek izler (cep ağzı, logo, işaret), ayrı parçalar (plaka, nfc) ve açılar.
+// SPEC.logo yoksa logo konmaz (ör. kumaş bileklik kılıfı).
 export function onYuz(SPEC, { POD, R, YC }) {
   const { modul: MOD, qr: QR, yerlesim: YER } = SPEC;
   const Q = SPEC.olculer.Q.deger;
@@ -156,10 +157,13 @@ export function onYuz(SPEC, { POD, R, YC }) {
   ));
   // Gömme logo ve dokun işareti: yüzeyde koyu, hafif parlak iz
   const iz = { renk: 0x08090a, metalness: 0, roughness: 0.6 };
-  const logo = logoMaskesi(SPEC.logo.metin);
-  const hL = SPEC.logo.yukseklik;
-  const LOGO_PHI = POD - (Q / 2 + YER.logoBosluk + markaEni(logo, hL) / 2) / R;
-  izler.push(silindirMarka(logo, { r: R, y0: YC - hL / 2, h: hL, aci: LOGO_PHI, ...iz }));
+  let LOGO_PHI = null;
+  if (SPEC.logo) {
+    const logo = logoMaskesi(SPEC.logo.metin);
+    const hL = SPEC.logo.yukseklik;
+    LOGO_PHI = POD - (Q / 2 + YER.logoBosluk + markaEni(logo, hL) / 2) / R;
+    izler.push(silindirMarka(logo, { r: R, y0: YC - hL / 2, h: hL, aci: LOGO_PHI, ...iz }));
+  }
   const isaret = nfcIsareti();
   const hN = SPEC.nfcIsareti.yukseklik;
   const NFC_PHI = POD + (Q / 2 + YER.nfcBosluk + markaEni(isaret, hN) / 2) / R;

@@ -48,12 +48,15 @@ function ayarliYol(SPEC, O) {
   return { L: s[s.length - 1], S_POD, delikler };
 }
 
-async function ciz(girdi, cikti, ayarli) {
+async function ciz(girdi, cikti, tur) {
+  const ayarli = tur === 'ayarli';
+  const kilif = tur === 'kilif';
   const SPEC = JSON.parse(await readFile(path.join(ROOT, girdi), 'utf8'));
   const O = Object.fromEntries(Object.entries(SPEC.olculer).map(([k, v]) => [k, v.deger]));
   const { modul: MOD, qr: QR, yerlesim: YER } = SPEC;
   const { W, T, Q } = O;
   const CEP = MOD.cep.en;
+  const KL = SPEC.kilif;
   const MODUL_MM = Q / (QR.modul + 2 * QR.sessiz);
 
   const q = SPEC.onayli ? '' : ' q';
@@ -129,7 +132,43 @@ async function ciz(girdi, cikti, ayarli) {
 
   // ---- 1 · açılmış görünüş, dış yüz ----
   const CY = 230;
-  if (!ayarli) {
+  if (kilif) {
+    const K1 = 7;
+    const G = KL.bosluk;
+    const KY = W / 2 + G + KL.et.yan;
+    const cx = 520;
+    const kx0 = cx - (O.K / 2) * K1;
+    const kx1 = cx + (O.K / 2) * K1;
+    const yt = CY - KY * K1;
+    const yb = CY + KY * K1;
+    // bant: kılıfın iki yanından devam eder (kesik)
+    for (const s of [-1, 1]) {
+      const bx0 = s < 0 ? 110 : kx1;
+      const bx1 = s < 0 ? kx0 : 930;
+      add(`<rect class="thin" x="${f(bx0)}" y="${f(CY - (W / 2) * K1)}" width="${f(bx1 - bx0)}" height="${f(W * K1)}" fill="url(#h3)"/>`);
+    }
+    add(`<line class="ctr" x1="90" y1="${CY}" x2="950" y2="${CY}"/>`);
+    rect(kx0, yt, O.K * K1, 2 * KY * K1, O.c * K1, 'vis', 'fill="#fff"');
+    const qx = kx0 + (YER.qrPay + Q / 2) * K1;
+    rect(qx - (CEP / 2) * K1, CY - (CEP / 2) * K1, CEP * K1, CEP * K1, 0.4 * K1, 'thin');
+    rect(qx - (Q / 2) * K1, CY - (Q / 2) * K1, Q * K1, Q * K1, 0.2 * K1, 'vis', 'fill="#fff"');
+    qrCiz(qx, CY, K1);
+    add(`<circle class="hid" cx="${f(qx)}" cy="${CY}" r="${f((MOD.nfc.cap / 2) * K1)}"/>`);
+    const nx = qx + (Q / 2 + YER.nfcBosluk) * K1;
+    nfcIsaret(nx, CY, SPEC.nfcIsareti.yukseklik * K1);
+    dimH(kx0, kx1, yb + 70, `K = ${m(O.K)}`, [[kx0, yb + 2], [kx1, yb + 2]]);
+    dimH(kx0, qx - (Q / 2) * K1, yb + 30, m(YER.qrPay), [[qx - (Q / 2) * K1, CY + (Q / 2) * K1 + 2]]);
+    dimH(qx - (Q / 2) * K1, qx + (Q / 2) * K1, yb + 30, m(Q), [[qx + (Q / 2) * K1, CY + (Q / 2) * K1 + 2]]);
+    dimH(qx + (Q / 2) * K1, nx, yt - 22, m(YER.nfcBosluk), [[nx, CY - 22], [qx + (Q / 2) * K1, CY - (Q / 2) * K1 - 2]]);
+    dimV(kx1 + 50, yt, yb, m(2 * KY), [[kx1 + 2, yt], [kx1 + 2, yb]]);
+    dimV(980, CY - (W / 2) * K1, CY + (W / 2) * K1, `W = ${m(W)}`, [[932, CY - (W / 2) * K1], [932, CY + (W / 2) * K1]]);
+    lead([[kx0 + 10, yt + 4], [kx0 - 120, 74], [kx0 + 60, 74]], `KİMLİK KILIFI ${m(O.K)} × ${m(2 * KY)}`, `${KL.malzeme} · kaydırılır, dikişi örter`);
+    lead([[qx + (Q / 2) * K1 - 8, CY - (Q / 2) * K1 + 8], [qx + 150, 112], [qx + 360, 112]],
+      `KİMLİK MODÜLÜ ${m(Q)} × ${m(Q)} · GÖMME`, `cep ${m(CEP)} · NFC Ø${m(MOD.nfc.cap)} (kesikli)`);
+    lead([[nx + 16, CY + 10], [nx + 120, yb + 40], [nx + 290, yb + 40]], 'DOKUN İŞARETİ', `kalıpta gömme · h ${m(SPEC.nfcIsareti.yukseklik)}`);
+    lead([[200, CY + (W / 2) * K1 - 6], [160, yb + 60], [330, yb + 60]], 'ELASTİK BANT (KESİK)', 'baskılı kumaş, desen serbest');
+    add(`<text class="h" x="${cx}" y="${f(yb + 104)}" text-anchor="middle">KILIF · ÖNDEN · ${m(K1 / 3.78)}:1</text>`);
+  } else if (!ayarli) {
     const K1 = 5;
     const BOY = SPEC.boylar.liste.find((b) => b.ad === SPEC.boylar.gosterilen);
     const L = TAU * (BOY.cevre / TAU + T);
@@ -194,7 +233,49 @@ async function ciz(girdi, cikti, ayarli) {
   }
 
   // ---- 2 · A–A kesit, kimlik modülü ----
-  {
+  if (kilif) {
+    const K = 13;
+    const ox = 310;
+    const oy = 690;                        // bant bilek yüzü
+    const P = (y, t) => [ox + y * K, oy - t * K];
+    const G = KL.bosluk;
+    const HY = W / 2 + G;
+    const KY = HY + KL.et.yan;
+    const t0 = -G - KL.et.arka;
+    const t1 = T + G + KL.et.on;
+    const ac = CEP / 2;
+    const du = ac - MOD.cep.dudak;
+    const tz = t1 - MOD.cep.derinlik;
+    const dis = [
+      [-KY, t0], [KY, t0], [KY, t1], [du, t1], [du, t1 - 0.3], [ac, t1 - 0.3], [ac, tz], [-ac, tz], [-ac, t1 - 0.3],
+      [-du, t1 - 0.3], [-du, t1], [-KY, t1],
+    ].map(([y, t]) => P(y, t));
+    const ic = [[-HY, -G], [HY, -G], [HY, T + G], [-HY, T + G]].map(([y, t]) => P(y, t));
+    const yol = (pts) => `M${pts.map(([x, y]) => `${f(x)},${f(y)}`).join(' L')} Z`;
+    add(`<path class="vis" fill="url(#h1)" fill-rule="evenodd" d="${yol(dis)} ${yol(ic)}"/>`);
+    const [bx, by] = P(-W / 2, T);
+    add(`<rect class="vis" x="${f(bx)}" y="${f(by)}" width="${f(W * K)}" height="${f(T * K)}" fill="url(#h3)"/>`);
+    const [nx, ny] = P(-MOD.nfc.cap / 2, tz + MOD.nfc.kalinlik);
+    add(`<rect x="${f(nx)}" y="${f(ny)}" width="${f(MOD.nfc.cap * K)}" height="${f(MOD.nfc.kalinlik * K)}" fill="#111"/>`);
+    const pk = MOD.plaka.kalinlik;
+    const [px0, py0] = P(-Q / 2, t1);
+    add(`<rect class="vis" x="${f(px0)}" y="${f(py0)}" width="${f(Q * K)}" height="${f(pk * K)}" fill="url(#h2)"/>`);
+    add(`<line class="ctr" x1="${ox}" y1="${oy + 50}" x2="${ox}" y2="${f(oy - t1 * K - 40)}"/>`);
+    dimH(P(-KY, 0)[0], P(KY, 0)[0], P(0, t0)[1] + 40, m(2 * KY), [[P(-KY, 0)[0], P(0, t0)[1] + 2], [P(KY, 0)[0], P(0, t0)[1] + 2]]);
+    dimH(P(-ac, 0)[0], P(ac, 0)[0], P(0, t1)[1] - 30, `cep ${m(CEP)}`, [[P(-ac, 0)[0], P(0, t1)[1] - 2], [P(ac, 0)[0], P(0, t1)[1] - 2]]);
+    const xr = P(KY, 0)[0] + 34;
+    dimV(xr, P(0, t1)[1], P(0, t0)[1], m(t1 - t0), [[P(KY, 0)[0] + 2, P(0, t1)[1]], [P(KY, 0)[0] + 2, P(0, t0)[1]]]);
+    dimV(xr + 62, P(0, T)[1], P(0, 0)[1], `T = ${m(T)}`, [[P(W / 2, 0)[0] + 2, P(0, T)[1]], [P(W / 2, 0)[0] + 2, P(0, 0)[1]]]);
+    lead([[P(-Q / 4, t1)[0], P(0, t1)[1] + 4], [ox - 260, oy - 140], [ox - 50, oy - 140]],
+      `4 · QR PLAKASI ${m(Q)} × ${m(Q)} × ${m(pk)}`, MOD.plaka.malzeme);
+    lead([[P(MOD.nfc.cap / 2 - 1, tz)[0], P(0, tz)[1] - 2], [ox + 120, oy - 190], [ox + 330, oy - 190]],
+      `3 · NFC INLAY Ø${m(MOD.nfc.cap)} × ${m(MOD.nfc.kalinlik)}`, MOD.nfc.cip);
+    lead([[P(KY - 0.6, t1 / 2)[0], P(0, t1 / 2)[1]], [ox + 170, oy - 100], [ox + 330, oy - 100]],
+      '2 · KİMLİK KILIFI', `ön ${m(KL.et.on)} · yan ${m(KL.et.yan)} · arka ${m(KL.et.arka)}`);
+    lead([[P(-W / 2 + 2, T / 2)[0], P(0, T / 2)[1]], [ox - 260, oy + 80], [ox - 70, oy + 80]],
+      '1 · ELASTİK BANT', 'kumaş, kılıfın içinden geçer');
+    add(`<text class="h" x="${ox}" y="${oy + 130}" text-anchor="middle">A–A KESİT · KILIF VE MODÜL · ${m(K / 3.78)}:1</text>`);
+  } else {
     const K = 14;
     const ox = 310;
     const oy = 640;
@@ -258,7 +339,7 @@ async function ciz(girdi, cikti, ayarli) {
     if (!ayarli) {
       add(`<text class="h" x="${x}" y="${y}">BOYLAR</text>`);
       y += 10;
-      satir(['Boy', 'İç çevre', 'İç Ø', 'Dış çevre'], true);
+      satir(['Boy', kilif ? 'İç çevre*' : 'İç çevre', 'İç Ø', 'Dış çevre'], true);
       for (const b of SPEC.boylar.liste) {
         const r = b.cevre / TAU;
         satir([b.ad, m(b.cevre), m(Math.round(2 * r * 10) / 10), m(Math.round(TAU * (r + T)))]);
@@ -276,7 +357,12 @@ async function ciz(girdi, cikti, ayarli) {
     y += 34;
     add(`<text class="h" x="${x}" y="${y}">PARÇA LİSTESİ</text>`);
     y += 10;
-    const rows = [
+    const rows = kilif ? [
+      ['1', 'Elastik bant', 'kumaş, süblimasyon baskı · uçlar dikilir'],
+      ['2', 'Kimlik kılıfı', `${KL.malzeme} · bant üstünde kayar`],
+      ['3', 'NFC inlay', `Ø${m(MOD.nfc.cap)} · her çipe tekil adres yazılır, kilitlenir`],
+      ['4', 'QR plakası', `PC ${m(Q)} × ${m(Q)} × ${m(MOD.plaka.kalinlik)} · ters baskı · tekil QR`],
+    ] : [
       ['1', ayarli ? 'Silikon kayış' : 'Silikon halka', ayarli
         ? `${SPEC.malzemeKisa} · pim, tutucu, logo, işaret tek parça`
         : `${SPEC.malzemeKisa} koyu gri mat · logo ve işaret gömme`],
@@ -292,7 +378,17 @@ async function ciz(girdi, cikti, ayarli) {
     }
     y += 30;
     add(`<text class="h" x="${x}" y="${y}">NOTLAR</text>`);
-    const notlar = [
+    const notlar = kilif ? [
+      'TASLAK: ölçüler varsayım; bant tedarikçisinin',
+      'ölçüleri ve tarama / dokunma testiyle kesinleşir.',
+      'Kılıf bant üstüne kaydırılır, dikiş yerini örter.',
+      'Bant sıradan ürün: desen ve tedarikçi serbest.',
+      "Modül (3 + 4) tipay'de cebe bastırılarak takılır;",
+      'bant ve kılıf üreticisi kimlik görmez.',
+      'QR yükü yalnız origin + /a/<publicId>.',
+      '* Gerilmemiş iç çevre; bant takarken uzar.',
+      'Kılıfın iç boşluğu bant kalınlığına göre ayarlanır.',
+    ] : [
       'TASLAK: ölçüler varsayım; numune, oturma ve',
       'tarama / dokunma testiyle kesinleşir.',
       'Tüm bileklikler NFC + QR; NFC\'siz model yoktur.',
@@ -325,6 +421,7 @@ async function ciz(girdi, cikti, ayarli) {
     </marker>
     <pattern id="h1" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="9" height="9" fill="#fff"/><line x1="0" y1="0" x2="0" y2="9" stroke="#111" stroke-width=".8"/></pattern>
     <pattern id="h2" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="4" height="4" fill="#fff"/><line x1="0" y1="0" x2="0" y2="4" stroke="#111" stroke-width=".6"/></pattern>
+    <pattern id="h3" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#fff"/><path d="M0,3 L6,3 M3,0 L3,6" stroke="#999" stroke-width=".5"/></pattern>
     <pattern id="qr" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#fff"/><rect width="4" height="4" fill="#bbb"/><rect x="4" y="4" width="4" height="4" fill="#bbb"/></pattern>
     <style>
       .vis{stroke:#111;stroke-width:2.2;stroke-linejoin:round}
@@ -353,5 +450,6 @@ async function ciz(girdi, cikti, ayarli) {
   console.log(`SVG   ${cikti}`);
 }
 
-await ciz('bileklik-olculer.json', 'bileklik-taslak.svg', false);
-await ciz('bileklik-ayarli-olculer.json', 'bileklik-ayarli-taslak.svg', true);
+await ciz('bileklik-olculer.json', 'bileklik-taslak.svg', 'kapali');
+await ciz('bileklik-ayarli-olculer.json', 'bileklik-ayarli-taslak.svg', 'ayarli');
+await ciz('bileklik-kilif-olculer.json', 'bileklik-kilif-taslak.svg', 'kilif');

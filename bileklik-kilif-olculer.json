@@ -1,0 +1,59 @@
+{
+  "parca": "tipay Kimlik Kılıfı · Elastik Bileklik",
+  "rev": "A",
+  "tarih": "26.11.2026",
+  "revNot": "İlk taslak. Baskılı elastik kumaş bilekliğe kaydırılarak takılan kılıf; dikiş yerini örter, önünde gömme 18 × 18 QR, içinde NFC. Bant sıradan ürün, kimlik kılıfta.",
+  "onayli": false,
+  "durum": "Taslak · ölçüler varsayım; bant tedarikçisinin ölçüleri ve tarama / dokunma testiyle kesinleşir",
+  "malzemeKisa": "TPU kılıf",
+
+  "olculer": {
+    "W": { "deger": 25,  "aciklama": "Elastik bant eni" },
+    "T": { "deger": 1.3, "aciklama": "Elastik bant kalınlığı" },
+    "Q": { "deger": 18,  "aciklama": "QR plakası, kare" },
+    "K": { "deger": 32,  "aciklama": "Kılıf boyu, bant boyunca" },
+    "c": { "deger": 1.2, "aciklama": "Kılıf kenar yuvarlatması" }
+  },
+
+  "kilif": {
+    "aciklama": "Tek parça halka kılıf; bandın üstünden kaydırılarak dikiş yerine getirilir ve dikişi örter. Ön duvarda kimlik modülü cebi, arka duvar bilek tarafında ince.",
+    "et": { "on": 2.2, "arka": 1.0, "yan": 1.2 },
+    "bosluk": 0.15,
+    "malzeme": "TPU (veya silikon), siyah mat"
+  },
+
+  "bant": {
+    "malzeme": "Geri dönüşümlü polyester + elastan dokuma, süblimasyon baskı",
+    "aciklama": "Desen serbest: tipay, işletme logosu veya koleksiyon baskısı. Uçlar dikilip halka yapılır; dikiş kılıfın altında kalır."
+  },
+
+  "boylar": {
+    "aciklama": "Gerilmemiş iç çevre (mm); elastik bant takarken uzar. Modelde gösterilen boy.",
+    "liste": [
+      { "ad": "XS", "cevre": 140 },
+      { "ad": "S",  "cevre": 155 },
+      { "ad": "M",  "cevre": 170 },
+      { "ad": "L",  "cevre": 185 }
+    ],
+    "gosterilen": "M"
+  },
+
+  "yerlesim": {
+    "aciklama": "QR merkezinin açısı (0 = +Z), açılıştaki izometrik kameraya bakar. Kılıf kenarından QR'a pay ve QR'dan dokun işaretine boşluk (mm).",
+    "modulAci": -50,
+    "qrPay": 2.5,
+    "nfcBosluk": 3.5
+  },
+
+  "modul": {
+    "aciklama": "Diğer bilekliklerle aynı kimlik modülü: tipay'de cebe bastırılır, üst yüzü kılıf yüzüyle aynı hizada.",
+    "cep":   { "en": 18.4, "derinlik": 1.25, "dudak": 0.3 },
+    "plaka": { "kalinlik": 0.8, "malzeme": "PC, ters baskı, kılıf eğrisine ısıl şekillendirilmiş" },
+    "nfc":   { "cap": 16, "kalinlik": 0.35, "cip": "NTAG213 / NTAG215 · ileri sürüm NTAG 424 DNA" }
+  },
+
+  "qr": { "modul": 37, "sessiz": 4, "ecc": "H" },
+  "nfcIsareti": { "yukseklik": 6 },
+
+  "ayrik": { "kilifY": 34, "plaka": 8, "plakaY": 26, "nfc": 4, "nfcY": 13 }
+}
