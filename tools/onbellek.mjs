@@ -11,6 +11,7 @@ const FILES = [
   'style.css', 'olculer.json', 'rekor-olculer.json', 'kelepce-olculer.json', 'kelepce-v2-olculer.json',
   'kazan-alti-parcasi-taslak.svg', 'oynar-rekor-taslak.svg', 'kelepce-ucu-taslak.svg', 'kelepce-ucu-v2-taslak.svg',
   'kelepce-revJ-olculer.json', 'uretim/kelepce-revJ/revJ-mesh.json', 'uretim/kelepce-revJ/kelepce-ucu-revJ-teknik-resim.svg',
+  'model-bileklik.js', 'bileklik-olculer.json', 'bileklik-taslak.svg',
 ];
 
 const h = createHash('sha1');

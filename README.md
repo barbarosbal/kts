@@ -2,7 +2,7 @@
 
 Pirinç (CW511L) parçaların ve çelik sıkma uçlarının 360° döndürülebilir 3D modelleri, teknik çizimleri ve fason üretim paketi. Güncel tek parça kelepçe ucu **Rev J**, C45E+QT teslim şartıyla teklif / numune adayıdır; fiziksel uyum ve çalışma torku henüz doğrulanmadı.
 
-- Canlı model: https://eng.ratel.systems (`?model=kelepce` güncel Rev J, `?model=kelepce-revI` önceki geometri, `?model=kelepce-v2`, `?model=kazan`, `?model=rekor`; adres boşsa Rev J açılır)
+- Canlı model: https://eng.ratel.systems (`?model=kelepce` güncel Rev J, `?model=kelepce-revI` önceki geometri, `?model=kelepce-v2`, `?model=kazan`, `?model=rekor`, `?model=bileklik`; adres boşsa Rev J açılır)
 - Gömülü görünüm: adrese `&embed=1` eklenince yalnız model ve İzo/Ön/Üst/Alt görünür; başlık bloğu (logo, ad, **Modeller**, **Üretim paketi**), **Ayrık** ve **Teknik çizim** gizlenir, A / T kısayolları ve `#teknik` kapanır; İzo/Ön/Üst/Alt her genişlikte sağ üstte durur (ör. ratel.systems/shop: `?model=kelepce&embed=1`).
 - Üretim paketleri: https://eng.ratel.systems/uretim/ (kazan altı parçası), https://eng.ratel.systems/uretim/rekor/ (oynar rekor), https://eng.ratel.systems/uretim/kelepce/ (kelepçe uçları, teklif paketi)
 
@@ -13,6 +13,8 @@ Pirinç (CW511L) parçaların ve çelik sıkma uçlarının 360° döndürülebi
 - `rekor-olculer.json`: oynar rekor (ölçüler onaylı). 3D görüntüleyici, STEP, DXF, teknik resim ve üretim planı bu dosyadan üretilir. `markalama` alanı bileziğin bir altıgen yüzündeki Bahr logosunun yüksekliğini ve yerini tutar.
 - `kelepce-olculer.json`: kelepçe sıkma ucu (taslak, `varsayim` işaretli ölçüler gerçek kelepçe ölçülünce kesinleşir). 3D görüntüleyici, teknik çizim ve teklif paketi (`uretim/kelepce/`, `npm run kelepce`) bu dosyadan üretilir. `markalama` alanı gövdeye sarılan Ratel logosunun (`brand/ratel-lockup.svg`, lazer kazıma) yüksekliğini ve yerini tutar; `tools/kelepce-markalama.mjs` atölye için lazer kazıma resmini (`kelepce-ucu-markalama.svg`, pakette PDF) üretir, 1:1 logo DXF/SVG'si pakete yazılır.
 - `kelepce-v2-olculer.json`: kelepçe sıkma ucu v2, ayrı ürün (taslak). Mil v1 ile aynı kafa ve sapı taşır (logo yok); kafanın arkasında iki rulmanla (6804-2RS) serbest dönen tırtıllı alüminyum kovan vardır, el kovanı tutup ucu kelepçenin dibinden destekler. Kafa, tırnak ve sap ölçüleri v1 ile ayrı tutulur: kelepçe ölçülünce iki dosya da güncellenir. `markalama` kovanın arka düz bandına sarılan Ratel logosunun (lazer, siyah eloksal üstünde beyaz) yüksekliğini ve yerini tutar; `ayrik` görüntüleyicideki ayrık görünümün ötelemeleridir.
+
+- `bileklik-olculer.json`: tipay bileklik (taslak, ölçüler varsayım). Tek parça ayarlı silikon kayış (mantar pim, delikler, tutucu halka) ve ayrı kimlik modülü (NFC inlay + tekil QR plakası); tüm bileklikler NFC + QR. Görüntüleyici `model-bileklik.js`, teknik çizim `bileklik-taslak.svg` (`cd tools && node bileklik-resim.mjs`, ardından `node onbellek.mjs`).
 
 Ölçü değişince:
 
