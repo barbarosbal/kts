@@ -1,232 +1,58 @@
 import * as THREE from 'three';
-import { Brush, Evaluator, SUBTRACTION } from 'three-bvh-csg';
-import { metin, smooth, silindirMarka } from 'kts/ortak';
+import { metin, smooth, silindirMarka, markaEni } from 'kts/ortak';
 
-// Tüm ölçüler bileklik-olculer.json'dan gelir (mm). Bileklik ekseni +Y; kayış XZ düzleminde sarılır.
-// Açı φ: 0 = +Z, π/2 = +X. Yerel çerçeve: rotation.y = φ olan nesnede +Z radyal dışa, +X artan φ yönü.
-// Gövde (silikon kayış) ile kimlik modülü (NFC inlay + QR plakası) ayrı parçalardır.
+// Tüm ölçüler bileklik-olculer.json'dan gelir (mm). Bileklik ekseni +Y; kapalı halka XZ düzleminde.
+// Açı φ: 0 = +Z, π/2 = +X (dışarıdan bakınca sağa doğru artar).
+// Gövde (silikon halka) ile kimlik modülü (NFC inlay + QR plakası) ayrı parçalardır; modül halkanın
+// cebine gömülür, üst yüzü halka yüzüyle aynı hizadadır (çıkıntı yok).
 export const SPEC = await fetch(`bileklik-olculer.json${new URL(import.meta.url).search}`).then((r) => r.json());
 const O = Object.fromEntries(Object.entries(SPEC.olculer).map(([k, v]) => [k, v.deger]));
-const { pim: PIM, tutucu: TUT, modul: MOD, qr: QR, ayrik: AY } = SPEC;
+const { modul: MOD, qr: QR, ayrik: AY, yerlesim: YER } = SPEC;
 
 const TAU = Math.PI * 2;
-const R0 = O.R;                            // iç yarıçap, takılı hal
+const BOY = SPEC.boylar.liste.find((b) => b.ad === SPEC.boylar.gosterilen);
+const R0 = BOY.cevre / TAU;               // iç yarıçap
 const T = O.T;
 const W = O.W;
-const WP = O.Wp;
-const YC = WP / 2;                         // kayış orta düzlemi (modül alt kenarı zemine değer)
-const KAT = T + 0.15;                      // kuyruk, baş ucunun üstünden bu kadar kalkar
-const POD = THREE.MathUtils.degToRad(SPEC.yerlesim.modulAci);
-const LOGO_PHI = POD + THREE.MathUtils.degToRad(SPEC.yerlesim.logoAci);
-const R_DIS = R0 + T;                      // tek kat dış yüzey
-const R_UST = R_DIS + O.h;                 // modül yuvası üst yüzü
-const R_ZEMIN = R_UST - MOD.yuva.derinlik; // yuva tabanı
-const POD_YARI = WP / 2 / R_DIS;           // yuvanın açısal yarı eni
-const DS = 0.4;
+const Q = O.Q;
+const YC = W / 2;                          // halka orta düzlemi, alt kenar zeminde
+const R_DIS = R0 + T;
+const POD = THREE.MathUtils.degToRad(YER.modulAci);
+const CEP = MOD.cep.en;
+const CEP_ACI = CEP / R_DIS;
+const Q_ACI = Q / R_DIS;
+const R_NFC = R_DIS - MOD.plaka.kalinlik - 0.05 - MOD.nfc.kalinlik / 2;
 
 const nokta = (phi, r, y = YC) => [Math.sin(phi) * r, y, Math.cos(phi) * r];
-const sar = (a) => Math.atan2(Math.sin(a), Math.cos(a));
+const radyal = (phi) => new THREE.Vector3(Math.sin(phi), 0, Math.cos(phi));
+const ustte = { polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -4 };
 
-// ---------------- kayış yolu ----------------
-// Baş ucundan (s = 0) kuyruk ucuna (s = L) sarmal: ilk turda R0, tur kapanırken baş ucunun üstüne KAT kadar kalkar.
-function yolHesapla() {
-  const s = [0];
-  const rel = [0];                         // baş ucuna göre açı
-  const rin = [];
-  const bitis = TAU + SPEC.kuyruk.uc / (R0 + T / 2);
-  for (let i = 0; ; i++) {
-    rin[i] = R0 + KAT * smooth(TAU - 0.32, TAU - 0.03, rel[i]);
-    if (rel[i] >= bitis) break;
-    rel.push(rel[i] + DS / (rin[i] + T / 2));
-    s.push(s[i] + DS);
-  }
-  return { s, rel, rin, L: s[s.length - 1] };
-}
-const YOL = yolHesapla();
-const L = YOL.L;
-
-// Düzgün adımlı s dizisinde doğrusal ara değer
-const ara = (arr, sx) => {
-  const f = Math.min(Math.max(sx / DS, 0), arr.length - 1);
-  const i = Math.min(Math.floor(f), arr.length - 2);
-  return arr[i] + (arr[i + 1] - arr[i]) * (f - i);
-};
-// rel → s (rel monoton artar)
-function sBul(relHedef) {
-  let lo = 0;
-  let hi = YOL.rel.length - 1;
-  while (hi - lo > 1) {
-    const m = (lo + hi) >> 1;
-    if (YOL.rel[m] < relHedef) lo = m; else hi = m;
-  }
-  const t = (relHedef - YOL.rel[lo]) / (YOL.rel[hi] - YOL.rel[lo]);
-  return (lo + t) * DS;
-}
-
-// Pim tokanın merkezinde, modülün tam karşısında
-const OFS = POD + Math.PI - ara(YOL.rel, PIM.konum);
-const phiAt = (sx) => ara(YOL.rel, sx) + OFS;
-const rinAt = (sx) => ara(YOL.rin, sx);
-const PIM_PHI = POD + Math.PI;
-const TUT_PHI = phiAt(TUT.konum);
-
-// Delikler kuyrukta; takılı delik pimle aynı açıda
-const S_TAKILI = sBul(ara(YOL.rel, PIM.konum) + TAU);
-const DELIKLER = Array.from({ length: O.n }, (_, k) => S_TAKILI + (k - SPEC.ayar.takili) * O.p);
-const CEVRE = TAU * R0;
-const ARALIK = [CEVRE - (O.n - 1 - SPEC.ayar.takili) * O.p, CEVRE + SPEC.ayar.takili * O.p];
-
-// Kayış eni: modül altında WP'ye yaklaşır, iki uç yarım daire
-function en(sx, phi, rel) {
-  let w = W;
-  if (rel < TAU) {
-    const d = Math.abs(sar(phi - POD));
-    w += (WP - 1.5 - W) * (1 - smooth(POD_YARI, POD_YARI + 0.4, d));
-  }
-  const uc = Math.min(sx, L - sx);
-  const r = w / 2;
-  if (uc < r) w = 2 * Math.sqrt(Math.max(0, r * r - (r - uc) ** 2));
-  return w;
-}
-
-// Yuvarlatılmış dikdörtgen kesit, (y, t) düzleminde saat yönünün tersi; t = 0 bilek tarafı
-const KOSE_N = 6;
-function kesit(w) {
-  const rc = Math.max(0, Math.min(1.1, w / 2 - 1e-3, T / 2));
-  const merkez = [
-    [w / 2 - rc, rc, -Math.PI / 2],
-    [w / 2 - rc, T - rc, 0],
-    [-w / 2 + rc, T - rc, Math.PI / 2],
-    [-w / 2 + rc, rc, Math.PI],
-  ];
+// Yuvarlatılmış dikdörtgen kesit (r, y), saat yönünün tersi; torna ile döndürülür
+function kesit(r0, r1, y0, y1, c, n = 8) {
   const pts = [];
-  for (const [cy, ct, a0] of merkez) {
-    for (let k = 0; k <= KOSE_N; k++) {
-      const a = a0 + (Math.PI / 2) * (k / KOSE_N);
-      pts.push([cy + rc * Math.cos(a), ct + rc * Math.sin(a)]);
+  const kose = (cr, cy, a0) => {
+    for (let k = 0; k <= n; k++) {
+      const a = a0 + (Math.PI / 2) * (k / n);
+      pts.push(new THREE.Vector2(cr + c * Math.cos(a), cy + c * Math.sin(a)));
     }
-  }
+  };
+  kose(r0 + c, y0 + c, Math.PI);
+  kose(r1 - c, y0 + c, -Math.PI / 2);
+  kose(r1 - c, y1 - c, 0);
+  kose(r0 + c, y1 - c, Math.PI / 2);
+  pts.push(pts[0].clone());
   return pts;
-}
-
-function kayisGeometrisi() {
-  const N = YOL.s.length;
-  const K = 4 * (KOSE_N + 1);
-  const pos = new Float32Array(N * K * 3);
-  let k = 0;
-  for (let i = 0; i < N; i++) {
-    const phi = YOL.rel[i] + OFS;
-    const nx = Math.sin(phi);
-    const nz = Math.cos(phi);
-    for (const [y, t] of kesit(en(YOL.s[i], phi, YOL.rel[i]))) {
-      const r = YOL.rin[i] + t;
-      pos[k++] = nx * r;
-      pos[k++] = YC + y;
-      pos[k++] = nz * r;
-    }
-  }
-  const index = new Uint32Array((N - 1) * K * 6);
-  k = 0;
-  for (let i = 0; i < N - 1; i++) {
-    for (let j = 0; j < K; j++) {
-      const a = i * K + j;
-      const b = i * K + ((j + 1) % K);
-      index.set([a, b, a + K, b, b + K, a + K], k);
-      k += 6;
-    }
-  }
-  const g = new THREE.BufferGeometry();
-  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-  g.setIndex(new THREE.BufferAttribute(index, 1));
-  g.computeVertexNormals();
-  return g;
-}
-
-// ---------------- kimlik modülü yuvası ----------------
-// Üstten yuvarlatılmış kare, radyal yönde uzatılır; alt taraf bilek silindiriyle, üst taraf cep kutusuyla kesilir.
-function yuvaGeometrisi() {
-  const pah = 0.9;
-  const a = WP / 2 - pah;
-  const rk = 3 - pah;
-  const sh = new THREE.Shape();
-  sh.moveTo(-a + rk, -a);
-  sh.lineTo(a - rk, -a);
-  sh.quadraticCurveTo(a, -a, a, -a + rk);
-  sh.lineTo(a, a - rk);
-  sh.quadraticCurveTo(a, a, a - rk, a);
-  sh.lineTo(-a + rk, a);
-  sh.quadraticCurveTo(-a, a, -a, a - rk);
-  sh.lineTo(-a, -a + rk);
-  sh.quadraticCurveTo(-a, -a, -a + rk, -a);
-  const alt = R0 - 5;
-  const derinlik = R_UST - alt - 2 * pah;
-  const govde = new THREE.ExtrudeGeometry(sh, {
-    depth: derinlik, bevelEnabled: true, bevelThickness: pah, bevelSize: pah, bevelSegments: 4, curveSegments: 10,
-  }).translate(0, YC, alt + pah);
-
-  const ev = new Evaluator();
-  ev.attributes = ['position', 'normal'];
-  const temizle = (g) => {
-    g.deleteAttribute('uv');
-    return g;
-  };
-  let b = new Brush(temizle(govde));
-  const bilek = new Brush(temizle(new THREE.CylinderGeometry(R0 + 0.35, R0 + 0.35, WP + 12, 160).translate(0, YC, 0)));
-  b = ev.evaluate(b, bilek, SUBTRACTION);
-  const y = MOD.yuva.en;
-  const cep = new Brush(temizle(new THREE.BoxGeometry(y, y, 6).translate(0, YC, R_ZEMIN + 3)));
-  b = ev.evaluate(b, cep, SUBTRACTION);
-  return b.geometry;
-}
-
-// ---------------- pim, tutucu, delik izleri ----------------
-function pimGeometrisi() {
-  const r = PIM.sapCap / 2;
-  const R = PIM.basCap / 2;
-  const h0 = R_DIS - 0.3;                  // baş ucunun dış yüzünden çıkar
-  const h1 = R0 + KAT + T;                 // kuyruk dış yüzü
-  const pts = [
-    [0, h0], [r, h0], [r, h1], [R - 0.4, h1], [R, h1 + 0.35], [R - 0.15, h1 + PIM.basBoy * 0.75],
-    [R * 0.55, h1 + PIM.basBoy], [0, h1 + PIM.basBoy],
-  ].map(([x, yy]) => new THREE.Vector2(x, yy));
-  return new THREE.LatheGeometry(pts, 48).rotateX(Math.PI / 2).translate(0, YC, 0);
-}
-
-function tutucuGeometrisi() {
-  const et = TUT.et;
-  const kalin = T + KAT;                   // iki kat
-  const ic = { y: W / 2 + 0.15, t: kalin / 2 + 0.1 };
-  const dis = { y: ic.y + et, t: ic.t + et };
-  const kare = (yy, tt, rr) => {
-    const s = new THREE.Shape();
-    s.moveTo(-yy + rr, -tt);
-    s.lineTo(yy - rr, -tt);
-    s.quadraticCurveTo(yy, -tt, yy, -tt + rr);
-    s.lineTo(yy, tt - rr);
-    s.quadraticCurveTo(yy, tt, yy - rr, tt);
-    s.lineTo(-yy + rr, tt);
-    s.quadraticCurveTo(-yy, tt, -yy, tt - rr);
-    s.lineTo(-yy, -tt + rr);
-    s.quadraticCurveTo(-yy, -tt, -yy + rr, -tt);
-    return s;
-  };
-  const sh = kare(dis.y, dis.t, 1.6);
-  sh.holes.push(kare(ic.y, ic.t, 0.6));
-  const g = new THREE.ExtrudeGeometry(sh, { depth: TUT.en, bevelEnabled: true, bevelThickness: 0.4, bevelSize: 0.3, bevelSegments: 3 });
-  // şekil x → dünya Y, şekil y → radyal, uzatma → teğet
-  g.applyMatrix4(new THREE.Matrix4().makeBasis(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 1), new THREE.Vector3(1, 0, 0)));
-  return g.translate(-TUT.en / 2, YC, R0 + kalin / 2);
 }
 
 // ---------------- dokular ----------------
 function qrDokusu() {
   const n = QR.modul;
   const N = n + 2 * QR.sessiz;
-  const px = 14;
+  const px = 16;
   const c = document.createElement('canvas');
   c.width = c.height = N * px;
   const g = c.getContext('2d');
-  g.fillStyle = '#f2eee5';
+  g.fillStyle = '#eeebe4';
   g.fillRect(0, 0, c.width, c.height);
   // Örnek desen: gerçek bir adrese çözülmez (her ürünün kodu üretimde tekil basılır)
   let seed = 0x2f6e2b1;
@@ -255,7 +81,7 @@ function qrDokusu() {
     m[6][i] = i % 2 === 0;
     m[i][6] = i % 2 === 0;
   }
-  g.fillStyle = '#111214';
+  g.fillStyle = '#121315';
   for (let r = 0; r < n; r++) {
     for (let q = 0; q < n; q++) {
       if (m[r][q] === null) m[r][q] = rnd() < 0.48;
@@ -279,164 +105,178 @@ function nfcDokusu() {
   g.arc(S / 2, S / 2, S / 2, 0, TAU);
   g.fill();
   g.strokeStyle = '#b9733a';
-  g.lineWidth = 7;
-  for (let i = 0; i < 7; i++) {
+  g.lineWidth = 8;
+  for (let i = 0; i < 6; i++) {
     g.beginPath();
-    g.arc(S / 2, S / 2, S * (0.46 - i * 0.022), 0, TAU);
+    g.arc(S / 2, S / 2, S * (0.45 - i * 0.026), 0, TAU);
     g.stroke();
   }
-  g.lineWidth = 9;
+  g.lineWidth = 10;
   g.beginPath();
-  g.moveTo(S * 0.5, S * 0.06);
+  g.moveTo(S * 0.5, S * 0.07);
   g.lineTo(S * 0.5, S * 0.42);
   g.stroke();
   g.fillStyle = '#1a1b1e';
-  g.fillRect(S * 0.46, S * 0.42, S * 0.08, S * 0.06);
+  g.fillRect(S * 0.45, S * 0.42, S * 0.1, S * 0.07);
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
   return tex;
 }
 
+// Logo yazısı: alt uzantılar dahil sıkı kırpılmış beyaz maske
 function logoMaskesi(text) {
   const c = document.createElement('canvas');
   const g = c.getContext('2d');
-  const font = '600 220px Inter, "Segoe UI", Roboto, Arial, sans-serif';
+  const font = '600 260px Inter, "Segoe UI", Roboto, Arial, sans-serif';
   g.font = font;
   const m = g.measureText(text);
   const asc = m.actualBoundingBoxAscent;
   const desc = m.actualBoundingBoxDescent;
-  c.width = Math.ceil(m.actualBoundingBoxRight + m.actualBoundingBoxLeft) + 8;
-  c.height = Math.ceil(asc + desc) + 8;
+  c.width = Math.ceil(m.actualBoundingBoxRight + m.actualBoundingBoxLeft) + 4;
+  c.height = Math.ceil(asc + desc) + 4;
   g.font = font;
   g.fillStyle = '#fff';
-  g.fillText(text, m.actualBoundingBoxLeft + 4, asc + 4);
+  g.fillText(text, m.actualBoundingBoxLeft + 2, asc + 2);
+  return c;
+}
+
+// Dokun işareti: ortak merkezli dört yay, sağa açılır
+function nfcIsareti() {
+  const H = 400;
+  const c = document.createElement('canvas');
+  c.width = 300;
+  c.height = H;
+  const g = c.getContext('2d');
+  g.strokeStyle = '#fff';
+  g.lineCap = 'round';
+  g.lineWidth = 24;
+  const a = 0.72;
+  const cx = -40;
+  [95, 150, 205, 260].forEach((r) => {
+    g.beginPath();
+    g.arc(cx, H / 2, r, -a, a);
+    g.stroke();
+  });
   return c;
 }
 
 // ---------------- teknik katman ----------------
-const Z_NFC = R_ZEMIN + MOD.nfc.kalinlik / 2;
-const Z_PLAKA = R_ZEMIN + MOD.nfc.kalinlik + 0.05 + MOD.plaka.kalinlik / 2;
-
 // İzometrik kameraya göre yerleşim: sağ (k), yukarı (dy), kameraya doğru (dc). Modül bu kameraya bakar.
+const KAMERA = THREE.MathUtils.degToRad(-50);   // app.js izometrik görünüm açısı
 const ek = (k, dy, dc = 0, p = [0, YC, 0]) => [
-  p[0] + Math.cos(POD) * k + Math.sin(POD) * dc,
+  p[0] + Math.cos(KAMERA) * k + Math.sin(KAMERA) * dc,
   p[1] + dy,
-  p[2] - Math.sin(POD) * k + Math.cos(POD) * dc,
+  p[2] - Math.sin(KAMERA) * k + Math.cos(KAMERA) * dc,
 ];
+
+let LOGO_PHI = POD;
+let NFC_PHI = POD;
+const boyMetni = SPEC.boylar.liste.map((b) => `${b.ad} ${b.cevre}`).join(' · ');
 
 function annotate(a) {
   const x0 = R_DIS + 9;
-  const y0 = YC - W / 2;
-  const y1 = YC + W / 2;
-  a.ext(y0, R_DIS + 1, x0 + 3);
-  a.ext(y1, R_DIS + 1, x0 + 3);
-  a.dim(x0, y0, y1, `W = ${metin(W)}`);
+  a.ext(0, R_DIS + 1, x0 + 3);
+  a.ext(W, R_DIS + 1, x0 + 3);
+  a.dim(x0, 0, W, `W = ${metin(W)}`);
 
-  const yd = YC + WP / 2 + 3;
+  const yd = W + 3;
   a.line([[-R0, yd, 0], [R0, yd, 0]]);
   a.arrow([-R0, yd, 0], [R0, yd, 0]);
   a.arrow([R0, yd, 0], [-R0, yd, 0]);
-  a.label(`İç Ø${metin(2 * R0)} · çevre ${Math.round(CEVRE)}`, [0, yd, 0], 'dimtag');
+  a.label(`${BOY.ad} · iç çevre ${BOY.cevre}`, [0, yd, 0], 'dimtag');
 
-  a.callout(nokta(POD, R_UST, YC + 6), ek(-28, -36, 20),
-    `Kimlik modülü ${metin(MOD.plaka.en)} × ${metin(MOD.plaka.en)}`, "NFC inlay + QR plakası · tipay'de takılır");
-  const hk = DELIKLER[SPEC.ayar.takili + 2];
-  a.callout(nokta(phiAt(hk), rinAt(hk) + T + 0.5), ek(30, 56),
-    `${O.n} delik · ${metin(O.p)} mm adım`, `bilek çevresi ≈ ${Math.round(ARALIK[0])}–${Math.round(ARALIK[1])} mm`);
-  a.callout(nokta(PIM_PHI, R0 + KAT + T + PIM.basBoy), ek(32, 38),
-    'Mantar pim', `Ø${metin(PIM.basCap)} baş · kalıpla tek parça`);
-  a.callout(nokta(TUT_PHI, R0 + KAT + T + TUT.et, YC + W / 2), ek(-32, 48, -10),
-    'Tutucu halka', 'kuyruk ucunu tutar');
-  a.callout(nokta(LOGO_PHI, R_DIS, YC - 2), ek(30, -36, 14),
+  a.callout(nokta(POD, R_DIS, YC - Q / 2 + 1), ek(-24, -34, 20),
+    `Kimlik modülü ${metin(Q)} × ${metin(Q)}`, 'gömme, yüzeyle aynı hizada · NFC + QR');
+  a.callout(nokta(LOGO_PHI, R_DIS, YC + 5), ek(-34, 42, -6),
     'tipay logosu', `kalıpta gömme · h ${metin(SPEC.logo.yukseklik)}`);
+  a.callout(nokta(NFC_PHI, R_DIS, YC + 3), ek(32, 38),
+    'Dokun işareti', 'NFC inlay plakanın altında');
+  a.callout(nokta(POD + 1.6, R_DIS, 2), ek(30, -34, 10),
+    `Boylar ${boyMetni}`, `kapalı halka · T ${metin(T)} · ${SPEC.malzemeKisa}`);
 }
 
 function annotateAyrik(a) {
-  // İzometrik kameranın sağ yönü (modül bu kameraya bakar)
-  const sag = (p, k, dy = 0) => [p[0] + Math.cos(POD) * k, p[1] + dy, p[2] - Math.sin(POD) * k];
-  const e = MOD.plaka.en;
-  const pl = nokta(POD, Z_PLAKA + AY.plaka, YC + AY.plakaY + e / 2 - 3);
-  a.callout(sag(pl, -e / 2), sag(pl, -34, 12), '3 · Kimlik plakası', `${MOD.plaka.malzeme} · tekil QR`);
-  const nf = nokta(POD, Z_NFC + AY.nfc, YC + AY.nfcY);
-  a.callout(sag(nf, MOD.nfc.cap / 2), sag(nf, 34, 4), '2 · NFC inlay', `Ø${metin(MOD.nfc.cap)} · ${MOD.nfc.cip}`);
-  const ky = nokta(POD + 0.95, R_DIS, YC - W / 2 + 2);
-  a.callout(ky, sag(ky, 26, -18), '1 · Silikon kayış', `${SPEC.malzemeKisa} · ayarlı, tek parça`);
+  const sag = (p, k, dy = 0) => [p[0] + Math.cos(KAMERA) * k, p[1] + dy, p[2] - Math.sin(KAMERA) * k];
+  const pl = nokta(POD, R_DIS + AY.plaka, YC + AY.plakaY + Q / 2 - 2);
+  a.callout(sag(pl, -Q / 2), sag(pl, -30, 12), '3 · QR plakası', `${MOD.plaka.malzeme} · tekil QR`);
+  const nf = nokta(POD, R_NFC + AY.nfc, YC + AY.nfcY);
+  a.callout(sag(nf, MOD.nfc.cap / 2), sag(nf, 30, 4), '2 · NFC inlay', `Ø${metin(MOD.nfc.cap)} · ${MOD.nfc.cip}`);
+  const ky = nokta(POD + 1.1, R_DIS, 2);
+  a.callout(ky, sag(ky, 24, -18), '1 · Silikon halka', `${SPEC.malzemeKisa} · cep ${metin(CEP)} × ${metin(MOD.cep.derinlik)}`);
 }
 
 // ---------------- kurulum ----------------
 export function kur() {
-  const silikon = new THREE.MeshStandardMaterial({ color: 0x1d1f23, metalness: 0, roughness: 0.8 });
-  const delikMat = new THREE.MeshBasicMaterial({ color: 0x060607 });
-  const plakaKenar = new THREE.MeshStandardMaterial({ color: 0x191b1f, metalness: 0, roughness: 0.3 });
-  const plakaYuz = new THREE.MeshStandardMaterial({ map: qrDokusu(), metalness: 0, roughness: 0.16 });
+  const silikon = new THREE.MeshStandardMaterial({ color: 0x313338, metalness: 0, roughness: 0.82 });
+  const cepMat = new THREE.MeshStandardMaterial({ color: 0x0d0e10, metalness: 0, roughness: 0.9, ...ustte });
+  const plakaKenar = new THREE.MeshStandardMaterial({ color: 0x15171a, metalness: 0, roughness: 0.35, side: THREE.DoubleSide });
+  const plakaYuz = new THREE.MeshStandardMaterial({ map: qrDokusu(), metalness: 0, roughness: 0.2, ...ustte, polygonOffsetUnits: -8 });
   const nfcMat = new THREE.MeshStandardMaterial({ map: nfcDokusu(), metalness: 0.2, roughness: 0.5, transparent: true });
 
-  const kayis = new THREE.Group();
-  kayis.add(new THREE.Mesh(kayisGeometrisi(), silikon));
+  const halka = new THREE.Group();
+  halka.add(new THREE.Mesh(new THREE.LatheGeometry(kesit(R0, R_DIS, 0, W, O.c), 256), silikon));
 
-  const yuva = new THREE.Mesh(yuvaGeometrisi(), silikon);
-  yuva.rotation.y = POD;
-  kayis.add(yuva);
+  // Cep ağzı: plaka çıkınca görünür; birleşik halde plakanın altında kalır
+  const cep = new THREE.CylinderGeometry(R_DIS + 0.004, R_DIS + 0.004, CEP, 48, 1, true, POD - CEP_ACI / 2, CEP_ACI)
+    .translate(0, YC, 0);
+  halka.add(new THREE.Mesh(cep, cepMat));
 
-  const pim = new THREE.Mesh(pimGeometrisi(), silikon);
-  pim.rotation.y = PIM_PHI;
-  kayis.add(pim);
+  // Gömme logo ve dokun işareti: yüzeyde koyu, hafif parlak iz
+  const iz = { renk: 0x08090a, metalness: 0, roughness: 0.6 };
+  const logo = logoMaskesi(SPEC.logo.metin);
+  const hL = SPEC.logo.yukseklik;
+  LOGO_PHI = POD - (Q / 2 + YER.logoBosluk + markaEni(logo, hL) / 2) / R_DIS;
+  halka.add(silindirMarka(logo, { r: R_DIS, y0: YC - hL / 2, h: hL, aci: LOGO_PHI, ...iz }));
+  const isaret = nfcIsareti();
+  const hN = SPEC.nfcIsareti.yukseklik;
+  NFC_PHI = POD + (Q / 2 + YER.nfcBosluk + markaEni(isaret, hN) / 2) / R_DIS;
+  halka.add(silindirMarka(isaret, { r: R_DIS, y0: YC - hN / 2, h: hN, aci: NFC_PHI, ...iz }));
 
-  const tutucu = new THREE.Mesh(tutucuGeometrisi(), silikon);
-  tutucu.rotation.y = TUT_PHI;
-  kayis.add(tutucu);
-
-  // Delik izleri: kuyruk dış yüzünde; takılı delik pimin altında, tutucunun altındakiler görünmez
-  const tutYari = (TUT.en / 2 + O.d) / (R0 + KAT + T);
-  DELIKLER.forEach((sx, k) => {
-    if (k === SPEC.ayar.takili) return;
-    const phi = phiAt(sx);
-    if (Math.abs(sar(phi - TUT_PHI)) < tutYari) return;
-    const m = new THREE.Mesh(new THREE.CircleGeometry(O.d / 2, 32).translate(0, YC, rinAt(sx) + T + 0.03), delikMat);
-    m.rotation.y = phi;
-    kayis.add(m);
-  });
-
-  const maske = logoMaskesi(SPEC.logo.metin);
-  const h = SPEC.logo.yukseklik;
-  kayis.add(silindirMarka(maske, { r: R_DIS, y0: YC - h / 2, h, aci: LOGO_PHI, renk: 0x34373e, metalness: 0, roughness: 0.42 }));
-
-  // Kimlik modülü: yerel +Z radyal
-  const modul = new THREE.Group();
-  modul.rotation.y = POD;
-  const nfc = new THREE.Group();
-  nfc.add(new THREE.Mesh(new THREE.CylinderGeometry(MOD.nfc.cap / 2, MOD.nfc.cap / 2, MOD.nfc.kalinlik, 64).rotateX(Math.PI / 2), nfcMat));
-  nfc.add(new THREE.Mesh(new THREE.CircleGeometry(MOD.nfc.cap / 2, 64).translate(0, 0, MOD.nfc.kalinlik / 2 + 0.01), nfcMat));
+  // Plaka: halka eğrisine uyan ince kabuk; üst yüzü halka yüzüyle aynı hizada
   const plaka = new THREE.Group();
-  const e = MOD.plaka.en;
-  plaka.add(new THREE.Mesh(new THREE.BoxGeometry(e, e, MOD.plaka.kalinlik), plakaKenar));
-  plaka.add(new THREE.Mesh(new THREE.PlaneGeometry(e - 0.4, e - 0.4).translate(0, 0, MOD.plaka.kalinlik / 2 + 0.01), plakaYuz));
-  nfc.position.set(0, YC, Z_NFC);
-  plaka.position.set(0, YC, Z_PLAKA);
-  modul.add(nfc, plaka);
+  const pk = MOD.plaka.kalinlik;
+  const kabuk = [
+    [R_DIS - pk, YC - Q / 2], [R_DIS, YC - Q / 2], [R_DIS, YC + Q / 2], [R_DIS - pk, YC + Q / 2], [R_DIS - pk, YC - Q / 2],
+  ].map(([r, y]) => new THREE.Vector2(r, y));
+  plaka.add(new THREE.Mesh(new THREE.LatheGeometry(kabuk, 32, POD - Q_ACI / 2, Q_ACI), plakaKenar));
+  const yuz = new THREE.CylinderGeometry(R_DIS + 0.012, R_DIS + 0.012, Q, 48, 1, true, POD - Q_ACI / 2, Q_ACI).translate(0, YC, 0);
+  plaka.add(new THREE.Mesh(yuz, plakaYuz));
 
-  const parts = { kayis, modul };
+  // NFC inlay: esnek, cep tabanında (düz disk olarak gösterilir; kenarları plakanın altında kalır)
+  const nfc = new THREE.Group();
+  const d = MOD.nfc.cap;
+  const inlay = new THREE.Group();
+  inlay.add(new THREE.Mesh(new THREE.CylinderGeometry(d / 2, d / 2, MOD.nfc.kalinlik, 64).rotateX(Math.PI / 2), nfcMat));
+  inlay.add(new THREE.Mesh(new THREE.CircleGeometry(d / 2, 64).translate(0, 0, MOD.nfc.kalinlik / 2 + 0.01), nfcMat));
+  inlay.position.set(0, YC, R_NFC - 0.4);
+  const nfcPivot = new THREE.Group();
+  nfcPivot.rotation.y = POD;
+  nfcPivot.add(inlay);
+  nfc.add(nfcPivot);
+
+  const yon = radyal(POD);
+  const parts = { halka, nfc, plaka };
   return {
     ad: SPEC.parca,
-    alt: `${SPEC.malzemeKisa} ayarlı kayış · kimlik modülü NFC + QR · Rev ${SPEC.rev}${SPEC.onayli ? '' : ' taslak'}`,
+    alt: `${SPEC.malzemeKisa} kapalı halka · boy ${SPEC.boylar.liste.map((b) => b.ad).join(' / ')} · gömme NFC + QR · Rev ${SPEC.rev}${SPEC.onayli ? '' : ' taslak'}`,
     rev: SPEC.rev,
     cizim: {
       src: 'bileklik-taslak.svg',
-      alt: 'tipay bileklik teknik çizimi: açılmış kayış, kimlik modülü kesiti, QR plakası, parça listesi',
+      alt: 'tipay bileklik teknik çizimi: açılmış halka, kimlik modülü kesiti, QR plakası, boylar, parça listesi',
     },
     parts,
     parcalar: Object.values(parts).map((obj) => ({ obj })),
     ayrikla: (t) => {
       const a = smooth(0, 0.65, t);
       const b = smooth(0.35, 1, t);
-      plaka.position.set(0, YC + AY.plakaY * a, Z_PLAKA + AY.plaka * a);
-      nfc.position.set(0, YC + AY.nfcY * b, Z_NFC + AY.nfc * b);
+      plaka.position.copy(yon).multiplyScalar(AY.plaka * a).setY(AY.plakaY * a);
+      nfc.position.copy(yon).multiplyScalar(AY.nfc * b).setY(AY.nfcY * b);
     },
-    occluder: { r: R_DIS, y0: YC - W / 2, y1: YC + W / 2 },
+    occluder: { r: R_DIS, y0: 0, y1: W },
     golge: 120,
     fit: (tech, ayrik) => (ayrik
-      ? { y: YC + 12, h: tech ? 110 : 84, w: tech ? 150 : 92 }
-      : { y: YC + (tech ? 10 : 0), h: tech ? 120 : 62, w: tech ? 150 : 76 }),
+      ? { y: YC + 10, h: tech ? 104 : 84, w: tech ? 150 : 96 }
+      : { y: YC + (tech ? 8 : 0), h: tech ? 120 : 64, w: tech ? 150 : 80 }),
     annotate,
     annotateAyrik,
   };
