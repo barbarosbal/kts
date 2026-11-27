@@ -2,7 +2,7 @@
 
 Pirinç (CW511L) parçaların ve çelik sıkma uçlarının 360° döndürülebilir 3D modelleri, teknik çizimleri ve fason üretim paketi. Güncel tek parça kelepçe ucu **Rev J**, C45E+QT teslim şartıyla teklif / numune adayıdır; fiziksel uyum ve çalışma torku henüz doğrulanmadı.
 
-- Canlı model: https://eng.ratel.systems (`?model=kelepce` güncel Rev J, `?model=kelepce-revI` önceki geometri, `?model=kelepce-v2`, `?model=kazan`, `?model=rekor`, `?model=bileklik`, `?model=bileklik-ayarli`, `?model=bileklik-kilif`; adres boşsa Rev J açılır)
+- Canlı model: https://eng.ratel.systems (`?model=kelepce` güncel Rev J, `?model=kelepce-revI` önceki geometri, `?model=kelepce-v2`, `?model=kazan`, `?model=rekor`, `?model=bileklik`, `?model=bileklik-ayarli`, `?model=bileklik-kilif`, `?model=toka`; adres boşsa Rev J açılır)
 - Gömülü görünüm: adrese `&embed=1` eklenince yalnız model ve İzo/Ön/Üst/Alt görünür; başlık bloğu (logo, ad, **Modeller**, **Üretim paketi**), **Ayrık** ve **Teknik çizim** gizlenir, A / T kısayolları ve `#teknik` kapanır; İzo/Ön/Üst/Alt her genişlikte sağ üstte durur (ör. ratel.systems/shop: `?model=kelepce&embed=1`).
 - Üretim paketleri: https://eng.ratel.systems/uretim/ (kazan altı parçası), https://eng.ratel.systems/uretim/rekor/ (oynar rekor), https://eng.ratel.systems/uretim/kelepce/ (kelepçe uçları, teklif paketi)
 
@@ -17,6 +17,7 @@ Pirinç (CW511L) parçaların ve çelik sıkma uçlarının 360° döndürülebi
 - `bileklik-olculer.json`: tipay bileklik (taslak, ölçüler varsayım). Kapalı silikon halka, S/M/L boy (iç çevre), W 22; kimlik modülü (NFC inlay + 18 × 18 tekil QR plakası) cebe gömülü, yüzeyle aynı hizada; tüm bileklikler NFC + QR. Görüntüleyici `model-bileklik.js`, teknik çizim `bileklik-taslak.svg` (`cd tools && node bileklik-resim.mjs`, ardından `node onbellek.mjs`).
 - `bileklik-ayarli-olculer.json`: aynı ön yüzün ayarlı eşi (taslak). Tek parça silikon kayış, toka bileğin arkasında (mantar pim, 7 delik, tutucu halka), tek beden. Görüntüleyici `model-bileklik-ayarli.js`, teknik çizim `bileklik-ayarli-taslak.svg`. İki bilekliğin ortak ön yüzü (gömme QR + NFC modülü, logo, dokun işareti) `bileklik-ortak.js`'te; iki teknik çizim de `tools/bileklik-resim.mjs` ile üretilir.
 - `bileklik-kilif-olculer.json`: baskılı elastik kumaş bilekliğe kaydırılarak takılan tipay kimlik kılıfı (taslak). Kılıf dikiş yerini örter; önünde aynı gömme 18 × 18 QR + NFC modülü ve dokun işareti var. Görüntüleyici `model-bileklik-kilif.js`, teknik çizim `bileklik-kilif-taslak.svg` (aynı `tools/bileklik-resim.mjs`).
+- `toka-olculer.json`: ilk 100 bileklik için PA12 toka (numune adayı). Kurucunun sac prototipinin biçimi: bandı saran C kanal, arkada iki dudak; ön yüzde 38 × 18 baskılı plaka cebi, altında NFC. `tools/toka.mjs` replicad / OpenCascade ile STEP, ağ ve kontrol raporunu; `tools/toka-resim.mjs` A3 teknik resim (SVG/PDF), 1:1 plaka şablonu, paket sayfası ve ZIP'i üretir ([uretim/toka/](uretim/toka/)). Görüntüleyici `model-toka.js` aynı katının ağını kullanır.
 
 Ölçü değişince:
 

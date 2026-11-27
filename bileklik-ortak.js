@@ -21,7 +21,7 @@ export const ek = (k, dy, dc = 0, p = [0, 0, 0]) => [
 
 // ---------------- dokular ----------------
 // Örnek QR deseni: gerçek bir adrese çözülmez (her ürünün kodu üretimde tekil basılır). Koyu modül, açık zemin.
-function qrDokusu(QR) {
+export function qrDokusu(QR) {
   const n = QR.modul;
   const N = n + 2 * QR.sessiz;
   const px = 16;
@@ -70,7 +70,7 @@ function qrDokusu(QR) {
   return tex;
 }
 
-function nfcDokusu() {
+export function nfcDokusu() {
   const S = 512;
   const c = document.createElement('canvas');
   c.width = c.height = S;
