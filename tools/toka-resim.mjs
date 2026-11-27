@@ -129,7 +129,7 @@ const yay = (r, xm, n = 60) => Array.from({ length: n + 1 }, (_, i) => {
 
 // ---- 3 · A–A kesit (bant enine, kapalı kanal) ----
 {
-  const K = 16;
+  const K = 14;
   const ox = 330;
   const oy = 770;                          // bilek yüzü (z = 0)
   const P = (y, z) => [ox + y * K, oy - z * K];
@@ -159,7 +159,7 @@ const yay = (r, xm, n = 60) => Array.from({ length: n + 1 }, (_, i) => {
   dimV(xr, P(0, TOP)[1], P(0, 0)[1], m(TOP), [[P(yH, 0)[0] + 2, P(0, TOP)[1]], [P(yH, 0)[0] + 2, P(0, 0)[1]]]);
   dimV(xr + 60, P(0, zK1)[1], P(0, zK0)[1], `Kh ${m(M.Kh)}`, [[P(yK, 0)[0], P(0, zK1)[1]], [P(yK, 0)[0], P(0, zK0)[1]]]);
   dimV(P(-yH, 0)[0] - 40, P(0, TOP)[1], P(0, zC)[1], m(CEP.derinlik), [[P(-yC, 0)[0], P(0, zC)[1]], [P(-yH, 0)[0] - 2, P(0, TOP)[1]]]);
-  dimV(P(-yH, 0)[0] - 92, P(0, zK0)[1], P(0, 0)[1], `arka ${m(M.Ar)}`, [[P(-yK, 0)[0], P(0, zK0)[1]], [P(-yH, 0)[0] - 2, P(0, 0)[1]]]);
+  dimV(P(-yH, 0)[0] - 40, P(0, zK0)[1], P(0, 0)[1], `arka ${m(M.Ar)}`, [[P(-yK, 0)[0], P(0, zK0)[1]], [P(-yH, 0)[0] - 2, P(0, 0)[1]]]);
   lead([[P(-PL.en / 4, TOP)[0], P(0, TOP)[1] + 2], [ox - 250, oy - 150], [ox - 40, oy - 150]],
     `3 · ETİKET ${m(PL.boy)} × ${m(PL.en)} × ${m(PL.kalinlik)}`, PL.malzeme);
   lead([[P(NFC.cap / 2 - 1, zC)[0], P(0, zC)[1] - 2], [ox + 130, oy - 170], [ox + 330, oy - 170]],

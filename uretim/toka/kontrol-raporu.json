@@ -1,6 +1,6 @@
 {
   "parca": "tipay Bileklik Tokası · PA12",
-  "rev": "B",
+  "rev": "C",
   "tarih": "27.11.2026",
   "durum": "NUMUNE ADAYI - ÜRETİM ONAYI DEĞİL",
   "birim": "mm",
@@ -8,27 +8,27 @@
   "sinirlar": [
     [
       -22,
-      -11.7,
+      -14.4,
       -5.202
     ],
     [
       22,
-      11.7,
-      6.2
+      14.4,
+      5.8
     ]
   ],
-  "hacimMm3": 2827.576,
-  "tahminiKutleGram": 2.86,
+  "hacimMm3": 3466.46,
+  "tahminiKutleGram": 3.5,
   "dis": {
     "boy": 44,
-    "yukseklik": 23.4,
-    "kalinlik": 6.2,
+    "yukseklik": 28.8,
+    "kalinlik": 5.8,
     "bilekYaricapi": 45,
     "ucSehimi": 5.202
   },
   "kanal": {
-    "en": 20.6,
-    "yukseklik": 3.4,
+    "en": 26,
+    "yukseklik": 3,
     "arka": "kapalı",
     "arkaDuvar": 1
   },
@@ -38,7 +38,7 @@
     "brepGecerliKesin": true,
     "stepGecerliStandart": true,
     "stepGecerliKesin": false,
-    "stepHacimFarkiMm3": 0.00005685162432200741
+    "stepHacimFarkiMm3": 0.000058980069297831506
   },
   "notlar": [
     "PA12 yoğunluğu 1,01 g/cm³ alındı.",

@@ -1,9 +1,9 @@
 {
   "parca": "tipay Bileklik Tokası · PA12",
   "kod": "tipay-toka-pa12",
-  "rev": "B",
+  "rev": "C",
   "tarih": "27.11.2026",
-  "revNot": "Rev B: arka kapalı kanal (bant çıkmaz, bileğe dudak değmez), bilek formunda kavis R45, esnek etiket + NFC. Rev A (arkası açık C kanal, düz) kaldırıldı.",
+  "revNot": "Rev C: kanal 26 × 3,0 (25 mm bant). Rev B: arka kapalı kanal, bilek formunda kavis R45, esnek etiket + NFC. Rev A (arkası açık C kanal, düz) kaldırıldı.",
   "onayli": false,
   "durum": "Numune adayı · ölçüler bant tedarikçisinin gerçek ölçüsüyle ve 3 numunede kesinleşir",
   "malzeme": "PA12, endüstriyel 3D baskı (MJF / SLS), mat siyah boyalı",
@@ -14,10 +14,10 @@
 
   "olculer": {
     "L":  { "deger": 44,   "aciklama": "Toka boyu (önden izdüşüm), bant boyunca" },
-    "Wb": { "deger": 20,   "aciklama": "Elastik bant eni" },
-    "Tb": { "deger": 1.6,  "aciklama": "Elastik bant kalınlığı (dikiş yerinde iki kat)" },
-    "Kw": { "deger": 20.6, "aciklama": "Kanal iç eni" },
-    "Kh": { "deger": 3.4,  "aciklama": "Kanal iç yüksekliği: dikişte iki kat bant + boşluk" },
+    "Wb": { "deger": 25,   "aciklama": "Elastik bant eni" },
+    "Tb": { "deger": 1.4,  "aciklama": "Elastik bant kalınlığı, en çok (dikiş yerinde iki kat kanala sığmalı)" },
+    "Kw": { "deger": 26,   "aciklama": "Kanal iç eni" },
+    "Kh": { "deger": 3.0,  "aciklama": "Kanal iç yüksekliği: dikişte iki kat bant + boşluk" },
     "On": { "deger": 1.8,  "aciklama": "Ön duvar kalınlığı" },
     "Yn": { "deger": 1.4,  "aciklama": "Yan duvar kalınlığı" },
     "Ar": { "deger": 1.0,  "aciklama": "Arka (bilek) duvar kalınlığı, kapalı" },
