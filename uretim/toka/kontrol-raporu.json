@@ -1,43 +1,49 @@
 {
   "parca": "tipay Bileklik Tokası · PA12",
-  "rev": "A",
+  "rev": "B",
   "tarih": "27.11.2026",
   "durum": "NUMUNE ADAYI - ÜRETİM ONAYI DEĞİL",
   "birim": "mm",
   "kati": 1,
   "sinirlar": [
     [
-      -22.000000000000004,
+      -22,
       -11.7,
-      -1
+      -5.202
     ],
     [
-      22.000000000000004,
-      11.700000099999999,
-      5.4
+      22,
+      11.7,
+      6.2
     ]
   ],
-  "hacimMm3": 2044.939,
-  "tahminiKutleGram": 2.07,
+  "hacimMm3": 2827.576,
+  "tahminiKutleGram": 2.86,
   "dis": {
     "boy": 44,
     "yukseklik": 23.4,
-    "kalinlik": 6.4
+    "kalinlik": 6.2,
+    "bilekYaricapi": 45,
+    "ucSehimi": 5.202
   },
   "kanal": {
     "en": 20.6,
     "yukseklik": 3.4,
-    "arkaAciklik": 11.6
+    "arka": "kapalı",
+    "arkaDuvar": 1
   },
-  "cepTabanDuvari": 0.75,
+  "cepTabanDuvari": 1.1,
+  "kenarYuvarlatmasi": "R0.8",
   "kontroller": {
-    "brepGecerli": true,
-    "stepGecerli": true,
-    "stepHacimFarkiMm3": 2.3874235921539366e-11
+    "brepGecerliKesin": true,
+    "stepGecerliStandart": true,
+    "stepGecerliKesin": false,
+    "stepHacimFarkiMm3": 0.00005685162432200741
   },
   "notlar": [
     "PA12 yoğunluğu 1,01 g/cm³ alındı.",
+    "Kapalı kanal iki uçtan açık: 3D baskı tozu temizlenebilir.",
     "Kanal iç ölçüsü gerçek bantla numunede denenir; dikiş kalınlığı ölçülmedi.",
-    "Fiziksel ter / sürtünme / bükülme testi yapılmadı."
+    "Fiziksel ter / sürtünme / bilekte kullanım testi yapılmadı."
   ]
 }

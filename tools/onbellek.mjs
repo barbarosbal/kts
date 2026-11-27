@@ -14,7 +14,7 @@ const FILES = [
   'model-bileklik.js', 'bileklik-olculer.json', 'bileklik-taslak.svg',
   'bileklik-ortak.js', 'model-bileklik-ayarli.js', 'bileklik-ayarli-olculer.json', 'bileklik-ayarli-taslak.svg',
   'model-bileklik-kilif.js', 'bileklik-kilif-olculer.json', 'bileklik-kilif-taslak.svg',
-  'model-toka.js', 'toka-olculer.json', 'uretim/toka/toka-mesh.json', 'uretim/toka/tipay-toka-pa12-revA-teknik-resim.svg',
+  'model-toka.js', 'toka-olculer.json', 'uretim/toka/toka-mesh.json', 'uretim/toka/tipay-toka-pa12-revB-teknik-resim.svg',
 ];
 
 const h = createHash('sha1');

@@ -1,0 +1,211 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 990" width="1400" height="990" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path d="M0,1.5 L10,5 L0,8.5 z" fill="#111"/></marker>
+    <pattern id="h1" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="9" height="9" fill="#fff"/><line x1="0" y1="0" x2="0" y2="9" stroke="#111" stroke-width=".8"/></pattern>
+    <pattern id="h3" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#fff"/><path d="M0,3 L6,3 M3,0 L3,6" stroke="#888" stroke-width=".6"/></pattern>
+    <pattern id="qr" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#fff"/><rect width="4" height="4" fill="#bbb"/><rect x="4" y="4" width="4" height="4" fill="#bbb"/></pattern>
+    <style>
+      .vis{stroke:#111;stroke-width:2.2;stroke-linejoin:round}
+      .thin{fill:none;stroke:#111;stroke-width:1}
+      .hid{fill:none;stroke:#111;stroke-width:1.2;stroke-dasharray:7 4}
+      .ctr{fill:none;stroke:#555;stroke-width:0.9;stroke-dasharray:22 4 3 4}
+      .dim{fill:none;stroke:#111;stroke-width:0.9}
+      .dima{fill:none;stroke:#111;stroke-width:0.9;marker-start:url(#arr);marker-end:url(#arr)}
+      .lead{fill:none;stroke:#111;stroke-width:0.9;marker-start:url(#arr)}
+      .grid{fill:none;stroke:#111;stroke-width:1}
+      .tb{font-size:14px;font-weight:700;fill:#111}
+      .ts{font-size:12px;fill:#333}
+      .tn{font-size:13px;fill:#111}
+      .tl{font-size:10px;fill:#555;letter-spacing:.4px}
+      .h{font-size:18px;font-weight:700;fill:#111;letter-spacing:.5px}
+      .q{fill:#c2410c}
+    </style>
+  </defs>
+  <rect x="0" y="0" width="1400" height="990" fill="#fff"/>
+  <rect x="20" y="20" width="1360" height="950" class="grid" stroke-width="1.6"/>
+  <line class="ctr" x1="92" y1="220" x2="568" y2="220"/>
+  <rect class="vis" x="132" y="114.7" width="396" height="210.6" rx="27" fill="#fff"/>
+  <rect class="thin" x="157.2" y="137.2" width="345.6" height="165.6" rx="5.4" />
+  <rect class="vis" x="159" y="139" width="342" height="162" rx="2.7" fill="#1a1b1e"/>
+  <rect x="339" y="139" width="162" height="162" fill="#fff"/>
+  <rect x="353.4" y="153.4" width="133.2" height="133.2" fill="url(#qr)"/>
+  <rect x="353.4" y="153.4" width="25.2" height="25.2" fill="#111"/>
+  <rect x="357" y="157" width="18" height="18" fill="#fff"/>
+  <rect x="360.6" y="160.6" width="10.8" height="10.8" fill="#111"/>
+  <rect x="461.4" y="153.4" width="25.2" height="25.2" fill="#111"/>
+  <rect x="465" y="157" width="18" height="18" fill="#fff"/>
+  <rect x="468.6" y="160.6" width="10.8" height="10.8" fill="#111"/>
+  <rect x="353.4" y="261.4" width="25.2" height="25.2" fill="#111"/>
+  <rect x="357" y="265" width="18" height="18" fill="#fff"/>
+  <rect x="360.6" y="268.6" width="10.8" height="10.8" fill="#111"/>
+  <text x="249" y="240.7" text-anchor="middle" font-size="64.8" font-weight="600" fill="#f2eee5">tipay</text>
+  <circle class="hid" cx="420" cy="220" r="72"/>
+  <line class="hid" x1="132" y1="127.3" x2="528" y2="127.3"/>
+  <line class="hid" x1="132" y1="312.7" x2="528" y2="312.7"/>
+  <line class="dim" x1="132" y1="240" x2="132" y2="391.3"/>
+  <line class="dim" x1="528" y1="240" x2="528" y2="391.3"/>
+  <line class="dima" x1="132" y1="387.3" x2="528" y2="387.3"/>
+  <rect x="304.8" y="377.3" width="50.4" height="20" fill="#fff"/>
+  <text class="tb q" x="330" y="392.3" text-anchor="middle">L = 44</text>
+  <line class="dim" x1="157.2" y1="304.8" x2="157.2" y2="357.3"/>
+  <line class="dim" x1="502.8" y1="304.8" x2="502.8" y2="357.3"/>
+  <line class="dima" x1="157.2" y1="353.3" x2="502.8" y2="353.3"/>
+  <rect x="296.4" y="343.3" width="67.2" height="20" fill="#fff"/>
+  <text class="tb q" x="330" y="358.3" text-anchor="middle">cep 38,4</text>
+  <line class="dim" x1="518" y1="114.7" x2="574" y2="114.7"/>
+  <line class="dim" x1="518" y1="325.3" x2="574" y2="325.3"/>
+  <line class="dima" x1="570" y1="114.7" x2="570" y2="325.3"/>
+  <rect x="550" y="210" width="40" height="20" fill="#fff"/>
+  <text class="tb q" x="570" y="225" text-anchor="middle">23,4</text>
+  <line class="dim" x1="157.2" y1="137.2" x2="88" y2="137.2"/>
+  <line class="dim" x1="157.2" y1="302.8" x2="88" y2="302.8"/>
+  <line class="dima" x1="92" y1="137.2" x2="92" y2="302.8"/>
+  <rect x="72" y="210" width="40" height="20" fill="#fff"/>
+  <text class="tb q" x="92" y="225" text-anchor="middle">18,4</text>
+  <polyline class="lead" points="140,120.7 102,70 302,70"/>
+  <text class="tb" x="106" y="64">PA12 TOKA · R3 köşe</text>
+  <text class="ts" x="106" y="84">ön ve bilek kenarları R0,8</text>
+  <polyline class="lead" points="349,157 429,70 639,70"/>
+  <text class="tb" x="433" y="64">ESNEK ETİKET 38 × 18</text>
+  <text class="ts" x="433" y="84">marka + QR 18 × 18 · NFC Ø16 altında (kesikli)</text>
+  <text class="h" x="330" y="437.3" text-anchor="middle">ÖNDEN · 2,38:1</text>
+  <polygon class="vis" fill="#fff" points="652,178.9 658.6,175.8 665.2,172.9 671.8,170.1 678.4,167.3 685,164.8 691.6,162.3 698.2,159.9 704.8,157.7 711.4,155.5 718,153.5 724.6,151.6 731.2,149.8 737.8,148.1 744.4,146.5 751,145 757.6,143.6 764.2,142.3 770.8,141.1 777.4,140 784,139 790.6,138 797.2,137.2 803.8,136.5 810.4,135.9 817,135.4 823.6,135 830.2,134.6 836.8,134.4 843.4,134.2 850,134.2 856.6,134.2 863.2,134.4 869.8,134.6 876.4,135 883,135.4 889.6,135.9 896.2,136.5 902.8,137.2 909.4,138 916,139 922.6,140 929.2,141.1 935.8,142.3 942.4,143.6 949,145 955.6,146.5 962.2,148.1 968.8,149.8 975.4,151.6 982,153.5 988.6,155.5 995.2,157.7 1001.8,159.9 1008.4,162.3 1015,164.8 1021.6,167.3 1028.2,170.1 1034.8,172.9 1041.4,175.8 1048,178.9 1048,241.7 1041.4,238.1 1034.8,234.6 1028.2,231.3 1021.6,228.2 1015,225.1 1008.4,222.3 1001.8,219.5 995.2,216.9 988.6,214.5 982,212.1 975.4,209.9 968.8,207.8 962.2,205.9 955.6,204 949,202.3 942.4,200.7 935.8,199.2 929.2,197.8 922.6,196.6 916,195.4 909.4,194.4 902.8,193.5 896.2,192.6 889.6,191.9 883,191.3 876.4,190.9 869.8,190.5 863.2,190.2 856.6,190.1 850,190 843.4,190.1 836.8,190.2 830.2,190.5 823.6,190.9 817,191.3 810.4,191.9 803.8,192.6 797.2,193.5 790.6,194.4 784,195.4 777.4,196.6 770.8,197.8 764.2,199.2 757.6,200.7 751,202.3 744.4,204 737.8,205.9 731.2,207.8 724.6,209.9 718,212.1 711.4,214.5 704.8,216.9 698.2,219.5 691.6,222.3 685,225.1 678.4,228.2 671.8,231.3 665.2,234.6 658.6,238.1 652,241.7"/>
+  <polyline class="hid" points="652,231.4 658.6,227.9 665.2,224.5 671.8,221.3 678.4,218.2 685,215.3 691.6,212.5 698.2,209.8 704.8,207.3 711.4,204.9 718,202.6 724.6,200.4 731.2,198.4 737.8,196.5 744.4,194.7 751,193 757.6,191.4 764.2,190 770.8,188.6 777.4,187.4 784,186.3 790.6,185.3 797.2,184.4 803.8,183.6 810.4,182.9 817,182.3 823.6,181.8 830.2,181.5 836.8,181.2 843.4,181.1 850,181 856.6,181.1 863.2,181.2 869.8,181.5 876.4,181.8 883,182.3 889.6,182.9 896.2,183.6 902.8,184.4 909.4,185.3 916,186.3 922.6,187.4 929.2,188.6 935.8,190 942.4,191.4 949,193 955.6,194.7 962.2,196.5 968.8,198.4 975.4,200.4 982,202.6 988.6,204.9 995.2,207.3 1001.8,209.8 1008.4,212.5 1015,215.3 1021.6,218.2 1028.2,221.3 1034.8,224.5 1041.4,227.9 1048,231.4"/>
+  <polyline class="hid" points="652,196.9 658.6,193.7 665.2,190.6 671.8,187.7 678.4,184.9 685,182.2 691.6,179.6 698.2,177.1 704.8,174.8 711.4,172.6 718,170.4 724.6,168.5 731.2,166.6 737.8,164.8 744.4,163.1 751,161.6 757.6,160.1 764.2,158.8 770.8,157.5 777.4,156.4 784,155.3 790.6,154.4 797.2,153.5 803.8,152.8 810.4,152.2 817,151.6 823.6,151.2 830.2,150.8 836.8,150.6 843.4,150.4 850,150.4 856.6,150.4 863.2,150.6 869.8,150.8 876.4,151.2 883,151.6 889.6,152.2 896.2,152.8 902.8,153.5 909.4,154.4 916,155.3 922.6,156.4 929.2,157.5 935.8,158.8 942.4,160.1 949,161.6 955.6,163.1 962.2,164.8 968.8,166.6 975.4,168.5 982,170.4 988.6,172.6 995.2,174.8 1001.8,177.1 1008.4,179.6 1015,182.2 1021.6,184.9 1028.2,187.7 1034.8,190.6 1041.4,193.7 1048,196.9"/>
+  <polyline class="hid" points="677.2,174.6 683,172.3 688.7,170.1 694.5,167.9 700.2,165.9 706,163.9 711.8,162 717.5,160.2 723.3,158.5 729,156.9 734.8,155.3 740.6,153.9 746.3,152.5 752.1,151.2 757.8,149.9 763.6,148.8 769.4,147.7 775.1,146.7 780.9,145.8 786.6,144.9 792.4,144.2 798.2,143.5 803.9,142.8 809.7,142.3 815.4,141.8 821.2,141.4 827,141.1 832.7,140.8 838.5,140.6 844.2,140.5 850,140.5 855.8,140.5 861.5,140.6 867.3,140.8 873,141.1 878.8,141.4 884.6,141.8 890.3,142.3 896.1,142.8 901.8,143.5 907.6,144.2 913.4,144.9 919.1,145.8 924.9,146.7 930.6,147.7 936.4,148.8 942.2,149.9 947.9,151.2 953.7,152.5 959.4,153.9 965.2,155.3 971,156.9 976.7,158.5 982.5,160.2 988.2,162 994,163.9 999.8,165.9 1005.5,167.9 1011.3,170.1 1017,172.3 1022.8,174.6"/>
+  <line class="ctr" x1="850" y1="104.2" x2="850" y2="266.8"/>
+  <line class="dim" x1="652" y1="238.8" x2="652" y2="274.8"/>
+  <line class="dim" x1="1048" y1="238.8" x2="1048" y2="274.8"/>
+  <line class="dima" x1="652" y1="270.8" x2="1048" y2="270.8"/>
+  <rect x="830" y="260.8" width="40" height="20" fill="#fff"/>
+  <text class="tb q" x="850" y="275.8" text-anchor="middle">44</text>
+  <line class="dim" x1="854" y1="134.2" x2="1092" y2="134.2"/>
+  <line class="dim" x1="854" y1="190" x2="1092" y2="190"/>
+  <line class="dima" x1="1088" y1="134.2" x2="1088" y2="190"/>
+  <rect x="1068" y="152.1" width="40" height="20" fill="#fff"/>
+  <text class="tb q" x="1088" y="167.1" text-anchor="middle">6,2</text>
+  <line class="dim" x1="854" y1="190" x2="1148" y2="190"/>
+  <line class="dim" x1="1050" y1="236.8" x2="1148" y2="236.8"/>
+  <line class="dima" x1="1144" y1="190" x2="1144" y2="236.8"/>
+  <rect x="1124" y="203.4" width="40" height="20" fill="#fff"/>
+  <text class="tb q" x="1144" y="218.4" text-anchor="middle">5,2</text>
+  <polyline class="lead" points="958.9,204.9 1038,298.8 1198,298.8"/>
+  <text class="tb" x="1042" y="292.8">BİLEK YÜZÜ R45</text>
+  <text class="ts" x="1042" y="312.8">kanal kavsi izler (kesikli)</text>
+  <text class="ts" x="850" y="96.2" text-anchor="middle">ön yüz (etiket tarafı)</text>
+  <text class="h" x="850" y="336.8" text-anchor="middle">YANDAN · 2,38:1</text>
+  <path class="vis" fill="url(#h1)" fill-rule="evenodd" d="M142.8,770 L517.2,770 L517.2,670.8 L477.2,670.8 L477.2,682 L182.8,682 L182.8,670.8 L142.8,670.8 Z M165.2,754 L494.8,754 L494.8,699.6 L165.2,699.6 Z"/>
+  <rect class="thin" x="170" y="726.8" width="320" height="25.6" fill="url(#h3)"/>
+  <rect class="thin" x="170" y="701.2" width="320" height="25.6" fill="url(#h3)"/>
+  <rect x="202" y="676.4" width="256" height="5.6" fill="#111"/>
+  <rect class="thin" x="186" y="671.6" width="288" height="4.8" fill="#666"/>
+  <line class="ctr" x1="330" y1="800" x2="330" y2="630.8"/>
+  <line class="dim" x1="142.8" y1="772" x2="142.8" y2="808"/>
+  <line class="dim" x1="517.2" y1="772" x2="517.2" y2="808"/>
+  <line class="dima" x1="142.8" y1="804" x2="517.2" y2="804"/>
+  <rect x="310" y="794" width="40" height="20" fill="#fff"/>
+  <text class="tb q" x="330" y="809" text-anchor="middle">23,4</text>
+  <line class="dim" x1="165.2" y1="697.6" x2="165.2" y2="636.8"/>
+  <line class="dim" x1="494.8" y1="697.6" x2="494.8" y2="636.8"/>
+  <line class="dima" x1="165.2" y1="640.8" x2="494.8" y2="640.8"/>
+  <rect x="288" y="630.8" width="84" height="20" fill="#fff"/>
+  <text class="tb q" x="330" y="645.8" text-anchor="middle">kanal 20,6</text>
+  <line class="dim" x1="519.2" y1="670.8" x2="557.2" y2="670.8"/>
+  <line class="dim" x1="519.2" y1="770" x2="557.2" y2="770"/>
+  <line class="dima" x1="553.2" y1="670.8" x2="553.2" y2="770"/>
+  <rect x="533.2" y="710.4" width="40" height="20" fill="#fff"/>
+  <text class="tb q" x="553.2" y="725.4" text-anchor="middle">6,2</text>
+  <line class="dim" x1="494.8" y1="699.6" x2="617.2" y2="699.6"/>
+  <line class="dim" x1="494.8" y1="754" x2="617.2" y2="754"/>
+  <line class="dima" x1="613.2" y1="699.6" x2="613.2" y2="754"/>
+  <rect x="588" y="716.8" width="50.4" height="20" fill="#fff"/>
+  <text class="tb q" x="613.2" y="731.8" text-anchor="middle">Kh 3,4</text>
+  <line class="dim" x1="182.8" y1="682" x2="98.8" y2="682"/>
+  <line class="dim" x1="140.8" y1="670.8" x2="98.8" y2="670.8"/>
+  <line class="dima" x1="102.8" y1="670.8" x2="102.8" y2="682"/>
+  <rect x="82.8" y="666.4" width="40" height="20" fill="#fff"/>
+  <text class="tb q" x="102.8" y="681.4" text-anchor="middle">0,7</text>
+  <line class="dim" x1="165.2" y1="754" x2="46.8" y2="754"/>
+  <line class="dim" x1="140.8" y1="770" x2="46.8" y2="770"/>
+  <line class="dima" x1="50.8" y1="754" x2="50.8" y2="770"/>
+  <rect x="25.6" y="752" width="50.4" height="20" fill="#fff"/>
+  <text class="tb q" x="50.8" y="767" text-anchor="middle">arka 1</text>
+  <polyline class="lead" points="258,672.8 80,620 290,620"/>
+  <text class="tb" x="84" y="614">3 · ETİKET 38 × 18 × 0,3</text>
+  <text class="ts" x="84" y="634">Polyester etiket, mat koruyucu laminasyon, kalıcı yapışkan</text>
+  <polyline class="lead" points="442,680 460,600 660,600"/>
+  <text class="tb" x="464" y="594">2 · NFC Ø16 × 0,35</text>
+  <text class="ts" x="464" y="614">cep tabanında, QR alanının altında</text>
+  <polyline class="lead" points="506,726.8 500,645 660,645"/>
+  <text class="tb" x="504" y="639">1 · PA12 TOKA · KAPALI KANAL</text>
+  <text class="ts" x="504" y="659">ön 1,8 · yan 1,4 · arka 1</text>
+  <polyline class="lead" points="202,726.8 80,860 270,860"/>
+  <text class="tb" x="84" y="854">ELASTİK BANT · DİKİŞ YERİ</text>
+  <text class="ts" x="84" y="874">20 × 1,6 · iki kat</text>
+  <text class="h" x="450" y="920" text-anchor="middle">A–A KESİT · 4,23:1</text>
+  <rect class="vis" x="680" y="700" width="228" height="108" rx="1.8" fill="#1a1b1e"/>
+  <rect x="800" y="700" width="108" height="108" fill="#fff"/>
+  <rect x="809.6" y="709.6" width="88.8" height="88.8" fill="url(#qr)"/>
+  <rect x="809.6" y="709.6" width="16.8" height="16.8" fill="#111"/>
+  <rect x="812" y="712" width="12" height="12" fill="#fff"/>
+  <rect x="814.4" y="714.4" width="7.2" height="7.2" fill="#111"/>
+  <rect x="881.6" y="709.6" width="16.8" height="16.8" fill="#111"/>
+  <rect x="884" y="712" width="12" height="12" fill="#fff"/>
+  <rect x="886.4" y="714.4" width="7.2" height="7.2" fill="#111"/>
+  <rect x="809.6" y="781.6" width="16.8" height="16.8" fill="#111"/>
+  <rect x="812" y="784" width="12" height="12" fill="#fff"/>
+  <rect x="814.4" y="786.4" width="7.2" height="7.2" fill="#111"/>
+  <text x="740" y="767.8" text-anchor="middle" font-size="43.2" font-weight="600" fill="#f2eee5">tipay</text>
+  <line class="dim" x1="680" y1="698" x2="680" y2="674"/>
+  <line class="dim" x1="908" y1="698" x2="908" y2="674"/>
+  <line class="dima" x1="680" y1="678" x2="908" y2="678"/>
+  <rect x="774" y="668" width="40" height="20" fill="#fff"/>
+  <text class="tb q" x="794" y="683" text-anchor="middle">38</text>
+  <line class="dim" x1="800" y1="810" x2="800" y2="836"/>
+  <line class="dim" x1="908" y1="810" x2="908" y2="836"/>
+  <line class="dima" x1="800" y1="832" x2="908" y2="832"/>
+  <rect x="833" y="822" width="42" height="20" fill="#fff"/>
+  <text class="tb q" x="854" y="837" text-anchor="middle">QR 18</text>
+  <line class="dim" x1="910" y1="700" x2="946" y2="700"/>
+  <line class="dim" x1="910" y1="808" x2="946" y2="808"/>
+  <line class="dima" x1="942" y1="700" x2="942" y2="808"/>
+  <rect x="922" y="744" width="40" height="20" fill="#fff"/>
+  <text class="tb q" x="942" y="759" text-anchor="middle">18</text>
+  <text class="tn" x="680" y="870">37 × 37 modül · ECC H · modül 0,4 · sessiz bölge 4 modül</text>
+  <text class="tn" x="680" y="888">Her adet tekil QR · koyu modül, açık zemin</text>
+  <text class="h" x="680" y="912">ETİKET BASKISI · 1,59:1</text>
+  <text class="h" x="1035" y="380">PARÇA LİSTESİ</text>
+  <rect class="grid" x="1035" y="390" width="330" height="42"/>
+  <text class="tb" x="1045" y="408">1</text>
+  <text class="tb" x="1065" y="408">PA12 toka</text>
+  <text class="tl" x="1065" y="423">3D baskı · arkası kapalı · R45 · ≈ 2,86 g</text>
+  <rect class="grid" x="1035" y="432" width="330" height="42"/>
+  <text class="tb" x="1045" y="450">2</text>
+  <text class="tb" x="1065" y="450">NFC inlay</text>
+  <text class="tl" x="1065" y="465">Ø16 esnek · tekil adres, kilitli</text>
+  <rect class="grid" x="1035" y="474" width="330" height="42"/>
+  <text class="tb" x="1045" y="492">3</text>
+  <text class="tb" x="1065" y="492">Esnek etiket</text>
+  <text class="tl" x="1065" y="507">38 × 18 × 0,3 polyester · tekil QR</text>
+  <rect class="grid" x="1035" y="516" width="330" height="42"/>
+  <text class="tb" x="1045" y="534">4</text>
+  <text class="tb" x="1065" y="534">Elastik bant</text>
+  <text class="tl" x="1065" y="549">20 mm siyah dokuma · tedarik</text>
+  <text class="h" x="1035" y="588">NOTLAR</text>
+  <text class="ts" x="1035" y="612">Malzeme: PA12 3D baskı (MJF / SLS), mat siyah.</text>
+  <text class="ts" x="1035" y="630">Genel tolerans ±0,2 mm (3D baskı).</text>
+  <text class="ts" x="1035" y="648">Kanal kapalı, iki uçtan açık: baskı tozu temizlenir.</text>
+  <text class="ts" x="1035" y="666">Kanal ölçüsü gerçek bantla 3 numunede denenir.</text>
+  <text class="ts" x="1035" y="684">Montaj: toka banda geçirilir, uçlar üst üste</text>
+  <text class="ts" x="1035" y="702">dikilir; dikiş kapalı kanalın içinde kalır.</text>
+  <text class="ts" x="1035" y="720">NFC + etiket tipay'de yapıştırılır;</text>
+  <text class="ts" x="1035" y="738">toka üreticisi ürün kimliği görmez.</text>
+  <text class="ts" x="1035" y="756">Marka yalnız etikette: ad değişirse toka aynı kalır.</text>
+  <rect class="grid" x="1035" y="862" width="330" height="96" stroke-width="1.6"/>
+  <line class="grid" x1="1035" y1="902" x2="1365" y2="902"/>
+  <text class="h" x="1047" y="889">tipay Bileklik Tokası · PA12</text>
+  <text class="ts" x="1047" y="922">Rev B · 27.11.2026 · NUMUNE ADAYI · mm</text>
+  <text class="ts" x="1047" y="942">STEP: tipay-toka-pa12-revB.step</text>
+  <text class="tl" x="1353" y="922" text-anchor="end">Ratel Systems</text>
+  <text class="tn q" x="1035" y="852">Turuncu ölçüler ön değerdir.</text>
+</svg>

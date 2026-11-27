@@ -1,51 +1,51 @@
 {
   "parca": "tipay Bileklik Tokası · PA12",
   "kod": "tipay-toka-pa12",
-  "rev": "A",
+  "rev": "B",
   "tarih": "27.11.2026",
-  "revNot": "İlk 100 adet için: kurucunun sac prototipinin biçimi (bandı saran C kanal, dikişi örter), PA12 endüstriyel 3D baskı. Ön yüzde 38 × 18 baskılı plaka cebi; plakanın altında NFC.",
+  "revNot": "Rev B: arka kapalı kanal (bant çıkmaz, bileğe dudak değmez), bilek formunda kavis R45, esnek etiket + NFC. Rev A (arkası açık C kanal, düz) kaldırıldı.",
   "onayli": false,
   "durum": "Numune adayı · ölçüler bant tedarikçisinin gerçek ölçüsüyle ve 3 numunede kesinleşir",
   "malzeme": "PA12, endüstriyel 3D baskı (MJF / SLS), mat siyah boyalı",
   "malzemeKisa": "PA12",
-  "yuzey": "Boyanmış mat siyah; isteğe bağlı buhar düzeltme. Kenarlarda çapak yok.",
+  "yuzey": "Boyanmış mat siyah; isteğe bağlı buhar düzeltme. Bilek yüzü ve kanal ağızları çapaksız, yuvarlatılmış.",
   "adet": "3 numune → 100 adet ilk parti",
   "genelTolerans": "±0,2 mm (3D baskı); kanal iç ölçüsü numunede bantla denenir",
 
   "olculer": {
-    "L":  { "deger": 44,   "aciklama": "Toka boyu, bant boyunca" },
+    "L":  { "deger": 44,   "aciklama": "Toka boyu (önden izdüşüm), bant boyunca" },
     "Wb": { "deger": 20,   "aciklama": "Elastik bant eni" },
     "Tb": { "deger": 1.6,  "aciklama": "Elastik bant kalınlığı (dikiş yerinde iki kat)" },
     "Kw": { "deger": 20.6, "aciklama": "Kanal iç eni" },
     "Kh": { "deger": 3.4,  "aciklama": "Kanal iç yüksekliği: dikişte iki kat bant + boşluk" },
-    "On": { "deger": 2.0,  "aciklama": "Ön duvar kalınlığı" },
+    "On": { "deger": 1.8,  "aciklama": "Ön duvar kalınlığı" },
     "Yn": { "deger": 1.4,  "aciklama": "Yan duvar kalınlığı" },
-    "Ar": { "deger": 1.0,  "aciklama": "Arka dudak kalınlığı" },
-    "De": { "deger": 4.5,  "aciklama": "Arka dudak eni (her iki yan)" },
+    "Ar": { "deger": 1.0,  "aciklama": "Arka (bilek) duvar kalınlığı, kapalı" },
+    "Rb": { "deger": 45,   "aciklama": "Bilek yüzü kavis yarıçapı" },
     "Rk": { "deger": 3,    "aciklama": "Önden görünüşte köşe yarıçapı" },
-    "Rf": { "deger": 0.8,  "aciklama": "Ön yüz kenar yuvarlatması" }
+    "Rf": { "deger": 0.8,  "aciklama": "Ön ve bilek yüzü kenar yuvarlatması" }
   },
 
   "cep": {
-    "aciklama": "Ön yüzde baskılı plaka cebi; plaka ile NFC inlay üst üste oturur, plaka yapıştırılır (VHB bant veya epoksi).",
+    "aciklama": "Ön yüzde etiket cebi, ön yüz kavsini izler (sabit derinlik). NFC inlay tabana, etiket üstüne yapıştırılır; etiket yüzeyle aynı hizada.",
     "boy": 38.4,
     "en": 18.4,
-    "derinlik": 1.25,
+    "derinlik": 0.7,
     "koseR": 0.6
   },
 
   "plaka": {
-    "aciklama": "Ters baskılı PC plaka: siyah zemin, solda marka yazısı, sağda 18 × 18 QR alanı (koyu modül, açık zemin). Marka yalnız plakada: ad değişirse toka değişmez.",
+    "aciklama": "Esnek baskılı etiket: siyah zemin, solda marka, sağda 18 × 18 QR alanı (koyu modül, açık zemin). Kavise uyar. Marka yalnız etikette: ad değişirse toka değişmez.",
     "boy": 38,
     "en": 18,
-    "kalinlik": 0.8,
-    "malzeme": "PC, ters baskı, mat koruyucu yüz",
+    "kalinlik": 0.3,
+    "malzeme": "Polyester etiket, mat koruyucu laminasyon, kalıcı yapışkan",
     "marka": "tipay",
     "qrAlan": 18
   },
 
   "nfc": {
-    "aciklama": "QR alanının altında, cep tabanında. Toka plastik olduğundan ferritli (metal üstü) etiket gerekmez.",
+    "aciklama": "QR alanının altında, cep tabanında; esnek ıslak inlay kavise uyar. Toka plastik olduğundan ferritli (metal üstü) etiket gerekmez.",
     "cap": 16,
     "kalinlik": 0.35,
     "cip": "NTAG213 / NTAG215 · ileri sürüm NTAG 424 DNA"
@@ -56,7 +56,7 @@
   "bant": {
     "malzeme": "Siyah dokuma elastik, kenarı tüylenmez",
     "cevre": 175,
-    "aciklama": "Bant uçları toka geçirildikten sonra üst üste dikilir; dikiş tokanın altında kalır."
+    "aciklama": "Toka banda geçirilir, uçlar üst üste dikilir; dikiş tokanın kapalı kanalında kalır."
   },
 
   "ayrik": { "toka": 26, "plaka": 22, "nfc": 12 }

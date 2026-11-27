@@ -2,9 +2,9 @@ import * as THREE from 'three';
 import { metin, smooth } from 'kts/ortak';
 import { qrDokusu, nfcDokusu, ek } from 'kts/bileklik-ortak';
 
-// PA12 bileklik tokası: STEP ile aynı OpenCascade katısının ağı (tools/toka.mjs) + elastik bant, baskılı plaka, NFC.
-// CAD ekseni: X bant boyunca, Y bant eni, Z dışa. Sahnede toka, rotation.y = POD olan çerçevede durur
-// (yerel +X teğet, +Y yukarı, +Z dışa); bileklik ekseni +Y.
+// PA12 bileklik tokası Rev B: STEP ile aynı OpenCascade katısının ağı (tools/toka.mjs) + elastik bant, esnek etiket, NFC.
+// CAD ekseni: X bant boyunca, Y bant eni, Z dışa; kavis merkezi (0, 0, -Rb), bilek yüzü tepesi Z = 0.
+// Sahnede toka, rotation.y = POD olan çerçevede durur (yerel +X teğet, +Y yukarı, +Z dışa); bileklik ekseni +Y.
 const V = new URL(import.meta.url).search;
 async function json(p) {
   const r = await fetch(`${p}${V}`);
@@ -17,33 +17,33 @@ const M = Object.fromEntries(Object.entries(SPEC.olculer).map(([k, v]) => [k, v.
 const { cep: CEP, plaka: PL, nfc: NFC, ayrik: AY } = SPEC;
 
 const TAU = Math.PI * 2;
-const H = Math.round((M.Kw + 2 * M.Yn) * 100) / 100;
-const Z1 = M.Kh + M.On;                    // tokanın ön yüzü (CAD)
+const yuvarla = (n) => Math.round(n * 100) / 100;
+const H = yuvarla(M.Kw + 2 * M.Yn);
+const TOP = yuvarla(M.Ar + M.Kh + M.On);
+const RF = M.Rb + TOP;                     // ön yüz yarıçapı (kavis merkezinden)
 const YC = H / 2;                          // toka alt kenarı zeminde
 const POD = THREE.MathUtils.degToRad(-50); // izometrik kameraya bakar
 const BOSLUK = 0.25;                       // bant ile kanal tabanı arası
 
 // ---------------- bant yolu ----------------
-// Bilek tarafı çizgisi: çevresi bant çevresi olan daire, toka altında düzleşir (D biçimi, köşeler yumuşatılmış).
-const A = M.L / 2 + 4;                     // düz bölümün yarı boyu
-function cevre(R) {
-  const th = Math.asin(Math.min(1, A / R));
-  return 2 * A + R * (TAU - 2 * th);
-}
-let R = 20;
-for (let i = 0; i < 60; i++) R += (SPEC.bant.cevre - cevre(R)) / TAU;
-const D = R * Math.cos(Math.asin(A / R));  // düz bölümün eksene uzaklığı
+// Bilek tarafı çizgisi: arkada daire (bant çevresi), önde tokanın kavsini izleyen geniş yay; geçiş yumuşatılmış.
+const R = SPEC.bant.cevre / TAU;
+const RHO = M.Rb + M.Ar + BOSLUK;          // bandın toka içindeki yarıçapı (toka kavis merkezinden)
+const A0 = M.L / 2 + 3;
+const ZA = Math.sqrt(R * R - A0 * A0) + RHO - Math.sqrt(RHO * RHO - A0 * A0);
+const ZM = ZA - RHO;                       // toka kavis merkezinin eksene uzaklığı (yerel Z)
+const ZB = ZM + M.Rb;                      // tokanın bilek yüzü tepesi (yerel Z)
 const sar = (a) => Math.atan2(Math.sin(a), Math.cos(a));
 function yaricap(phi) {
-  const c = Math.max(0.02, Math.cos(sar(phi - POD)));
-  const k = 1.6;
-  return -k * Math.log(Math.exp(-R / k) + Math.exp(-(D / c) / k));
+  const d = sar(phi - POD);
+  const uc = Math.cos(d) * ZM;
+  const t = uc + Math.sqrt(Math.max(0, uc * uc - ZM * ZM + RHO * RHO));
+  const k = 1.2;
+  return -k * Math.log(Math.exp(-R / k) + Math.exp(-t / k));
 }
-const Z_KANAL = D + 0.02 - BOSLUK;          // kanal tabanının eksene uzaklığı (bant iç yüzü D)
 
 function bantGeometrisi() {
   const N = 720;
-  const K = 28;
   const { Wb: W, Tb: T } = M;
   const pts = [];
   for (let i = 0; i < N; i++) {
@@ -125,8 +125,8 @@ function dokumaDokusu() {
   return tex;
 }
 
-// Baskılı plaka yüzü: siyah zemin, solda marka, sağda QR alanı (koyu modül, açık zemin)
-function plakaDokusu() {
+// Etiket yüzü: siyah zemin, solda marka, sağda QR alanı (koyu modül, açık zemin)
+function etiketDokusu() {
   const px = 40;
   const c = document.createElement('canvas');
   c.width = PL.boy * px;
@@ -149,6 +149,10 @@ function plakaDokusu() {
   return tex;
 }
 
+// Toka kavsine oturan silindir yaması (yerel çerçevede kavis merkezi (0, YC, ZM)); merkez yay uzunluğu x0
+const yama = (r, boy, en, x0 = 0) => new THREE.CylinderGeometry(r, r, en, 64, 1, true, (x0 - boy / 2) / r, boy / r)
+  .translate(0, YC, ZM);
+
 // ---------------- teknik katman ----------------
 const yerel = (x, y, z) => {
   const v = new THREE.Vector3(x, y, z).applyAxisAngle(new THREE.Vector3(0, 1, 0), POD);
@@ -156,73 +160,64 @@ const yerel = (x, y, z) => {
 };
 const P = [0, YC, 0];
 const QR_X = PL.boy / 2 - PL.qrAlan / 2;
+const ON = ZB + TOP;
 
 function annotate(a) {
-  const on = Z_KANAL + Z1;
-  a.callout(yerel(-M.L / 2 + 2, YC + H / 2 - 2, on - 0.5), ek(-34, 40, 0, P),
-    `Toka ${metin(M.L)} × ${metin(H)} × ${metin(Z1 + M.Ar)}`, `${SPEC.malzeme}`);
-  a.callout(yerel(-4, YC - PL.en / 2 + 2, on), ek(-26, -34, 16, P),
-    `Baskılı plaka ${metin(PL.boy)} × ${metin(PL.en)}`, `marka + QR ${metin(PL.qrAlan)} × ${metin(PL.qrAlan)} · gömme, aynı hizada`);
-  a.callout(yerel(QR_X, YC + 4, on), ek(34, 38, 0, P),
+  a.callout(yerel(-M.L / 2 + 3, YC + H / 2 - 2, ON - 1.5), ek(-34, 40, 0, P),
+    `Toka ${metin(M.L)} × ${metin(H)} × ${metin(TOP)}`, `${SPEC.malzemeKisa} · bilek yüzü R${metin(M.Rb)}`);
+  a.callout(yerel(-4, YC - PL.en / 2 + 2, ON), ek(-26, -34, 16, P),
+    `Etiket ${metin(PL.boy)} × ${metin(PL.en)}`, `marka + QR ${metin(PL.qrAlan)} × ${metin(PL.qrAlan)} · gömme, aynı hizada`);
+  a.callout(yerel(QR_X, YC + 4, ON), ek(34, 38, 0, P),
     `NFC Ø${metin(NFC.cap)} QR altında`, 'plastik toka: ferrit gerekmez');
-  a.callout(yerel(M.L / 2, YC - M.Kw / 2 + 2, Z_KANAL + M.Kh / 2), ek(34, -32, 6, P),
-    `Kanal ${metin(M.Kw)} × ${metin(M.Kh)}`, `${metin(M.Wb)} mm elastik bant · dikiş tokanın altında`);
+  a.callout(yerel(M.L / 2, YC - M.Kw / 2 + 2, ZB + M.Ar + M.Kh / 2), ek(34, -32, 6, P),
+    `Kapalı kanal ${metin(M.Kw)} × ${metin(M.Kh)}`, `arka duvar ${metin(M.Ar)} · ${metin(M.Wb)} mm bant, dikiş içeride`);
 }
 
 function annotateAyrik(a) {
-  const on = Z_KANAL + Z1;
-  const pl = yerel(-PL.boy / 2, YC + AY.toka + AY.plaka + PL.en / 2, on + 4);
-  a.callout(pl, ek(-26, 10, 0, pl), '3 · Baskılı plaka', `${PL.malzeme}`);
-  const nf = yerel(QR_X + NFC.cap / 2, YC + AY.toka + AY.nfc, on + 2);
+  const pl = yerel(-PL.boy / 2, YC + AY.toka + AY.plaka + PL.en / 2, ON + 4);
+  a.callout(pl, ek(-26, 10, 0, pl), '3 · Esnek etiket', `${PL.malzeme}`);
+  const nf = yerel(QR_X + NFC.cap / 2, YC + AY.toka + AY.nfc, ON + 2);
   a.callout(nf, ek(28, 4, 0, nf), '2 · NFC inlay', `Ø${metin(NFC.cap)} · ${NFC.cip}`);
-  const tk = yerel(M.L / 2, YC + AY.toka - H / 2 + 2, on - 2);
-  a.callout(tk, ek(26, -14, 0, tk), '1 · PA12 toka', 'endüstriyel 3D baskı, mat siyah');
+  const tk = yerel(M.L / 2, YC + AY.toka - H / 2 + 2, ON - 2);
+  a.callout(tk, ek(26, -14, 0, tk), '1 · PA12 toka', 'endüstriyel 3D baskı, arkası kapalı');
 }
 
 // ---------------- kurulum ----------------
 export function kur() {
   const pa12 = new THREE.MeshStandardMaterial({ color: 0x1c1d21, metalness: 0, roughness: 0.86 });
   const bantMat = new THREE.MeshStandardMaterial({ map: dokumaDokusu(), metalness: 0, roughness: 0.95 });
-  const plakaKenar = new THREE.MeshStandardMaterial({ color: 0x111214, metalness: 0, roughness: 0.3 });
-  const plakaYuz = new THREE.MeshStandardMaterial({ map: plakaDokusu(), metalness: 0, roughness: 0.22 });
-  const nfcMat = new THREE.MeshStandardMaterial({ map: nfcDokusu(), metalness: 0.2, roughness: 0.5, transparent: true });
+  const etiketMat = new THREE.MeshStandardMaterial({ map: etiketDokusu(), metalness: 0, roughness: 0.3, side: THREE.DoubleSide });
+  const nfcMat = new THREE.MeshStandardMaterial({ map: nfcDokusu(), metalness: 0.2, roughness: 0.5, transparent: true, alphaTest: 0.5, side: THREE.DoubleSide });
 
   const bant = new THREE.Group();
   bant.add(new THREE.Mesh(bantGeometrisi(), bantMat));
 
-  // Toka: CAD ağı, yerel çerçevede kanal tabanı Z_KANAL'da
+  // Toka: CAD ağı, bilek yüzü tepesi yerel ZB'de
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.Float32BufferAttribute(mesh.vertices, 3));
   geo.setAttribute('normal', new THREE.Float32BufferAttribute(mesh.normals, 3));
   geo.setIndex(mesh.triangles);
-  geo.translate(0, YC, Z_KANAL);
+  geo.translate(0, YC, ZB);
   const tokaGovde = new THREE.Mesh(geo, pa12);
 
-  const plaka = new THREE.Group();
-  plaka.add(new THREE.Mesh(new THREE.BoxGeometry(PL.boy, PL.en, PL.kalinlik), plakaKenar));
-  plaka.add(new THREE.Mesh(new THREE.PlaneGeometry(PL.boy - 0.2, PL.en - 0.2).translate(0, 0, PL.kalinlik / 2 + 0.01), plakaYuz));
-  const zPlaka = Z_KANAL + Z1 - PL.kalinlik / 2 - 0.02;
-  plaka.position.set(0, YC, zPlaka);
-
-  const nfc = new THREE.Group();
-  nfc.add(new THREE.Mesh(new THREE.CylinderGeometry(NFC.cap / 2, NFC.cap / 2, NFC.kalinlik, 64).rotateX(Math.PI / 2), nfcMat));
-  nfc.add(new THREE.Mesh(new THREE.CircleGeometry(NFC.cap / 2, 64).translate(0, 0, NFC.kalinlik / 2 + 0.01), nfcMat));
-  const zNfc = Z_KANAL + Z1 - CEP.derinlik + NFC.kalinlik / 2;
-  nfc.position.set(QR_X, YC, zNfc);
+  // Etiket ve NFC: cebe oturan kavisli yamalar (etiket üstü ön yüzle aynı hizada)
+  const etiket = new THREE.Mesh(yama(RF - 0.04, PL.boy, PL.en), etiketMat);
+  const rNfc = RF - CEP.derinlik + NFC.kalinlik;
+  const nfc = new THREE.Mesh(yama(rNfc, NFC.cap, NFC.cap, QR_X * (rNfc / RF)), nfcMat);
 
   const toka = new THREE.Group();
   toka.rotation.y = POD;
-  toka.add(tokaGovde, plaka, nfc);
+  toka.add(tokaGovde, etiket, nfc);
 
   const parts = { bant, toka };
   return {
     ad: SPEC.parca,
-    alt: `${SPEC.malzemeKisa} 3D baskı · ${metin(M.L)} × ${metin(H)} × ${metin(Z1 + M.Ar)} mm · baskılı plaka + NFC · Rev ${SPEC.rev}${SPEC.onayli ? '' : ' numune adayı'}`,
+    alt: `${SPEC.malzemeKisa} 3D baskı · ${metin(M.L)} × ${metin(H)} × ${metin(TOP)} mm · arkası kapalı, R${metin(M.Rb)} kavis · Rev ${SPEC.rev}${SPEC.onayli ? '' : ' numune adayı'}`,
     rev: SPEC.rev,
     paket: 'uretim/toka/',
     cizim: {
       src: `uretim/toka/${SPEC.kod}-rev${SPEC.rev}-teknik-resim.svg`,
-      alt: 'PA12 bileklik tokası teknik resmi: önden görünüş, A–A kesit, üstten görünüş, baskılı plaka',
+      alt: 'PA12 bileklik tokası teknik resmi: önden, yandan (kavis), A–A kesit, etiket',
     },
     parts,
     parcalar: Object.values(parts).map((obj) => ({ obj })),
@@ -230,8 +225,8 @@ export function kur() {
       const a = smooth(0, 0.5, e);
       const b = smooth(0.4, 1, e);
       tokaGovde.position.y = AY.toka * a;
-      plaka.position.set(0, YC + AY.toka * a + AY.plaka * b, zPlaka + 4 * b);
-      nfc.position.set(QR_X, YC + AY.toka * a + AY.nfc * b, zNfc + 2 * b);
+      etiket.position.set(0, AY.toka * a + AY.plaka * b, 4 * b);
+      nfc.position.set(0, AY.toka * a + AY.nfc * b, 2 * b);
     },
     occluder: { r: R, y0: YC - M.Wb / 2, y1: YC + M.Wb / 2 },
     golge: 110,
